@@ -41,7 +41,7 @@ CREATE TABLE tyovuorotunti
 (
 	aukiolotunti_paivamaara date,
 	aukiolotunti_tunti time,
-	tyontekija_id integer NOT NULL references tyontekija(id) ON DELETE cascade,
-	primary key (aukiolotunti_paivamaara, aukiolotunti_tunti)
+	tyontekija_id integer references tyontekija(id) ON DELETE cascade,
+	primary key (aukiolotunti_paivamaara, aukiolotunti_tunti, tyontekija_id)
 );
 
