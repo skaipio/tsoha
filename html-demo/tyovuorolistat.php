@@ -1,4 +1,4 @@
-<div id="content">
+<div id="tyovuorot">
     <h1>Työvuorolistat</h1>
     <table class="table table-striped">
         <thead>

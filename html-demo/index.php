@@ -6,8 +6,8 @@ include './header.php';
 
 $type = $_GET["type"];
 switch ($type) {
-    case "tyovuorot" :
-        include "tyovuorot.php";
+    case "omat-tyovuorot" :
+        include "omattyovuorot.php";
         break;
     case "tyovuorolistat" :
         include "tyovuorolistat.php";
@@ -19,7 +19,7 @@ switch ($type) {
         include "tyontekijat.php";
         break;
     default :
-         include "tyovuorot.php";
+         include "omattyovuorot.php";
 }
 require './footer.php';
 ?>
