@@ -11,9 +11,9 @@
     </coordinates>
     <panel_attributes>tyovuorotunti
 --
-&lt;&lt;fkey&gt;&gt;aukiolotunti_paivamaara: DATE
-&lt;&lt;fkey&gt;&gt;aukiolotunti_tunti: TIME
-&lt;&lt;fkey&gt;&gt;tyontekija_id: INT
+&lt;&lt;fk&gt;&gt;aukiolotunti_paivamaara: DATE
+&lt;&lt;fk&gt;&gt;aukiolotunti_tunti: TIME
+&lt;&lt;fk&gt;&gt;tyontekija_id: INT
 </panel_attributes>
     <additional_attributes/>
   </element>
@@ -27,9 +27,9 @@
     </coordinates>
     <panel_attributes>aukiolotunti
 --
-&lt;&lt;key&gt;&gt;paivamaara: DATE
-&lt;&lt;key&gt;&gt;tunti: TIME
-&lt;&lt;fkey&gt;&gt;kiireellisyysluokka_nimi: VARCHAR(45)</panel_attributes>
+&lt;&lt;k&gt;&gt;paivamaara: DATE
+&lt;&lt;k&gt;&gt;tunti: TIME
+&lt;&lt;fk&gt;&gt;kiireellisyysluokka_nimi: VARCHAR(45)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -53,7 +53,7 @@
     </coordinates>
     <panel_attributes>kiireellisyysluokka
 --
-&lt;&lt;key&gt;&gt;nimi: VARCHAR(45)</panel_attributes>
+&lt;&lt;k&gt;&gt;nimi: VARCHAR(45)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -66,8 +66,8 @@
     </coordinates>
     <panel_attributes>minimivahvuus
 --
-&lt;&lt;key,fkey&gt;&gt;kiireellisyysluokka: VARCHAR(45)
-&lt;&lt;key,fkey&gt;&gt;henkilostoluokka_nimi: VARCHAR(45)
+&lt;&lt;k,fk&gt;&gt;kiireellisyysluokka_nimi: VARCHAR(45)
+&lt;&lt;k,fk&gt;&gt;henkilostoluokka_nimi: VARCHAR(45)
 minimi: INT
 
 </panel_attributes>
@@ -83,7 +83,7 @@ minimi: INT
     </coordinates>
     <panel_attributes>henkilostoluokka
 --
-&lt;&lt;key&gt;&gt;nimi: VARCHAR(45)</panel_attributes>
+&lt;&lt;k&gt;&gt;nimi: VARCHAR(45)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -129,7 +129,7 @@ minimi: INT
     </coordinates>
     <panel_attributes>tyontekija
 --
-&lt;&lt;key&gt;&gt;id: INT
+&lt;&lt;k&gt;&gt;id: INT
 kayttajanimi: VARCHAR(45)
 salasana: VARCHAR(45)
 sahkoposti: VARCHAR(45)
@@ -138,7 +138,7 @@ etunimi: VARCHAR(45)
 sukunimi: VARCHAR(45)
 hetu: VARCHAR(11)
 osoite: VARCHAR(100)
-&lt;&lt;fkey&gt;&gt;henkilostoluokka: VARCHAR(45)
+&lt;&lt;fk&gt;&gt;henkilostoluokka_nimi: VARCHAR(45)
 maxtunnitpaivassa: INT
 maxtunnitviikossa: INT
 </panel_attributes>
