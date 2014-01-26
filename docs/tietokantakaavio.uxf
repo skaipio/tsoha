@@ -138,7 +138,7 @@ etunimi: VARCHAR(45)
 sukunimi: VARCHAR(45)
 hetu: VARCHAR(11)
 osoite: VARCHAR(100)
-gsmnnumero: VARCHAR(10)
+gsmnumero: VARCHAR(10)
 &lt;&lt;fk&gt;&gt;henkilostoluokka_nimi: VARCHAR(45)
 maxtunnitpaivassa: INT
 maxtunnitviikossa: INT
