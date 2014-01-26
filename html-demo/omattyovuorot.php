@@ -17,10 +17,20 @@
                 <td><div class="text-center">La 1.4.2014</div></td>
                 <td><div class="text-center">Su 2.4.2014</div></td>
             </tr>
+            <tr>              
+                <td>Tunteja:</td>
+                <td><div class="text-center">8</div></td>
+                <td><div class="text-center">7</div></td>
+                <td><div class="text-center">0</div></td>
+                <td><div class="text-center">0</div></td>
+                <td><div class="text-center">0</div></td>
+                <td><div class="text-center">0</div></td>
+                <td><div class="text-center">0</div></td>
+            </tr>
         </thead>
         <tbody>
             <tr>
-                <td>08:00</td>
+                <td>8-9</td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
                 <td></td>
@@ -29,7 +39,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>09:00</td>
+            <tr><td>9-10</td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
                 <td></td>
@@ -38,7 +48,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>10:00</td>
+            <tr><td>10-11</td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
                 <td></td>
@@ -47,7 +57,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>11:00</td>
+            <tr><td>11-12</td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
                 <td></td>
@@ -56,7 +66,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>12:00</td>
+            <tr><td>12-13</td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
                 <td></td>
@@ -65,7 +75,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>13:00</td>
+            <tr><td>13-14</td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
                 <td></td>
@@ -74,7 +84,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>14:00</td>
+            <tr><td>14-15</td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
@@ -83,7 +93,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>15:00</td>
+            <tr><td>15-16</td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
@@ -92,17 +102,8 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>16:00</td>
-                <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
-                <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
+            <tr><td>16-17</td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr><td>17:00</td>
-                <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
                 <td></td>
@@ -110,17 +111,8 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>18:00</td>
-                <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
-                <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
+            <tr><td>17-18</td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr><td>19:00</td>
-                <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
                 <td></td>
@@ -128,8 +120,26 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr><td>20:00</td>
+            <tr><td>18-19</td>
+                <td></td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr><td>19-20</td>
+                <td></td>
+                <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr><td>20-21</td>
+                <td></td>
                 <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <td></td>
                 <td></td>

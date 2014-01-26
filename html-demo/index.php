@@ -18,6 +18,9 @@ switch ($type) {
     case "tyontekijat" :
         include "tyontekijat.php";
         break;
+    case "muokkaa-tyontekijaa=1" :
+        include "muokkaa-tyontekijaa.php";
+        break;
     default :
          include "omattyovuorot.php";
 }

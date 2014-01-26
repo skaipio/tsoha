@@ -1,39 +1,34 @@
-<div id="content">
-<!--<div class="row tools">
-    <div class="col-md-4"><h4>Työntekijät</h4></div>
-    <div class="col-md-4"><button type="button" class="btn btn-xs btn-default">Lisää työntekijä</button></div>
-</div>-->
+<div id="tyontekijat">
     <ul class="nav nav-pills">
         <li><a href="#">Lisää työntekijä</a></li>       
     </ul>
-<table id="tyontekijalista" class="table table-striped">
+<table id="tyontekijalista" class="table table-striped table-condensed">
     <thead>
         <tr>              
             <th>Etunimi</th>
             <th>Sukunimi</th>
-            <th>Virka</th>
+            <th>Henkilöstöluokka</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Sepe</td>
-            <td>Skalpelli</td>
+            <td>Väiski</td>
+            <td>Vemmelsääri</td>
             <td>Lääkäri</td>
+            <td><a href="?type=muokkaa-tyontekijaa=1">Muokkaa</a></td>
         </tr>
         <tr>
-            <td>Antero</td>
-            <td>Aasipainen</td>
+            <td>Miss</td>
+            <td>Piggy</td>
             <td>Sairaanhoitaja</td>
+            <td><a href="?muokkaa-tyontekijaa=2">Muokkaa</a></td>
         </tr>
         <tr>
-            <td>Marjatta</td>
-            <td>Virkkunen</td>
-            <td>Sairaanhoitaja</td>
-        </tr>
-        <tr>
-            <td>Lilli</td>
-            <td>Lumme</td>
+            <td>Pepe</td>
+            <td>Le Pew</td>
             <td>Perushoitaja</td>
+            <td><a href="?muokkaa-tyontekijaa=3">Muokkaa</a></td>
         </tr>
     </tbody>
 </table>
