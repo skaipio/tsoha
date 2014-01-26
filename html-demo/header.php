@@ -10,7 +10,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Henkilöstövahvuus<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="?type=henkvahvuuskalenteri">Kalenteri</a></li>
-                        <li><a href="#">Kiireellisyysluokat</a></li>
+                        <li><a href="?type=kiireellisyysluokat">Kiireellisyysluokat</a></li>
                     </ul>
                 </li>
                 <li><a href="?type=tyontekijat">Työntekijät</a></li>

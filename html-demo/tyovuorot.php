@@ -1,20 +1,20 @@
 <div id="tyovuorolistat">
     <!-- Miten headerit saadaan floattaamaan scrollauksen mukana? -->
-    <h4 style="text-align: center">Viikottainen työvuorolista</h4>
-    <a href="?type=tyovuorot-muokkaa" style="text-align: center">Muokkaa</a>
+    <h4 class="text-center">Viikottainen työvuorolista - <a href="?type=tyovuorot-muokkaa">Muokkaa</a></h4>
+    
     <ul class="pager">
-        <li class="previous"><a href="#">&larr; Edellinen viikko</a></li>
-        <li><a href="#">Viikko 27.3.-2.4.2014</a></li>
-        <li class="next"><a href="#">Seuraava viikko &rarr;</a></li>
+        <li class="previous disabled"><a href="#">&larr; Edellinen viikko</a></li>
+        <li class="disabled"><a href="#">Viikko 27.3.-2.4.2014</a></li>
+        <li class="next disabled"><a href="#">Seuraava viikko &rarr;</a></li>
     </ul>
     <ul class="nav nav-justified">
-        <li class="span active"><a href="#">Ma 27.3.</a></li>
-        <li><a href="#">Ti 28.3.</a></li>
-        <li><a href="#">Ke 29.3.</a></li>
-        <li><a href="#">To 30.3.</a></li> 
-        <li><a href="#">Pe 31.3.</a></li>
-        <li><a href="#">La 1.4.</a></li>
-        <li><a href="#">Su 2.4.</a></li>
+        <li class="span active disabled"><a href="#">Ma 27.3.</a></li>
+        <li class="disabled"><a href="#">Ti 28.3.</a></li>
+        <li class="disabled"><a href="#">Ke 29.3.</a></li>
+        <li class="disabled"><a href="#">To 30.3.</a></li> 
+        <li class="disabled"><a href="#">Pe 31.3.</a></li>
+        <li class="disabled"><a href="#">La 1.4.</a></li>
+        <li class="disabled"><a href="#">Su 2.4.</a></li>
     </ul>
     <table id="tyovuorolistaus" class="table table-striped table-bordered table-condensed">
         <thead>

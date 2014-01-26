@@ -1,4 +1,4 @@
-<div id="tyontekija">
+<div id="tyontekija-muokkaa">
     <h4>Lääkäri Väiski Vemmelsääri</h4>
     <form class="form-horizontal" role="form">
         <div class="form-group">
@@ -56,9 +56,9 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Tallenna</button>
-                <button type="cancel" class="btn btn-default">Peruuta</button>
-                <button type="cancel" class="btn btn-default">Poista työntekijä</button>
+                <button type="submit" class="btn btn-default disabled">Tallenna</button>
+                <a href="?type=tyontekija"><button class="btn btn-default" type="button">Peruuta</button></a>
+                <button type="cancel" class="btn btn-default disabled">Poista työntekijä</button>
             </div>
         </div>
     </form>

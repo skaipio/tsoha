@@ -1,7 +1,5 @@
 <div id="tyontekijat">
-    <ul class="nav nav-pills">
-        <li><a href="#">Lisää työntekijä</a></li>       
-    </ul>
+        <a href="?type=tyontekija-muokkaa"><button class="btn btn-default disabled" type="button">Lisää työntekijä</button></a>    
 <table id="tyontekijalista" class="table table-striped table-condensed">
     <thead>
         <tr>              
@@ -16,19 +14,19 @@
             <td>Väiski</td>
             <td>Vemmelsääri</td>
             <td>Lääkäri</td>
-            <td><a href="?type=muokkaa-tyontekijaa=1">Muokkaa</a></td>
+            <td><a href="?type=tyontekija" class="btn">Näytä</a></td>
         </tr>
         <tr>
             <td>Miss</td>
             <td>Piggy</td>
             <td>Sairaanhoitaja</td>
-            <td><a href="?muokkaa-tyontekijaa=2">Muokkaa</a></td>
+            <td><a href="#" class="btn disabled">Näytä</a></td>
         </tr>
         <tr>
             <td>Pepe</td>
             <td>Le Pew</td>
             <td>Perushoitaja</td>
-            <td><a href="?muokkaa-tyontekijaa=3">Muokkaa</a></td>
+            <td><a href="#" class="btn disabled">Näytä</a></td>
         </tr>
     </tbody>
 </table>

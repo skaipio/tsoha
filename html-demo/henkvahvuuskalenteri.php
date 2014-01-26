@@ -1,7 +1,7 @@
 <div id="henkilostovahvuuskalenteri">
     <!-- Miten headerit saadaan floattaamaan scrollauksen mukana? -->
-    <h4 style="text-align: center">Henkilöstövahvuuskalenteri</h4>
-    <a href="?type=henkvahvuuskalenteri-muokkaa" style="text-align: center">Muokkaa</a>
+    <h4 class="text-center">Henkilöstövahvuuskalenteri - <a href="?type=henkvahvuuskalenteri-muokkaa">Muokkaa</a></h4>
+    
     <ul class="pager">
         <li class="previous disabled"><a href="#">&larr; Edellinen viikko</a></li>
         <li class="disabled"><a href="#">Viikko 27.3.-2.4.2014</a></li>

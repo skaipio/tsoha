@@ -18,11 +18,20 @@ switch ($type) {
     case "henkvahvuuskalenteri-muokkaa" :
         include "henkvahvuuskalenteri-muokkaa.php";
         break;
+    case "kiireellisyysluokat" :
+        include "kiireellisyysluokat.php";
+        break;
+     case "kiireellisyysluokka-muokkaa" :
+        include "kiireellisyysluokka-muokkaa.php";
+        break;
     case "tyontekijat" :
         include "tyontekijat.php";
         break;
-    case "muokkaa-tyontekijaa=1" :
-        include "muokkaa-tyontekijaa.php";
+    case "tyontekija" :
+        include "tyontekija.php";
+        break;
+    case "tyontekija-muokkaa" :
+        include "tyontekija-muokkaa.php";
         break;
     case "tyovuorot-muokkaa" :
         include "tyovuorot-muokkaa.php";
