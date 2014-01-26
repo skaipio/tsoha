@@ -9,8 +9,8 @@ switch ($type) {
     case "omat-tyovuorot" :
         include "omattyovuorot.php";
         break;
-    case "tyovuorolistat" :
-        include "tyovuorolistat.php";
+    case "tyovuorot" :
+        include "tyovuorot.php";
         break;   
     case "henkvahvuuskalenteri" :
         include "vahvuuskalenteri.php";
@@ -20,6 +20,9 @@ switch ($type) {
         break;
     case "muokkaa-tyontekijaa=1" :
         include "muokkaa-tyontekijaa.php";
+        break;
+    case "tyovuorot-muokkaa" :
+        include "tyovuorot-muokkaa.php";
         break;
     default :
          include "omattyovuorot.php";
