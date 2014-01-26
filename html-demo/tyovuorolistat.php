@@ -6,16 +6,6 @@
         <li><a href="#">Viikko 27.3.-2.4.2014</a></li>
         <li class="next"><a href="#">Seuraava viikko &rarr;</a></li>
     </ul>
-    <!--        <ul class="nav nav-pills" style="width: 100%">
-                <li class="active" style="width: 100%"><a href="#">Ma 27.3.</a></li>
-                <li style="width: 100%"><a href="#">Ti 28.3.</a></li>
-                <li><a href="#">Ke 29.3.</a></li>
-                <li><a href="#">To 30.3.</a></li> 
-                <li><a href="#">Pe 31.3.</a></li>
-                <li><a href="#">La 1.4.</a></li>
-                <li><a href="#">Su 2.4.</a></li>
-            </ul>-->
-
     <ul class="nav nav-justified">
         <li class="span active"><a href="#">Ma 27.3.</a></li>
         <li><a href="#">Ti 28.3.</a></li>
@@ -26,12 +16,9 @@
         <li><a href="#">Su 2.4.</a></li>
     </ul>
         <table id="tyovuorolistaus" class="table table-striped table-bordered table-condensed">
-            <colgroup>
-                <col span="1" class="col-md-10">
-            </colgroup>
             <thead>
                 <tr>              
-                    <th class="col-sm-12"></th>
+                    <th class="tyontekijasarake"></th>
                     <th class="halfwrap"><div class="text-center">00:00-01:00</div></th>
                     <th class="halfwrap"><div class="text-center">01:00-02:00</div></th>
                     <th class="halfwrap"><div class="text-center">02:00-03:00</div></th>
@@ -76,6 +63,7 @@
                     <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                     <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                     <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

@@ -24,6 +24,7 @@ CREATE TABLE tyontekija
 	sukunimi varchar(45) NOT NULL,
 	hetu varchar(45) UNIQUE NOT NULL,
 	osoite varchar(100) NOT NULL,
+	gsmnumero varchar(10) NOT NULL,
 	henkilostoluokka_nimi varchar(45) NOT NULL references henkilostoluokka(nimi),
 	maxtunnitpaivassa integer NOT NULL,
 	maxtunnitviikossa integer NOT NULL

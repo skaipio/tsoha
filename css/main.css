@@ -2,6 +2,10 @@
     float:right
 }
 
+.tyontekijasarake{
+    width: 200px!important
+}
+
 .halfwrap{
-    width: 50%
+    width: 50%;
 }
