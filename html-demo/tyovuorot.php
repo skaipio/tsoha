@@ -49,25 +49,25 @@
         <tbody>
             <tr>
                 <td>Väiski Vemmelsääri</td>
-                <?php for ($i = 0; $i < 7; $i++): ?>
+                <?php for ($hour = 0; $hour < 7; $hour++): ?>
                     <td></td>
                 <?php endfor; ?>
-                <?php for ($i = 7; $i < 16; $i++): ?>
+                <?php for ($hour = 7; $hour < 16; $hour++): ?>
                     <td><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></td>
                 <?php endfor; ?>
-                <?php for ($i = 16; $i < 24; $i++): ?>
+                <?php for ($hour = 16; $hour < 24; $hour++): ?>
                      <td></td>
                 <?php endfor; ?>
             </tr>
             <tr>
                 <td>Miss Piggy</td>
-                <?php for ($i = 0; $i < 24; $i++): ?>
+                <?php for ($hour = 0; $hour < 24; $hour++): ?>
                     <td></td>
                 <?php endfor; ?>
             </tr>
             <tr>
                 <td>Pepe Le Pew</td>
-                <?php for ($i = 0; $i < 24; $i++): ?>
+                <?php for ($hour = 0; $hour < 24; $hour++): ?>
                     <td></td>
                 <?php endfor; ?>
             </tr>

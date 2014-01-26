@@ -13,7 +13,10 @@ switch ($type) {
         include "tyovuorot.php";
         break;   
     case "henkvahvuuskalenteri" :
-        include "vahvuuskalenteri.php";
+        include "henkvahvuuskalenteri.php";
+        break;
+    case "henkvahvuuskalenteri-muokkaa" :
+        include "henkvahvuuskalenteri-muokkaa.php";
         break;
     case "tyontekijat" :
         include "tyontekijat.php";
