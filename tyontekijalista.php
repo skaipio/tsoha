@@ -6,6 +6,6 @@ require_once 'models/tyontekija.php';
 $tyontekijat = Tyontekija::getTyontekijat();
 
 foreach($tyontekijat as $tyontekija){
-    echo $tyontekija->getKayttajanimi();
+    echo $tyontekija->getSahkoposti();
 }
 
