@@ -16,8 +16,8 @@
                 <li><a href="?type=tyontekijat">Työntekijät</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/index.php?tuhoa=1">Tuhoa sessio</a></li>
-                <li><a href="#">Kirjaudu ulos</a></li>
+<!--                <li><a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/index.php?destroySession=1">Tuhoa sessio</a></li>-->
+                <li><a href="index.php?logout">Kirjaudu ulos</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>

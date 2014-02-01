@@ -1,6 +1,6 @@
 <?php
-
 require_once 'libs/common.php';
+
 //Tarkistetaan että vaaditut kentät on täytetty:
 
 if (!postParametersExist(array('email'))) {

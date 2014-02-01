@@ -30,8 +30,8 @@ function attemptLogin($email, $password) {
 function isLoggedIn() {
     if (isset($_SESSION['loggedIn'])) {
         $user = $_SESSION['loggedIn'];
-        //return (isset($user->email) && isset($user->password));
         return true;
+        //return (isset($user->email) && isset($user->password));
     }
     else{
         return false;
