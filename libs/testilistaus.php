@@ -13,7 +13,7 @@ $tyontekijat = Tyontekija::getTyontekijat();
             <?php foreach ($tyontekijat as $tyontekija): ?>
             <li><?php
             $kayttajanimi = $tyontekija->getKayttajanimi();
-            $sposti = $tyontekija->getSahkoposti();
+            $sposti = $tyontekija->getEmail();
             $osoite = $tyontekija->getOsoite();
             echo "$kayttajanimi, $sposti, $osoite"?>
             </li>

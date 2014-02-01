@@ -13,7 +13,7 @@
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Käyttäjätunnus"
-                                       name="sahkoposti" type="text" value="<?php echo $data->sahkoposti;?>">
+                                       name="email" type="text" value="<?php echo $data->email; ?>">
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Salasana" name="salasana" type="password" value="">

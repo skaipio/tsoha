@@ -1,5 +1,12 @@
 <?php
+if (isset($_GET["destroySession"])) {
+    session_unset();
+}
 
-$sivu = 'views/login.php';
-require 'libs/common.php';
-require 'doLogin.php';
+require_once 'libs/common.php';
+
+if (isLoggedIn()) {
+    header('Location: tyontekijalista.php');
+}else{
+    header('Location: doLogin.php');
+}

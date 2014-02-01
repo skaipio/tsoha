@@ -14,5 +14,5 @@
     <body>
         <?php if (!empty($data->error)): ?>
             <div class="alert alert-danger"><?php echo $data->error; ?></div>
-        <?php endif; ?>
+        <?php endif; 
 

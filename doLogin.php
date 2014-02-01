@@ -1,35 +1,32 @@
 <?php
 
 require_once 'libs/common.php';
-require_once 'libs/tietokantayhteys.php';
-require 'models/tyontekija.php';
-
 //Tarkistetaan että vaaditut kentät on täytetty:
-if (!postParamsExist(array('sahkoposti'))) {
+
+if (!postParametersExist(array('email'))) {
     showView("views/login.php", array(
         'error' => "Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.",
     ));
 }
-$sahkoposti = $_POST["sahkoposti"];
+$email = $_POST["email"];
 
-if (!postParamsExist(array('salasana'))) {
+if (!postParametersExist(array('salasana'))) {
     showView("views/login.php", array(
-        'sahkoposti' => $sahkoposti,
+        'email' => $email,
         'error' => "Kirjautuminen epäonnistui! Et antanut salasanaa.",
     ));
 }
-$salasana = $_POST["salasana"];
+$password = $_POST["salasana"];
 
 
-$tyontekija = Tyontekija::getTyontekijaTunnuksilla($sahkoposti, $salasana);
-
-/* Tarkistetaan onko parametrina saatu oikeat tunnukset */
-if (isset($tyontekija)) {
+$user = attemptLogin($email, $password);
+if (isset($user)) {
     /* Jos tunnus on oikea, ohjataan käyttäjä sopivalla HTTP-otsakkeella kissalistaan. */
+    $_SESSION['loggedIn'] = $user;
     header('Location: tyontekijalista.php');
 } else {
     /* Väärän tunnuksen syöttänyt saa eteensä kirjautumislomakkeen. */
-    showView("views/login.php", array(
-        'sahkoposti' => $sahkoposti,
+    showView("views/login.php",array(
+        'email' => $email,
         'error' => "Kirjautuminen epäonnistui! Antamasi tunnus tai salasana on väärä."));
 }
