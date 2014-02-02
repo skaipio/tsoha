@@ -4,17 +4,17 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="?type=omat-tyovuorot">Omat työvuorot</a></li>
+                <li class="active"><a href="omattyovuorot.php">Omat työvuorot</a></li>
                 <?php if ($data->isadmin):?>
-                <li><a href="?type=tyovuorot">Työvuorot</a></li>
+<!--                <li><a href="?type=tyovuorot">Työvuorot</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Henkilöstövahvuus<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="?type=henkvahvuuskalenteri">Kalenteri</a></li>
-                        <li><a href="?type=kiireellisyysluokat">Kiireellisyysluokat</a></li>
+                        <li><a href="#">Kalenteri</a></li>
+                        <li><a href="#">Kiireellisyysluokat</a></li>
                     </ul>
-                </li>
-                <li><a href="?type=tyontekijat">Työntekijät</a></li>
+                </li>-->
+                <li><a href="tyontekijalista.php">Työntekijät</a></li>
                 <?php endif; ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">

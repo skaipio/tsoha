@@ -3,8 +3,16 @@
 require_once 'libs/common.php';
 
 if (isLoggedIn()) {
-    showView('views/employees.php');
-}else{
+    $user = unserialize(getUserLoggedIn());
+    $admin = $user->isAdmin();
+    if ($admin) {
+        showView('views/employees.php', array('isadmin'=>$admin));    
+    }
+    else {
+        echo "Sivu vaatii ylläpito-oikeudet.";
+        //header('Location: omattyovuorot.php');
+    }
+} else {
     header('Location: kirjautuminen.php');
 }
 
