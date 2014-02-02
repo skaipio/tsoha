@@ -14,7 +14,7 @@ class Workshifthour {
     
     public static function getAllWorkshifthoursForEmployee($id){
         $sql = "SELECT id, openhour_id FROM workshifthour WHERE employee_id = ?";
-        $query = getTietokantayhteys()->prepare($sql);
+        $query = getDatabaseConnection()->prepare($sql);
         $query->execute();
 
         $results = array();
@@ -29,7 +29,7 @@ class Workshifthour {
     
     public static function getAllOpenhourIDsForEmployee($id){
         $sql = "SELECT openhour_id FROM workshifthour WHERE employee_id = ?";
-        $query = getTietokantayhteys()->prepare($sql);
+        $query = getDatabaseConnection()->prepare($sql);
         $query->execute();
 
         $results = array();

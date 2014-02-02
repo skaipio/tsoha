@@ -1,6 +1,6 @@
 <?php
-require_once 'tietokantayhteys.php';
-require_once '../models/tyontekija.php';
+require_once 'databaseconnection.php';
+require_once '../models/employee.php';
 //Lista asioista array-tietotyyppiin laitettuna:
 $tyontekijat = Employee::getEmployees();
 ?>
@@ -10,12 +10,12 @@ $tyontekijat = Employee::getEmployees();
     <body>
         <h1>Listaelementtitesti</h1>
         <ul>
-            <?php foreach ($tyontekijat as $tyontekija): ?>
+            <?php foreach ($tyontekijat as $employee): ?>
             <li><?php
-            $kayttajanimi = $tyontekija->getKayttajanimi();
-            $sposti = $tyontekija->getEmail();
-            $osoite = $tyontekija->getOsoite();
-            echo "$kayttajanimi, $sposti, $osoite"?>
+            $firstname = $employee->getFirstName();
+            $lastname = $employee->getLastName();
+            $sposti = $employee->getEmail();
+            echo "$firstname $lastname, $sposti"?>
             </li>
             <?php endforeach; ?>
         </ul>

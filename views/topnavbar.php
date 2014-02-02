@@ -5,6 +5,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="?type=omat-tyovuorot">Omat työvuorot</a></li>
+                <?php if ($data->isadmin):?>
                 <li><a href="?type=tyovuorot">Työvuorot</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Henkilöstövahvuus<b class="caret"></b></a>
@@ -14,6 +15,7 @@
                     </ul>
                 </li>
                 <li><a href="?type=tyontekijat">Työntekijät</a></li>
+                <?php endif; ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="index.php?logout">Kirjaudu ulos</a></li>

@@ -2,7 +2,7 @@
 session_start();
 
 require_once 'libs/databaseconnection.php';
-require_once 'models/tyontekija.php';
+require_once 'models/employee.php';
 
 function showView($page, $data = array()) {
     $data = (object) $data;
