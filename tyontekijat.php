@@ -3,7 +3,7 @@
 require_once 'libs/common.php';
 
 if (isLoggedIn()) {
-    $user = unserialize(getUserLoggedIn());
+    $user = getUserLoggedIn();
     $admin = $user->isAdmin();
     if ($admin) {
         showView('views/employees.php', array('isadmin'=>$admin));    

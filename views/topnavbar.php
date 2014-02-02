@@ -14,7 +14,7 @@
                         <li><a href="#">Kiireellisyysluokat</a></li>
                     </ul>
                 </li>-->
-                <li><a href="tyontekijalista.php">Työntekijät</a></li>
+                <li><a href="tyontekijat.php">Työntekijät</a></li>
                 <?php endif; ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
