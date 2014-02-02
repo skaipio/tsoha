@@ -21,7 +21,7 @@ $password = $_POST["salasana"];
 
 $user = attemptLogin($email, $password);
 if (isset($user)) {
-    $_SESSION['loggedIn'] = serialize($user);
+    $_SESSION['loggedIn'] = $user;
     header('Location: omattyovuorot.php');
 } else {
     /* Väärän tunnuksen syöttänyt saa eteensä kirjautumislomakkeen. */
