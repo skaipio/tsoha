@@ -8,5 +8,5 @@ if (isset($_GET["logout"])){
 if (isLoggedIn()) {
     header('Location: tyontekijalista.php');
 }else{
-    header('Location: doLogin.php');
+    showView('views/login.php');
 }
