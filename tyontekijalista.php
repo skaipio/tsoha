@@ -5,7 +5,7 @@ require_once 'libs/common.php';
 if (isLoggedIn()) {
     showView('views/employees.php');
 }else{
-    header('Location: doLogin.php');
+    header('Location: kirjautuminen.php');
 }
 
 

@@ -9,7 +9,7 @@
                     <h3 class="panel-title">Kirjautuminen</h3>
                 </div>
                 <div class="panel-body">
-                    <form accept-charset="UTF-8" role="form" action="doLogin.php" method="POST">
+                    <form accept-charset="UTF-8" role="form" action="kirjautuminen.php" method="POST">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Käyttäjätunnus"

@@ -21,9 +21,8 @@ $password = $_POST["salasana"];
 
 $user = attemptLogin($email, $password);
 if (isset($user)) {
-    /* Jos tunnus on oikea, ohjataan käyttäjä sopivalla HTTP-otsakkeella kissalistaan. */
-    $_SESSION['loggedIn'] = $user;
-    header('Location: tyontekijalista.php');
+    $_SESSION['loggedIn'] = serialize($user);
+    header('Location: omattyovuorot.php');
 } else {
     /* Väärän tunnuksen syöttänyt saa eteensä kirjautumislomakkeen. */
     showView("views/login.php",array(

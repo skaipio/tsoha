@@ -2,7 +2,7 @@
 require_once 'tietokantayhteys.php';
 require_once '../models/tyontekija.php';
 //Lista asioista array-tietotyyppiin laitettuna:
-$tyontekijat = Tyontekija::getTyontekijat();
+$tyontekijat = Employee::getEmployees();
 ?>
 <!DOCTYPE HTML>
 <html>

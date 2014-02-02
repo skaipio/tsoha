@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once 'libs/tietokantayhteys.php';
+require_once 'libs/databaseconnection.php';
 require_once 'models/tyontekija.php';
 
 function showView($page, $data = array()) {
@@ -22,18 +22,15 @@ function postParametersExist($parameters = array()) {
 }
 
 function attemptLogin($email, $password) {
-    $user = Tyontekija::getTyontekijaTunnuksilla($email, $password);
-
+    $user = Employee::getEmployeeByLoginInfo($email, $password);
     return $user;
 }
 
 function isLoggedIn() {
-    if (isset($_SESSION['loggedIn'])) {
-        $user = $_SESSION['loggedIn'];
-        return true;
-        //return (isset($user->email) && isset($user->password));
-    }
-    else{
-        return false;
-    }
+    return isset($_SESSION['loggedIn']);
+}
+
+function getUserLoggedIn() {
+    $user = $_SESSION['loggedIn'];
+    return $user;
 }
