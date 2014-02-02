@@ -7,13 +7,13 @@
       <x>310</x>
       <y>150</y>
       <w>300</w>
-      <h>90</h>
+      <h>80</h>
     </coordinates>
-    <panel_attributes>tyovuorotunti
+    <panel_attributes>workshifthour
 --
-&lt;&lt;fk&gt;&gt;aukiolotunti_paivamaara: DATE
-&lt;&lt;fk&gt;&gt;aukiolotunti_tunti: TIME
-&lt;&lt;fk&gt;&gt;tyontekija_id: INT
+&lt;&lt;k&gt;&gt;id: INT
+&lt;&lt;fk&gt;&gt;openhour_id: INT
+&lt;&lt;fk&gt;&gt;employee_id: INT
 </panel_attributes>
     <additional_attributes/>
   </element>
@@ -23,13 +23,14 @@
       <x>60</x>
       <y>300</y>
       <w>330</w>
-      <h>90</h>
+      <h>100</h>
     </coordinates>
-    <panel_attributes>aukiolotunti
+    <panel_attributes>openhour
 --
-&lt;&lt;k&gt;&gt;paivamaara: DATE
-&lt;&lt;k&gt;&gt;tunti: TIME
-&lt;&lt;fk&gt;&gt;kiireellisyysluokka_nimi: VARCHAR(45)</panel_attributes>
+&lt;&lt;k&gt;&gt;id: INT
+opendate: DATE
+hour: TIME
+&lt;&lt;fk&gt;&gt;urgencycategory_id: INT</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -49,11 +50,12 @@
       <x>60</x>
       <y>440</y>
       <w>340</w>
-      <h>50</h>
+      <h>60</h>
     </coordinates>
-    <panel_attributes>kiireellisyysluokka
+    <panel_attributes>urgencycategory
 --
-&lt;&lt;k&gt;&gt;nimi: VARCHAR(45)</panel_attributes>
+&lt;&lt;k&gt;&gt;id: INT
+name: VARCHAR(45)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -62,13 +64,14 @@
       <x>460</x>
       <y>560</y>
       <w>350</w>
-      <h>90</h>
+      <h>100</h>
     </coordinates>
-    <panel_attributes>minimivahvuus
+    <panel_attributes>minimumpersonnel
 --
-&lt;&lt;k,fk&gt;&gt;kiireellisyysluokka_nimi: VARCHAR(45)
-&lt;&lt;k,fk&gt;&gt;henkilostoluokka_nimi: VARCHAR(45)
-minimi: INT
+&lt;&lt;k&gt;&gt;id: INT
+&lt;&lt;fk&gt;&gt;urgencycategory_id: INT
+&lt;&lt;fk&gt;&gt;personnelcategory_id: INT
+minimum: INT
 
 </panel_attributes>
     <additional_attributes/>
@@ -79,11 +82,12 @@ minimi: INT
       <x>550</x>
       <y>490</y>
       <w>200</w>
-      <h>50</h>
+      <h>60</h>
     </coordinates>
-    <panel_attributes>henkilostoluokka
+    <panel_attributes>personnelcategory
 --
-&lt;&lt;k&gt;&gt;nimi: VARCHAR(45)</panel_attributes>
+&lt;&lt;k&gt;&gt;id: INT
+&lt;&lt;k&gt;&gt;name: VARCHAR(45)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -127,21 +131,20 @@ minimi: INT
       <w>310</w>
       <h>230</h>
     </coordinates>
-    <panel_attributes>tyontekija
+    <panel_attributes>employee
 --
 &lt;&lt;k&gt;&gt;id: INT
-kayttajanimi: VARCHAR(45)
-salasana: VARCHAR(45)
-sahkoposti: VARCHAR(45)
-yllapitaja: BOOLEAN
-etunimi: VARCHAR(45)
-sukunimi: VARCHAR(45)
-hetu: VARCHAR(11)
-osoite: VARCHAR(100)
-gsmnumero: VARCHAR(10)
-&lt;&lt;fk&gt;&gt;henkilostoluokka_nimi: VARCHAR(45)
-maxtunnitpaivassa: INT
-maxtunnitviikossa: INT
+password: VARCHAR(45)
+email: VARCHAR(45)
+admin: BOOLEAN
+firstname: VARCHAR(45)
+lastname: VARCHAR(45)
+socialsecuritynumber: VARCHAR(11)
+address: VARCHAR(100)
+phonenumber: VARCHAR(10)
+&lt;&lt;fk&gt;&gt;personnelcategory_id: INT
+maxhoursperday: INT
+maxhoursperweek: INT
 </panel_attributes>
     <additional_attributes/>
   </element>
