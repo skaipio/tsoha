@@ -1,7 +1,7 @@
-DROP TABLE tyovuorotunti;
-DROP TABLE aukiolotunti;
-DROP TABLE tyontekija;
-DROP TABLE minimivahvuus;
-DROP TABLE kiireellisyysluokka;
-DROP TABLE henkilostoluokka;
+DROP TABLE workshifthour;
+DROP TABLE openhour;
+DROP TABLE employee;
+DROP TABLE minimumpersonnel;
+DROP TABLE urgencycategory;
+DROP TABLE personnelcategory;
 

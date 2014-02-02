@@ -1,48 +1,48 @@
-CREATE TABLE henkilostoluokka
-(
-	nimi varchar(45) primary key
-);
-CREATE TABLE kiireellisyysluokka
-(
-	nimi varchar(45) primary key
-);
-CREATE TABLE minimivahvuus
-(
-	kiireellisyysluokka_nimi varchar(45) references kiireellisyysluokka(nimi) ON DELETE cascade,
-	henkilostoluokka_nimi varchar(45) references henkilostoluokka(nimi) ON DELETE cascade,
-	minimi integer NOT NULL,
-	primary key (kiireellisyysluokka_nimi, henkilostoluokka_nimi)
-);
-CREATE TABLE tyontekija
+CREATE TABLE personnelcategory
 (
 	id serial primary key,
-	kayttajanimi varchar(45) UNIQUE NOT NULL,
-	salasana varchar(45) NOT NULL,
-	sahkoposti varchar(45) UNIQUE NOT NULL,
-	yllapitaja boolean NOT NULL,
-	etunimi varchar(45) NOT NULL,
-	sukunimi varchar(45) NOT NULL,
-	hetu varchar(45) UNIQUE NOT NULL,
-	osoite varchar(100) NOT NULL,
-	gsmnumero varchar(10) NOT NULL,
-	henkilostoluokka_nimi varchar(45) NOT NULL references henkilostoluokka(nimi),
-	maxtunnitpaivassa integer NOT NULL,
-	maxtunnitviikossa integer NOT NULL
+	name varchar(45) UNIQUE NOT NULL
+);
+CREATE TABLE urgencycategory
+(
+	id serial primary key,
+	name varchar(45) UNIQUE NOT NULL
+);
+CREATE TABLE minimumpersonnel
+(
+	id serial primary key,
+	urgencycategory_id integer NOT NULL  references urgencycategory(id) ON DELETE cascade,
+	personnelcategory_id integer NOT NULL  references personnelcategory(id) ON DELETE cascade,
+	minimum integer NOT NULL
+);
+CREATE TABLE employee
+(
+	id serial primary key,
+	password varchar(45) NOT NULL,
+	email varchar(45) UNIQUE NOT NULL,
+	admin boolean NOT NULL,
+	firstname varchar(45) NOT NULL,
+	lastname varchar(45) NOT NULL,
+	socialsecuritynumber varchar(45) UNIQUE,
+	address varchar(100) NOT NULL,
+	phonenumber varchar(10) NOT NULL,
+	personnelcategory_id integer NOT NULL references personnelcategory(id),
+	maxhoursperday integer NOT NULL,
+	maxhoursperweek integer NOT NULL
 );
 
-CREATE TABLE aukiolotunti
+CREATE TABLE openhour
 (
-	paivamaara date,
-	tunti time,
-	kiireellisyysluokka_nimi varchar(45) NOT NULL references kiireellisyysluokka(nimi) ON DELETE cascade,
-	primary key (paivamaara, tunti)
+	id serial primary key,
+	opendate date,
+	hour time,
+	urgencycategory_id integer NOT NULL references urgencycategory(id) ON DELETE cascade
 );
 
-CREATE TABLE tyovuorotunti
+CREATE TABLE workshifthour
 (
-	aukiolotunti_paivamaara date,
-	aukiolotunti_tunti time,
-	tyontekija_id integer references tyontekija(id) ON DELETE cascade,
-	primary key (aukiolotunti_paivamaara, aukiolotunti_tunti, tyontekija_id)
+	id serial primary key,
+	openhour_id integer references openhour(id) ON DELETE cascade,
+	employee_id integer references employee(id) ON DELETE cascade
 );
 
