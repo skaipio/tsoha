@@ -1,15 +1,23 @@
 <?php
 
-require_once 'libs/databaseconnection.php';
-require_once 'models/employee.php';
+$root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
+$path = $root . "/libs/databaseconnection.php";
+require_once($path);
+$path = $root . "/models/employee.php";
+require_once($path);
+
+//        $path = realpath(dirname(__FILE__)) . "/";
+//        include_once $path . "/common/header.php";
+
 
 session_start();
 
 function showView($page, $data = array()) {
+    $root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
     $data = (object) $data;
-    require_once 'views/header.php';
-    require_once $page;
-    require_once 'views/footer.php';
+    require_once($root . '/views/header.php');
+    require_once ($root . '/' . $page);
+    require_once($root . '/views/footer.php');
     exit();
 }
 
@@ -20,6 +28,13 @@ function postParametersExist($parameters = array()) {
         }
     }
     return true;
+}
+
+function requireFiles($files = array()){
+    $root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
+    foreach($files as $file){
+        require_once($root . $file);
+    }
 }
 
 function attemptLogin($email, $password) {
@@ -36,11 +51,11 @@ function getUserLoggedIn() {
     return $user;
 }
 
-function getPersonnelCategoriesAsDataArray(){  
+function getPersonnelCategoriesDataArray() {
     $pcategories = Personnelcategory::getPersonnelCategories();
     $pcategoriesData = array();
-    foreach ($pcategories as $pcategory){
-        $pcategoriesData[]= (object)array('id'=>$pcategory->getID(), 'name'=>$pcategory->getName());
+    foreach ($pcategories as $pcategory) {
+        $pcategoriesData[] = (object)$pcategory->getAsDataArray();
     }
     return $pcategoriesData;
 }
@@ -60,11 +75,11 @@ function getSubmittedEmployeeData() {
     $email = $_POST['email'];
     $phone = $_POST['phone'];
     $admin = $_POST['admin'];
-    $pcategory = $_POST['personnelcategory'];
+    $pcategory = $_POST['personnelcategory_id'];
     $maxhoursperweek = $_POST['maxhoursperweek'];
     $maxhoursperday = $_POST['maxhoursperday'];
     $data = array('firstname' => $firstname, 'lastname' => $lastname, 'ssn' => $ssn,
         'address' => $address, 'email' => $email, 'phone' => $phone, 'admin' => $admin,
-        'personnelcategory'=>$pcategory, 'maxhoursperweek' => $maxhoursperweek, 'maxhoursperday' => $maxhoursperday);
+        'personnelcategory_id' => $pcategory, 'maxhoursperweek' => $maxhoursperweek, 'maxhoursperday' => $maxhoursperday);
     return $data;
 }

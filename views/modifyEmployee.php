@@ -2,10 +2,10 @@
     <div class="col-lg-10">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Uuden työntekijän lisäys</h3>
+                <h3 class="panel-title">Työntekijän muokkaus</h3>
             </div>
             <div class="panel-body">
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="employee-add-form" class="form-horizontal" role="form" method="post">
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="employee-modify-form" class="form-horizontal" role="form" method="post">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -107,7 +107,7 @@
                                         <input type="checkbox" id="admin"
                                                name="admin" value='true'
                                                <?php
-                                               if ($data->admin === 'true') {
+                                               if ($data->admin) {
                                                    echo 'checked';
                                                }
                                                ?>>
@@ -128,9 +128,8 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">Tallenna</button>
-                                <a href="tyontekijat.php"><button class="btn btn-default" type="cancel">Peruuta</button></a>
-                                <button type="cancel" class="btn btn-default disabled">Poista työntekijä</button>
+                                <button type="submit" class="btn btn-default">Tallenna muutokset</button>
+                                <a href="<?php echo "nayta.php?id=$data->id" ?>"><button class="btn btn-default" type="button">Peruuta</button></a>
                             </div>
                         </div>
                     </div>
