@@ -31,6 +31,10 @@ class Employee {
     public function getErrors() {
         return $this->errors;
     }
+    
+    public function getID(){
+        return $this->id;
+    }
 
     public function getEmail() {
         return $this->email;
@@ -162,7 +166,7 @@ class Employee {
 
         $results = array();
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
-            $results[] = Employee::newEmployeeFromDBResultArray($result);
+            $results[] = Employee::createEmployeeFromData($result);
         }
         return $results;
     }
@@ -182,22 +186,24 @@ class Employee {
 
     public static function createEmployeeFromData($data) {
         $employee = new Employee();
+        $employee->id = $data->id;
         $employee->setFirstName($data->firstname);
         $employee->setLastName($data->lastname);
         $employee->setSocialSecurityNumber($data->ssn);
         $employee->setAddress($data->address);
         $employee->setEmail($data->email);
         $employee->setPhone($data->phone);
-        $employee->setPersonnelCategory($data->personnelcategory);
+        $employee->setPersonnelCategory($data->personnelcategory_id);
         $employee->setMaxHourPerAWeek($data->maxhoursperweek);
         $employee->setMaxHoursPerDay($data->maxhoursperday);
         $employee->setAdmin($data->admin);
         return $employee;
     }
-
-    private static function newEmployeeFromDBResultArray($result) {
-        $employee = new Employee($result->id, $result->password, $result->email, $result->firstname, $result->lastname, $result->admin, $result->personnelcategory_id);
-        return $employee;
+    
+    public static function removeEmployeeFromDatabase($id){
+        $sql = "DELETE FROM employee WHERE id = ?";
+        $query = getDatabaseConnection()->prepare($sql);
+        $query->execute(array($id));
     }
 
     private static function generatePassword($length = 8) {

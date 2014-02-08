@@ -12,7 +12,10 @@ if (isLoggedIn()) {
         $employeeObjects = Employee::getEmployees();
         $employees = array();
         foreach ($employeeObjects as $employee) {
-            $employees[] = getEmployeeDetailsObject($employee);
+            var_dump($employee->getID());
+            $personnelcategory = Personnelcategory::getPersonnelCategoryById($employee->getPersonnelCategoryID());
+            $employees[] = (object)array('firstname'=>$employee->getFirstName(), 'lastname'=>$employee->getLastName(),
+                'personnelcategory'=>$personnelcategory->getName(), 'id'=>$employee->getID());
         }
         showView('views/employeesListing.php', array('isadmin' => $admin, 'employeeDetails' => $employees));
     } else {

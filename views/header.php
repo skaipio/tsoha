@@ -12,6 +12,15 @@
         <link href="css/main.css" rel="stylesheet">
     </head>
     <body>
+        <?php if (isset($_SESSION['notification'])): ?>  
+        var_dump($_SESSION['notification');
+        <div class ="alert alert-danger">
+            <?php echo $_SESSION['notification']; ?>
+        </div>
+        <?php
+            unset($_SESSION['notification']);
+        ?>
+        <?php endif; ?>
         <?php if (isset($data->errors)): ?>
             <div class="alert alert-danger">
                 <?php

@@ -10,11 +10,12 @@ if (isLoggedIn()) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = getSubmittedEmployeeData();
             $employee = Employee::createEmployeeFromData((object)$data);
-            if (!$employee->isValid()){
-                showView("views/addEmployee.php", array('personnelcategories' => $prcategories, 'errors'=>$employee->getErrors()) + $data);
+            if ($employee->isValid()){
+                $employee->addToDatabase();              
+                $_SESSION['notification'] = "Työntekijä on lisätty tietokantaan.";
+                header('Location: tyontekijat.php');    
             }else{
-                $employee->addToDatabase();
-                header('Location:tyontekijat.php');
+                showView("views/addEmployee.php", array('personnelcategories' => $prcategories, 'errors'=>$employee->getErrors()) + $data);
             }           
         }
         showView('views/addEmployee.php', array('isadmin' => $admin, 'personnelcategories' => $prcategories));

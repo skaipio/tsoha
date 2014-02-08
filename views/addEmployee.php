@@ -72,12 +72,12 @@
                             <div class="form-group">
                                 <label for="personnelcategory" class="col-lg-5 control-label">Henkilöstöluokka</label>
                                 <div class="col-lg-6">
-                                    <select class="form-control" id="personnelcategory" name="personnelcategory">
+                                    <select class="form-control" id="personnelcategory" name="personnelcategory_id">
                                         <?php $categories = $data->personnelcategories; ?>
                                         <?php foreach ($categories as $category): ?>
                                             <option value=<?php
                                             echo $category->id;
-                                            if ($data->personnelcategory == $category->id) {
+                                            if ($data->personnelcategory_id == $category->id) {
                                                 echo ' selected';
                                             }
                                             ?>>

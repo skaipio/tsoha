@@ -36,15 +36,6 @@ function getUserLoggedIn() {
     return $user;
 }
 
-function getEmployeeDetailsObject($employee) {
-    $personnelcategory = Personnelcategory::getPersonnelCategoryById($employee->getPersonnelCategoryID());
-    return (object) array(
-                'firstname' => $employee->getFirstName(),
-                'lastname' => $employee->getLastName(),
-                'personnelcategory' => $personnelcategory->getName()
-    );
-}
-
 function getPersonnelCategoriesAsDataArray(){  
     $pcategories = Personnelcategory::getPersonnelCategories();
     $pcategoriesData = array();
