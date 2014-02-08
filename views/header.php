@@ -12,7 +12,15 @@
         <link href="css/main.css" rel="stylesheet">
     </head>
     <body>
-        <?php if (!empty($data->error)): ?>
-            <div class="alert alert-danger"><?php echo $data->error; ?></div>
-        <?php endif; 
+        <?php if (isset($data->errors)): ?>
+            <div class="alert alert-danger">
+                <?php
+                $errors = $data->errors;
+                foreach ($errors as $error) {
+                    echo $error;
+                }
+                ?>
+            </div>
+            <?php
+         endif; 
 

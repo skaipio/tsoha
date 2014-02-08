@@ -2,10 +2,26 @@
     float:right
 }
 
-.tyontekijasarake{
-    width: 200px!important
+#employee-add-form{
+    margin-top: 3em;
 }
 
 .halfwrap{
     width: 50%;
+}
+
+.tsoha-listing{
+    padding: 0 40px;
+}
+
+#etunimi-header{
+    width: 140px;
+}
+
+#sukunimi-header{
+    width: 200px;
+}
+
+#employee-add .panel{
+    background-color: aliceblue;
 }

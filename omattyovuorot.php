@@ -1,14 +1,13 @@
 <?php
 require_once 'libs/common.php';
+require_once 'models/personnelcategory.php';
 
 if (isLoggedIn()) {
     $user = getUserLoggedIn();
-    $firstname = $user->getFirstName();
-    $lastname = $user->getLastName();
     $admin = $user->isAdmin();
-    //$firstname = "Antero";
+    
     showView('views/employeeworkshifthours.php',
-            array('firstname' => $firstname, 'lastname' => $lastname, 'isadmin' => $admin));
+            array('isadmin' => $admin, 'employeeDetails'=>getEmployeeDetailsObject($user)));
 } else {
     header('Location: kirjautuminen.php');
 }
