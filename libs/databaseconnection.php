@@ -1,13 +1,16 @@
 <?php
+
 function getDatabaseConnection() {
-  static $connection = null; //Muuttuja, jonka sisältö säilyy getTietokantayhteys-kutsujen välillä.
+    static $connection = null; //Muuttuja, jonka sisältö säilyy getDatabaseConnection-kutsujen välillä.
 
-  if ($connection === null) { 
-    //Tämä koodi suoritetaan vain kerran, sillä seuraavilla 
-    //funktion suorituskerroilla $yhteys-muuttujassa on sisältöä.
-    $connection = new PDO('pgsql:');
-    $connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-  }
+    if ($connection === null) {
+        //Tämä koodi suoritetaan vain kerran
+        //
+        //$dsn = "host=localhost;port=1234;dbname=testdb;user=johndoe;password=mypass";
+        $dsn = "";
+        $connection = new PDO('pgsql:'.$dsn);
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
 
-  return $connection;
+    return $connection;
 }
