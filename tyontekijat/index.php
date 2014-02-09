@@ -1,5 +1,5 @@
 <?php
-require 'libs/common.php';
+require '../libs/common.php';
 
 $user = getUserLoggedIn();
 if (isset($user)) {   
@@ -15,12 +15,12 @@ if (isset($user)) {
         }
         showView('views/employeesListing.php', array('admin'=>$admin, 'employeeDetails' => $employees));
     } else {
-        $warnings = array("Sivu vaatii ylläpito-oikeudet.");
-        setErrors($warnings);
+        $errors = array("Sivu vaatii ylläpito-oikeudet.");
+        setErrors($errors);
         showOnlyTemplate(array('admin'=>$user->isAdmin()));
     }
 } else {
-    header('Location: kirjautuminen.php');
+    redirectTo('../kirjautuminen.php');
 }
 
 

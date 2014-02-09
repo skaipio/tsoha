@@ -9,7 +9,7 @@
                         <?php echo "active";
                     endif;
                     ?>">
-                        <a href="omattyovuorot.php">Omat työvuorot</a>
+                        <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/omattyovuorot.php">Omat työvuorot</a>
                     </li>
                     <?php if ($data->admin): ?>
                         <!--                <li><a href="?type=tyovuorot">Työvuorot</a></li>
@@ -20,23 +20,23 @@
                                                 <li><a href="#">Kiireellisyysluokat</a></li>
                                             </ul>
                                         </li>-->
-                        <li class="<?php if (isActivePage("/tyovuorolista/tyontekijat.php")): ?>
+                        <li class="<?php if (isActivePage("/tyovuorolista/tyontekijat/index.php")): ?>
                                 <?php echo "active";
                             endif;
                             ?>">
-                            <a href="tyontekijat.php">Työntekijät</a>
+                            <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/tyontekijat/index.php">Työntekijät</a>
                         </li>
                     <?php endif; ?>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.php?logout">Kirjaudu ulos</a></li>
+                    <li><a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/index.php?logout">Kirjaudu ulos</a></li>
                 </ul>
             </div>
         </nav>
     </div>
 </header>
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.js"></script>
+<script src="/tyovuorolista/js/jquery.js"></script>
+<script src="/tyovuorolista/js/bootstrap.js"></script>
 
 
 

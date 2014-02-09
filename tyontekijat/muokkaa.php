@@ -14,8 +14,8 @@ if (isset($user)) {
                 $employee->updateDatabaseEntry();  
                 unset($_SESSION['employeeBeingModified']);
                 $id = $employee->getID();
-                header("Location: nayta.php?id=$id");    
                 setSuccesses(array("Työntekijää on onnistuneesti muokattu."));
+                redirectTo("nayta.php?id=$id");                   
             }else{
                 setErrors($employee->getErrors());
                 showView("views/modifyEmployee.php", array('personnelcategories' => $prcategories) + $data);
@@ -40,6 +40,6 @@ if (isset($user)) {
         showOnlyTemplate();
     }
 } else {
-    header('Location: ../kirjautuminen.php');
+    redirectTo('../kirjautuminen.php');
 }
 

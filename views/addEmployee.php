@@ -12,7 +12,7 @@
                                 <label for="firstname" class="col-lg-3 control-label">Etunimi</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="firstname"
-                                           name="firstname" value=<?php echo htmlspecialchars($data->firstname) ?>>
+                                           name="firstname" value=<?php echoDataToPage('firstname') ?>>
                                 </div>
                             </div>
                         </div>
@@ -21,7 +21,7 @@
                                 <label for="lastname" class="col-lg-3 control-label">Sukunimi</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="lastname"
-                                           name="lastname" value=<?php echo htmlspecialchars($data->lastname) ?>>
+                                           name="lastname" value=<?php echoDataToPage('lastname') ?>>
                                 </div>
                             </div>  
                         </div>
@@ -32,7 +32,7 @@
                                 <label for="ssn" class="col-lg-3 control-label">Henkilötunnus</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="ssn"
-                                           name="ssn"value=<?php echo htmlspecialchars($data->ssn) ?>>
+                                           name="ssn"value=<?php echoDataToPage('ssn') ?>>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                 <label for="address" class="col-lg-3 control-label">Osoite</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="address"
-                                           name="address" value=<?php echo htmlspecialchars($data->address) ?>>
+                                           name="address" value=<?php echoDataToPage('address') ?>>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                                 <label for="email" class="col-lg-3 control-label">Sähköposti</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="email"
-                                           name="email" value=<?php echo htmlspecialchars($data->email) ?>>
+                                           name="email" value=<?php echoDataToPage('email') ?>>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                                 <label for="phone" class="col-lg-3 control-label">Puhelin</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="phone"
-                                           name="phone" value=<?php echo htmlspecialchars($data->phone) ?>>
+                                           name="phone" value=<?php echoDataToPage('phone') ?>>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                                         <?php foreach ($categories as $category): ?>
                                             <option value="<?php echo $category->id; ?>" 
                                             <?php
-                                            if ($data->personnelcategory_id == $category->id) {
+                                            if (isset($data->personnelcategory_id) && $data->personnelcategory_id == $category->id) {
                                                 echo ' selected';
                                             }
                                             ?>>
@@ -93,7 +93,7 @@
                                 <label for="maxhoursperweek" class="col-lg-5 control-label">Max tunnit viikossa</label>
                                 <div class="col-lg-4">
                                     <input type="text" class="form-control" id="maxhoursperweek"
-                                           name="maxhoursperweek" value=<?php echo htmlspecialchars($data->maxhoursperweek) ?>>
+                                           name="maxhoursperweek" value=<?php echoDataToPage('maxhoursperweek') ?>>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                                         <input type="checkbox" id="admin"
                                                name="admin" value='true'
                                                <?php
-                                               if ($data->admin === 'true') {
+                                               if (isset($data->admin) && $data->admin) {
                                                    echo 'checked';
                                                }
                                                ?>>
@@ -120,7 +120,7 @@
                                 <label for="maxhoursperday" class="col-lg-5 control-label">Max tunnit päivässä</label>
                                 <div class="col-lg-4">
                                     <input type="text" class="form-control" id="maxhoursperday"
-                                           name="maxhoursperday" value=<?php echo htmlspecialchars($data->maxhoursperday) ?>>
+                                           name="maxhoursperday" value=<?php echoDataToPage('maxhoursperday') ?>>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
                         <div class="form-group">
                             <div class="col-lg-offset-1 col-lg-8">
                                 <button type="submit" class="btn btn-default">Tallenna</button>
-                                <a href="../tyontekijat.php"><button class="btn btn-default" type="button">Peruuta</button></a>
+                                <a href="index.php"><button class="btn btn-default" type="button">Peruuta</button></a>
                             </div>
                         </div>
                     </div>

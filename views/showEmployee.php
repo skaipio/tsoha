@@ -50,7 +50,7 @@
                     <div class="col-lg-6">
                         <a href="<?php echo "muokkaa.php?id=$data->id" ?>"><button type="button" class="btn btn-default">Muokkaa</button></a> 
                         <a href="<?php echo "poista.php?id=$data->id" ?>"><button type="button" class="btn btn-default">Poista työntekijä</button></a>
-                        <a href="../tyontekijat.php"><button class="btn btn-default" type="cancel">Takaisin</button>
+                        <a href="index.php"><button class="btn btn-default" type="cancel">Takaisin</button>
                     </div>
                 </div>
             </div>

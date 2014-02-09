@@ -21,6 +21,6 @@ if (isset($user)) {
         showOnlyTemplate();
     }
 } else {
-    header('Location: ../kirjautuminen.php');
+    redirectTo('../kirjautuminen.php');
 }
 

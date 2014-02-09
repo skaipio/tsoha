@@ -1,7 +1,7 @@
 <div class='container'>
     <?php if (session_is_registered('successes')): ?>  
         <div class ="col-lg-offset-2 col-lg-8 alert alert-success">
-            <?php
+            <?php            
             $successes = $_SESSION['successes'];
             echoNotifications($successes);
             ?>

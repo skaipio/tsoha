@@ -26,6 +26,11 @@ function showOnlyTemplate($data = array()) {
     exit();
 }
 
+function redirectTo($location){
+    header('Location: ' . $location);
+    exit();
+}
+
 function postParametersExist($parameters = array()) {
     foreach ($parameters as $param) {
         if (empty($_POST[$param])) {
@@ -79,6 +84,12 @@ function isActivePage($page) {
 
 function setNavBarAsVisible($visible) {
     $_SESSION['navBarVisible'] = $visible;
+}
+
+function echoDataToPage($property) {
+    if (isset($data[$property])) {
+        echo htmlspecialchars($data[$property]);
+    }
 }
 
 function echoNotifications($notifications) {
