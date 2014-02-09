@@ -6,7 +6,7 @@
                 <th id="etunimi-header">Etunimi</th>
                 <th id="sukunimi-header">Sukunimi</th>
                 <th id="henkilosto-header">Henkilöstöluokka</th>
-                <th></th>
+                <th>Toiminnot</th>
             </tr>
         </thead>
         <tbody>
@@ -15,7 +15,10 @@
                     <td><?php echo $employee->firstname ?></td>
                     <td><?php echo $employee->lastname ?></td>
                     <td><?php echo $employee->personnelcategory ?></td>
-                    <td><a href="<?php echo "nayta.php?id=$employee->id" ?>" class="btn">Näytä</a></td>
+                    <td>
+                        <a href="<?php echo "nayta.php?id=$employee->id" ?>" class="btn btn-default btn-sm" role="button">Näytä</a>
+                        <a href="<?php echo "poista.php?id=$employee->id" ?>" class="btn btn-default btn-sm" role="button">Poista</a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
