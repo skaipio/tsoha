@@ -2,13 +2,11 @@
 
 $root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
 $path = $root . "/libs/databaseconnection.php";
-require_once($path);
+require($path);
 $path = $root . "/models/employee.php";
-require_once($path);
-
-//        $path = realpath(dirname(__FILE__)) . "/";
-//        include_once $path . "/common/header.php";
-
+require($path);
+$path = $root . "/models/personnelcategory.php";
+require($path);
 
 session_start();
 
@@ -21,6 +19,13 @@ function showView($page, $data = array()) {
     exit();
 }
 
+function showOnlyTemplate($data = array()) {
+    $root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
+    include($root . '/views/header.php');
+    include($root . '/views/footer.php');
+    exit();
+}
+
 function postParametersExist($parameters = array()) {
     foreach ($parameters as $param) {
         if (empty($_POST[$param])) {
@@ -30,32 +35,15 @@ function postParametersExist($parameters = array()) {
     return true;
 }
 
-function requireFiles($files = array()){
-    $root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
-    foreach($files as $file){
-        require_once($root . $file);
-    }
-}
-
-function attemptLogin($email, $password) {
-    $user = Employee::getEmployeeByLoginInfo($email, $password);
-    return $user;
-}
-
-function isLoggedIn() {
-    return isset($_SESSION['loggedIn']);
-}
-
 function getUserLoggedIn() {
-    $user = $_SESSION['loggedIn'];
-    return $user;
+    return $_SESSION['loggedIn'];
 }
 
 function getPersonnelCategoriesDataArray() {
     $pcategories = Personnelcategory::getPersonnelCategories();
     $pcategoriesData = array();
     foreach ($pcategories as $pcategory) {
-        $pcategoriesData[] = (object)$pcategory->getAsDataArray();
+        $pcategoriesData[] = (object) $pcategory->getAsDataArray();
     }
     return $pcategoriesData;
 }
@@ -82,4 +70,31 @@ function getSubmittedEmployeeData() {
         'address' => $address, 'email' => $email, 'phone' => $phone, 'admin' => $admin,
         'personnelcategory_id' => $pcategory, 'maxhoursperweek' => $maxhoursperweek, 'maxhoursperday' => $maxhoursperday);
     return $data;
+}
+
+function isActivePage($page) {
+    $current = filter_input(INPUT_SERVER, 'PHP_SELF');
+    return $current === $page;
+}
+
+function setNavBarAsVisible($visible) {
+    $_SESSION['navBarVisible'] = $visible;
+}
+
+function echoNotifications($notifications) {
+    foreach ($notifications as $notification) {
+        echo $notification;
+    }
+}
+
+function setSuccesses($successes) {
+    $_SESSION['successes'] = $successes;
+}
+
+function setWarnings($warnings) {
+    $_SESSION['warnings'] = $warnings;
+}
+
+function setErrors($errors) {
+    $_SESSION['errors'] = $errors;
 }

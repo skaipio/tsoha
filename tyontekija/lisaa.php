@@ -1,8 +1,11 @@
 <?php
-require_once 'libs/common.php';
+$root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
+$path = $root . "/libs/common.php";
+require $path;
 
-if (isLoggedIn()) {
-    $user = getUserLoggedIn();
+$user = getUserLoggedIn();
+if (isset($user)) { 
+    setNavBarAsVisible(false);
     $admin = $user->isAdmin();
     if ($admin) {
         $prcategories = getPersonnelCategoriesDataArray();
@@ -11,17 +14,19 @@ if (isLoggedIn()) {
             $employee = Employee::createEmployeeFromData((object)$data);
             if ($employee->isValid()){
                 $employee->addToDatabase();                             
-                header('Location: tyontekijat.php');    
+                header('Location: ../tyontekijat.php');    
                 $_SESSION['notification'] = "Uusi työntekijä on onnistuneesti lisätty tietokantaan.";
             }else{
-                showView("views/addEmployee.php", array('personnelcategories' => $prcategories, 'errors'=>$employee->getErrors()) + $data);
+                setErrors($employee->getErrors());
+                showView("views/addEmployee.php", array('personnelcategories' => $prcategories) + $data);
             }           
         }
         showView('views/addEmployee.php', array('isadmin' => $admin, 'personnelcategories' => $prcategories));
     } else {
-        echo "Sivu vaatii ylläpito-oikeudet.";
+        setErrors(array("Sivu vaatii ylläpito-oikeudet."));
+        showOnlyTemplate(array('admin'=>$user->isAdmin()));
     }
 } else {
-    header('Location: kirjautuminen.php');
+    header('Location: ../kirjautuminen.php');
 }
 

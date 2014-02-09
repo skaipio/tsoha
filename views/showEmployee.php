@@ -1,4 +1,4 @@
-<div id="employee-show" class="container">
+<div class="container employee-view">
     <div class="col-lg-offset-2 col-lg-8">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -46,10 +46,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="padding-top: 10px">
                     <div class="col-lg-6">
                         <a href="<?php echo "muokkaa.php?id=$data->id" ?>"><button type="button" class="btn btn-default">Muokkaa</button></a> 
-                        <button type="submit" class="btn btn-default">Poista työntekijä</button></a>
+                        <a href="<?php echo "poista.php?id=$data->id" ?>"><button type="button" class="btn btn-default">Poista työntekijä</button></a>
                         <a href="../tyontekijat.php"><button class="btn btn-default" type="cancel">Takaisin</button>
                     </div>
                 </div>

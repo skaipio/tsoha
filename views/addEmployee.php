@@ -1,7 +1,7 @@
 <div class="container employee-view">
-    <div class="col-lg-10">
+    <div class="col-lg-offset-1 col-lg-10">
         <div class="panel panel-default">
-            <div class="panel-heading">
+            <div id='dat-heading' class="panel-heading">
                 <h3 class="panel-title">Uuden työntekijän lisäys</h3>
             </div>
             <div class="panel-body">
@@ -127,10 +127,9 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
+                            <div class="col-lg-offset-1 col-lg-8">
                                 <button type="submit" class="btn btn-default">Tallenna</button>
-                                <a href="tyontekijat.php"><button class="btn btn-default" type="cancel">Peruuta</button></a>
-                                <button type="cancel" class="btn btn-default disabled">Poista työntekijä</button>
+                                <a href="../tyontekijat.php"><button class="btn btn-default" type="button">Peruuta</button></a>
                             </div>
                         </div>
                     </div>

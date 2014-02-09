@@ -1,12 +1,9 @@
-<?php
-$root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
-$path = $root . "/libs/common.php";
-require_once($path);
-$path = $root . "/models/employee.php";
-require_once($path);
+<?php 
+require "../libs/common.php";
 
-if (isLoggedIn()) {
-    $user = getUserLoggedIn();
+$user = getUserLoggedIn();
+if (isset($user)) {
+    setNavBarAsVisible(false);
     $admin = $user->isAdmin();
     if ($admin) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,9 +15,10 @@ if (isLoggedIn()) {
                 unset($_SESSION['employeeBeingModified']);
                 $id = $employee->getID();
                 header("Location: nayta.php?id=$id");    
-                $_SESSION['notification'] = "Työntekijää on onnistuneesti muokattu.";
+                setSuccesses(array("Työntekijää on onnistuneesti muokattu."));
             }else{
-                showView("views/modifyEmployee.php", array('personnelcategories' => $prcategories, 'errors'=>$employee->getErrors()) + $data);
+                setErrors($employee->getErrors());
+                showView("views/modifyEmployee.php", array('personnelcategories' => $prcategories) + $data);
             }           
         }
         
@@ -38,9 +36,10 @@ if (isLoggedIn()) {
             showView("views/modifyEmployee.php", array('personnelcategories' => $prcategoriesData) + $employee);
         }
     } else {
-        echo "Sivu vaatii ylläpito-oikeudet.";
+        setErrors(array("Sivu vaatii ylläpito-oikeudet."));
+        showOnlyTemplate();
     }
 } else {
-    header('Location: kirjautuminen.php');
+    header('Location: ../kirjautuminen.php');
 }
 

@@ -3,6 +3,8 @@ require_once 'libs/common.php';
 
 //Tarkistetaan että vaaditut kentät on täytetty:
 
+setNavBarAsVisible(false);
+
 if (!postParametersExist(array('email'))) {
     showView("views/login.php", array(
         'error' => "Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.",
@@ -18,8 +20,8 @@ if (!postParametersExist(array('salasana'))) {
 }
 $password = $_POST["salasana"];
 
+$user = Employee::getEmployeeByLoginInfo($email, $password);
 
-$user = attemptLogin($email, $password);
 if (isset($user)) {
     $_SESSION['loggedIn'] = $user;
     header('Location: omattyovuorot.php');

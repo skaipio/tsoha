@@ -1,12 +1,11 @@
 <?php
-$path = $_SERVER['DOCUMENT_ROOT'];
-$path .= "/tyovuorolista/libs/common.php";
-require_once($path);
+require "../libs/common.php";
 
 unset($_SESSION['employeeBeingModified']);
 
-if (isLoggedIn()) {
-    $user = getUserLoggedIn();
+$user = getUserLoggedIn();
+if (isset($user)) {
+    setNavBarAsVisible(false);
     $admin = $user->isAdmin();
     if ($admin) {
         $id = $_GET['id'];
@@ -18,9 +17,10 @@ if (isLoggedIn()) {
             showView("views/showEmployee.php", $employee);
         }
     } else {
-        echo "Sivu vaatii ylläpito-oikeudet.";
+        setErrors(array("Sivu vaatii ylläpito-oikeudet."));
+        showOnlyTemplate();
     }
 } else {
-    header('Location: kirjautuminen.php');
+    header('Location: ../kirjautuminen.php');
 }
 

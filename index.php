@@ -1,11 +1,13 @@
 <?php
 require_once 'libs/common.php';
+
 if (isset($_GET["logout"])){
-    unset($_SESSION["loggedIn"]);    
-    showView('views/login.php');
+    unset($_SESSION["loggedIn"]);   
+    header('Location: kirjautuminen.php');
 }
-if (isLoggedIn()) {
+$user = getUserLoggedIn();
+if (isset($user)) {
     header('Location: omattyovuorot.php');
 }else{
-    showView('views/login.php');
+    header('Location: kirjautuminen.php');
 }

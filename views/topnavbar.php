@@ -5,7 +5,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="<?php if ($_SERVER["PHP_SELF"] === "/tyovuorolista/omattyovuorot.php"): ?>
+                    <li class="<?php if (isActivePage("/tyovuorolista/omattyovuorot.php")): ?>
                         <?php echo "active";
                     endif;
                     ?>">
@@ -20,7 +20,7 @@
                                                 <li><a href="#">Kiireellisyysluokat</a></li>
                                             </ul>
                                         </li>-->
-                        <li class="<?php if ($_SERVER["PHP_SELF"] === "/tyovuorolista/tyontekijat.php"): ?>
+                        <li class="<?php if (isActivePage("/tyovuorolista/tyontekijat.php")): ?>
                                 <?php echo "active";
                             endif;
                             ?>">

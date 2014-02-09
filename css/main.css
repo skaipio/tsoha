@@ -25,3 +25,8 @@
 .employee-view .panel{
     background-color: aliceblue;
 }
+
+.employee-view .panel-heading{
+    background-image: -webkit-linear-gradient(top, #edf7ff 0%, #b8d7ff 100%);
+    background-image: linear-gradient(to bottom, #edf7ff 0%, #b8d7ff 100%);
+}

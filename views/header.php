@@ -13,11 +13,11 @@
     </head>
     <body>
         <?php
-        $root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
-        $path = $root . "/views/notifications.php";
-        include($path);
-        if (isset($data->includeNavBar)) {
+        $root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';       
+        if (isset($_SESSION['navBarVisible']) && $_SESSION['navBarVisible'] == true) {
             $path = $root . "/views/topnavbar.php";
             include($path);
         }
+        $path = $root . "/views/notifications.php";
+        include($path);
 

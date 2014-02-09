@@ -1,9 +1,9 @@
 <?php
-require_once 'libs/common.php';
-require_once 'models/personnelcategory.php';
+require 'libs/common.php';
 
-if (isLoggedIn()) {
-    $user = getUserLoggedIn();
+$user = getUserLoggedIn();
+if (isset($user)) {   
+    setNavBarAsVisible(true);
     $admin = $user->isAdmin();
     if ($admin) {
         $employeeObjects = Employee::getEmployees();
@@ -13,10 +13,11 @@ if (isLoggedIn()) {
             $employees[] = (object)array('firstname'=>$employee->getFirstName(), 'lastname'=>$employee->getLastName(),
                 'personnelcategory'=>$personnelcategory->getName(), 'id'=>$employee->getID());
         }
-        showView('views/employeesListing.php', array('admin'=>$admin, 'employeeDetails' => $employees, 'includeNavBar'=>1));
+        showView('views/employeesListing.php', array('admin'=>$admin, 'employeeDetails' => $employees));
     } else {
-        echo "Sivu vaatii ylläpito-oikeudet.";
-        //header('Location: omattyovuorot.php');
+        $warnings = array("Sivu vaatii ylläpito-oikeudet.");
+        setErrors($warnings);
+        showOnlyTemplate(array('admin'=>$user->isAdmin()));
     }
 } else {
     header('Location: kirjautuminen.php');

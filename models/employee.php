@@ -1,8 +1,5 @@
 <?php
 
-$path = realpath(dirname(__FILE__)) . "/";
-include_once $path . "/personnelcategory.php";
-
 class Employee {
 
     private $errors = array();

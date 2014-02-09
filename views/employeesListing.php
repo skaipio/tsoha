@@ -1,12 +1,11 @@
 <div id="employees-listing" class="container tsoha-listing">
-    <a href="lisaaTyontekija.php"><button class="btn btn-default" type="button">Lisää työntekijä</button></a>    
+    <a href="tyontekija/lisaa.php"><button class="btn btn-default" type="button">Lisää työntekijä</button></a>    
     <table id="tyontekijalista" class="table table-striped table-condensed">
         <thead>
             <tr>              
                 <th id="etunimi-header">Etunimi</th>
                 <th id="sukunimi-header">Sukunimi</th>
                 <th id="henkilosto-header">Henkilöstöluokka</th>
-                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -17,12 +16,6 @@
                     <td><?php echo $employee->lastname ?></td>
                     <td><?php echo $employee->personnelcategory ?></td>
                     <td><a href="<?php echo "tyontekija/nayta.php?id=$employee->id" ?>" class="btn">Näytä</a></td>
-                    <td>
-                        <form action='poistaTyontekija.php' method="post">
-                            <input type="hidden" name="id" value="<?php echo $employee->id ?>">
-                            <input type="submit" name="delete" value="Poista">
-                        </form>
-                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
