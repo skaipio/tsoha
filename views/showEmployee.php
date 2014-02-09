@@ -1,5 +1,5 @@
-<div id="employee-add" class="container">
-    <div class="col-lg-8">
+<div id="employee-show" class="container">
+    <div class="col-lg-offset-2 col-lg-8">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><?php echo "$data->personnelcategory $data->firstname $data->lastname" ?></h3>

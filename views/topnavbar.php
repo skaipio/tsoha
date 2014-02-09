@@ -1,6 +1,6 @@
 <header>
     <div class ='container'>
-        <nav class="navbar navbar-default" role="navigation">
+        <nav class="col-lg-offset-1 col-lg-10 navbar navbar-default" role="navigation">
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
