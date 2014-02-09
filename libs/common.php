@@ -26,7 +26,7 @@ function showOnlyTemplate($data = array()) {
     exit();
 }
 
-function redirectTo($location){
+function redirectTo($location) {
     header('Location: ' . $location);
     exit();
 }
@@ -86,10 +86,8 @@ function setNavBarAsVisible($visible) {
     $_SESSION['navBarVisible'] = $visible;
 }
 
-function echoDataToPage($property) {
-    if (isset($data[$property])) {
-        echo htmlspecialchars($data[$property]);
-    }
+function echoToPage($property) {
+    echo htmlspecialchars($property);
 }
 
 function echoNotifications($notifications) {

@@ -1,4 +1,5 @@
 <?php
+
 require "../libs/common.php";
 
 $user = getUserLoggedIn();
@@ -18,9 +19,8 @@ if (isset($user)) {
                 setErrors($employee->getErrors());
                 showView("views/addEmployee.php", array('personnelcategories' => $prcategories) + $data);
             }
-        }else{
-            showView('views/addEmployee.php', array('isadmin' => $admin, 'personnelcategories' => $prcategories));
-        }        
+        }
+        showView('views/addEmployee.php', array('admin' => $admin, 'personnelcategories' => $prcategories));
     } else {
         setErrors(array("Sivu vaatii ylläpito-oikeudet."));
         showOnlyTemplate(array('admin' => $user->isAdmin()));

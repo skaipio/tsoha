@@ -12,7 +12,7 @@
                                 <label for="firstname" class="col-lg-3 control-label">Etunimi</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="firstname"
-                                           name="firstname" value=<?php echoDataToPage('firstname') ?>>
+                                           name="firstname" value=<?php echoToPage($data->firstname) ?>>
                                 </div>
                             </div>
                         </div>
@@ -21,7 +21,7 @@
                                 <label for="lastname" class="col-lg-3 control-label">Sukunimi</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="lastname"
-                                           name="lastname" value=<?php echoDataToPage('lastname') ?>>
+                                           name="lastname" value=<?php echoToPage($data->lastname) ?>>
                                 </div>
                             </div>  
                         </div>
@@ -32,7 +32,7 @@
                                 <label for="ssn" class="col-lg-3 control-label">Henkilötunnus</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="ssn"
-                                           name="ssn"value=<?php echoDataToPage('ssn') ?>>
+                                           name="ssn"value=<?php echoToPage($data->ssn) ?>>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                 <label for="address" class="col-lg-3 control-label">Osoite</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="address"
-                                           name="address" value=<?php echoDataToPage('address') ?>>
+                                           name="address" value=<?php echoToPage($data->address) ?>>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                                 <label for="email" class="col-lg-3 control-label">Sähköposti</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="email"
-                                           name="email" value=<?php echoDataToPage('email') ?>>
+                                           name="email" value=<?php echoToPage($data->email) ?>>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                                 <label for="phone" class="col-lg-3 control-label">Puhelin</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="phone"
-                                           name="phone" value=<?php echoDataToPage('phone') ?>>
+                                           name="phone" value=<?php echoToPage($data->phone) ?>>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                                 <label for="maxhoursperweek" class="col-lg-5 control-label">Max tunnit viikossa</label>
                                 <div class="col-lg-4">
                                     <input type="text" class="form-control" id="maxhoursperweek"
-                                           name="maxhoursperweek" value=<?php echoDataToPage('maxhoursperweek') ?>>
+                                           name="maxhoursperweek" value=<?php echoToPage($data->maxhoursperweek) ?>>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
                                 <label for="maxhoursperday" class="col-lg-5 control-label">Max tunnit päivässä</label>
                                 <div class="col-lg-4">
                                     <input type="text" class="form-control" id="maxhoursperday"
-                                           name="maxhoursperday" value=<?php echoDataToPage('maxhoursperday') ?>>
+                                           name="maxhoursperday" value=<?php echoToPage($data->maxhoursperday) ?>>
                                 </div>
                             </div>
                         </div>
