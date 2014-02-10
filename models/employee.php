@@ -49,8 +49,8 @@ class Employee {
     }
 
     public function setFirstName($firstname) {
-        $this->firstname = $firstname;
-        if (trimInput($firstname) == '') {
+        $this->firstname = trim($firstname);
+        if (empty($this->firstname)) {
             $this->errors['firstname'] = "Etunimi puuttuu. ";
         } else {
             unset($this->errors['firstname']);
@@ -58,8 +58,8 @@ class Employee {
     }
 
     public function setLastName($lastname) {
-        $this->lastname = $lastname;
-        if (trimInput($lastname) == '') {
+        $this->lastname = trim($lastname);
+        if (empty($this->lastname)) {
             $this->errors['lastname'] = "Sukunimi puuttuu. ";
         } else {
             unset($this->errors['lastname']);
@@ -67,21 +67,26 @@ class Employee {
     }
 
     public function setSocialSecurityNumber($ssn) {
-        $this->ssn = $ssn;
+        $this->ssn = trim($ssn);
+//        if(strlen($ssn) != 11){
+//            $this->errors['ssn'] = "Henkilötunnuksen on oltava 11 merkkiä pitkä. ";
+//        } else{
+//            unset($this->errors['ssn']);
+//        }       
     }
 
     public function setAddress($address) {
-        $this->address = $address;
-        if (trimInput($address) == '') {
-            $this->errors['adress'] = "Osoite puuttuu. ";
+        $this->address = trim($address);
+        if (empty($this->address)) {
+            $this->errors['address'] = "Osoite puuttuu. ";
         } else {
-            unset($this->errors['adress']);
+            unset($this->errors['address']);
         }
     }
 
     public function setEmail($email) {
         $this->email = $email;
-        if (trimInput($email) == '') {
+        if (trim($email) == '') {
             $this->errors['email'] = "Sähköpostiosoite puuttuu. ";
         } else {
             unset($this->errors['email']);
@@ -89,8 +94,8 @@ class Employee {
     }
 
     public function setPhone($phonenumber) {
-        $this->phone = $phonenumber;
-        if (trimInput($phonenumber) == '') {
+        $this->phone = trim($phonenumber);
+        if (empty($this->phone)) {
             $this->errors['phone'] = "Puhelinnumero puuttuu. ";
         } else {
             unset($this->errors['phone']);
@@ -103,8 +108,10 @@ class Employee {
 
     public function setMaxHourPerAWeek($maxhours) {
         $this->maxhoursperweek = $maxhours;
-        if (trimInput($maxhours) == '') {
+        if (empty($maxhours)) {
             $this->errors['maxhoursperweek'] = "Maksimitunnit viikossa puuttuu. ";
+        } else if (!is_numeric($maxhours)) {
+            $this->errors['maxhoursperweek'] = "Maksimitunnit viikossa on oltava kokonaisluku. ";
         } else {
             unset($this->errors['maxhoursperweek']);
         }
@@ -112,8 +119,10 @@ class Employee {
 
     public function setMaxHoursPerDay($maxhours) {
         $this->maxhoursperday = $maxhours;
-        if (trimInput($maxhours) == '') {
+        if (empty($maxhours)) {
             $this->errors['maxhoursperday'] = "Maksimitunnit päivässä puuttuu. ";
+        } else if (!is_numeric($maxhours)) {
+            $this->errors['maxhoursperday'] = "Maksimitunnit päivässä on oltava kokonaisluku. ";
         } else {
             unset($this->errors['maxhoursperday']);
         }
@@ -169,9 +178,6 @@ class Employee {
         $employeeDataArray = $employeeDataArray + $this->getAsDataArray();
         unset($employeeDataArray['id']);
         $employeeDataArray['admin'] = $employeeDataArray['admin'] ? 'true' : 'false';
-//        $ok = $query->execute(array($password, $this->firstname, $this->lastname,
-//            $this->ssn, $this->address, $this->email, $this->phone, $this->personnelcategory_id,
-//            $this->maxhoursperday, $this->maxhoursperweek, $admin));
         $ok = $query->execute(array_values($employeeDataArray));
         if ($ok) {
             $this->id = $query->fetchColumn();

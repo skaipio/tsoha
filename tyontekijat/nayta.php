@@ -23,4 +23,3 @@ if (isset($user)) {
 } else {
     redirectTo('../kirjautuminen.php');
 }
-

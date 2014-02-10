@@ -8,8 +8,10 @@ if (isset($user)) {
     if ($admin) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $employee = $_SESSION['employeeBeingModified'];
-            $data = getSubmittedEmployeeData();
+            $data = getSubmittedEmployeeData();           
             $employee->setFromData($data);
+            $prcategories = getPersonnelCategoriesDataArray();
+            $data['id'] = $employee->getID();
             if ($employee->isValid()){
                 $employee->updateDatabaseEntry();  
                 unset($_SESSION['employeeBeingModified']);
@@ -42,4 +44,3 @@ if (isset($user)) {
 } else {
     redirectTo('../kirjautuminen.php');
 }
-
