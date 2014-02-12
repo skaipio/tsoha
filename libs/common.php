@@ -67,7 +67,7 @@ function getSubmittedEmployeeData() {
     $address = $_POST['address'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
-    $admin = $_POST['admin'];
+    $admin = isset($_POST['admin']) ? $_POST['admin'] : false;
     $pcategory = $_POST['personnelcategory_id'];
     $maxhoursperweek = $_POST['maxhoursperweek'];
     $maxhoursperday = $_POST['maxhoursperday'];

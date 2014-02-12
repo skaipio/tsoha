@@ -47,8 +47,16 @@ class Employee {
     public function isAdmin() {
         return $this->admin;
     }
+    
+    private function setId($id){
+        $this->id = $id;
+    }
+    
+    private function setPassword($password){
+        $this->password=$password;
+    }
 
-    public function setFirstName($firstname) {
+    public function setFirstname($firstname) {
         $this->firstname = trim($firstname);
         if (empty($this->firstname)) {
             $this->errors['firstname'] = "Etunimi puuttuu. ";
@@ -57,7 +65,7 @@ class Employee {
         }
     }
 
-    public function setLastName($lastname) {
+    public function setLastname($lastname) {
         $this->lastname = trim($lastname);
         if (empty($this->lastname)) {
             $this->errors['lastname'] = "Sukunimi puuttuu. ";
@@ -66,8 +74,8 @@ class Employee {
         }
     }
 
-    public function setSocialSecurityNumber($ssn) {
-        $this->ssn = trim($ssn);
+    public function setSSN($socialsecuritynumber) {
+        $this->ssn = trim($socialsecuritynumber);
 //        if(strlen($ssn) != 11){
 //            $this->errors['ssn'] = "Henkilötunnuksen on oltava 11 merkkiä pitkä. ";
 //        } else{
@@ -102,11 +110,11 @@ class Employee {
         }
     }
 
-    public function setPersonnelCategory($category) {
+    public function setPersonnelcategory_id($category) {
         $this->personnelcategory_id = $category;
     }
 
-    public function setMaxHourPerAWeek($maxhours) {
+    public function setMaxhoursperweek($maxhours) {
         $this->maxhoursperweek = $maxhours;
         if (empty($maxhours)) {
             $this->errors['maxhoursperweek'] = "Maksimitunnit viikossa puuttuu. ";
@@ -117,7 +125,7 @@ class Employee {
         }
     }
 
-    public function setMaxHoursPerDay($maxhours) {
+    public function setMaxhoursperday($maxhours) {
         $this->maxhoursperday = $maxhours;
         if (empty($maxhours)) {
             $this->errors['maxhoursperday'] = "Maksimitunnit päivässä puuttuu. ";
@@ -132,12 +140,13 @@ class Employee {
         $this->admin = (bool) $isAdmin;
     }
 
-    public function setFromData($data) {
-        if (is_array($data) && count($data)) {
+    public function setFromDataObject($data) {
+        if (is_object($data) && count($data)) {
             $valid = get_class_vars(get_class($this));
             foreach ($valid as $var => $val) {
-                if (isset($data[$var])) {
-                    $this->$var = $data[$var];
+                if (isset($data->$var)) {
+                    //$this->$var = $data[$var];
+                    call_user_func(array($this, 'set'.ucfirst($var)), $data->$var);
                 }
             }
         }
@@ -156,8 +165,9 @@ class Employee {
         $maxhoursperweek = $this->maxhoursperweek;
         $maxhoursperday = $this->maxhoursperday;
         $admin = $this->admin;
-        $data = array('id' => $id, 'password' => $password, 'firstname' => $firstname, 'lastname' => $lastname, 'ssn' => $ssn,
-            'address' => $address, 'email' => $email, 'phone' => $phone, 'personnelcategory' => $pcategory,
+        $data = array('id' => $id, 'password' => $password, 'firstname' => $firstname,
+            'lastname' => $lastname, 'ssn' => $ssn, 'address' => $address,
+            'email' => $email, 'phone' => $phone, 'personnelcategory_id' => $pcategory,
             'maxhoursperweek' => $maxhoursperweek, 'maxhoursperday' => $maxhoursperday, 'admin' => $admin);
         return $data;
     }
@@ -173,9 +183,8 @@ class Employee {
                 . "maxhoursperday, maxhoursperweek, admin)"
                 . "VALUES (?,?,?,?,?,?,?,?,?,?,?) RETURNING id";
         $query = getDatabaseConnection()->prepare($sql);
-        $employeeDataArray = array();
+        $employeeDataArray = $this->getAsDataArray();
         $employeeDataArray['password'] = Employee::generatePassword();
-        $employeeDataArray = $employeeDataArray + $this->getAsDataArray();
         unset($employeeDataArray['id']);
         $employeeDataArray['admin'] = $employeeDataArray['admin'] ? 'true' : 'false';
         $ok = $query->execute(array_values($employeeDataArray));
@@ -195,8 +204,7 @@ class Employee {
                 . "maxhoursperday=?, maxhoursperweek=?, admin=? "
                 . "WHERE id=?";
         $query = getDatabaseConnection()->prepare($sql);
-        $ok = $query->execute(array_values($employeeDataArray));
-        return $ok;
+        return $query->execute(array_values($employeeDataArray));
     }
 
     public static function getEmployees() {
@@ -239,18 +247,7 @@ class Employee {
 
     public static function createEmployeeFromData($data) {
         $employee = new Employee();
-        $employee->id = $data->id;
-        $employee->password = $data->password;
-        $employee->setFirstName($data->firstname);
-        $employee->setLastName($data->lastname);
-        $employee->setSocialSecurityNumber($data->ssn);
-        $employee->setAddress($data->address);
-        $employee->setEmail($data->email);
-        $employee->setPhone($data->phone);
-        $employee->setPersonnelCategory($data->personnelcategory_id);
-        $employee->setMaxHourPerAWeek($data->maxhoursperweek);
-        $employee->setMaxHoursPerDay($data->maxhoursperday);
-        $employee->setAdmin($data->admin);
+        $employee->setFromDataObject((object)$data);
         return $employee;
     }
 
