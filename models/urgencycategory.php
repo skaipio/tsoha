@@ -81,6 +81,10 @@ class UrgencyCategory {
         return $urgencycategory;
     }
 
-    
+    public static function removeFromDatabase($id) {
+        $sql = "DELETE FROM urgencycategory WHERE id = ?";
+        $query = getDatabaseConnection()->prepare($sql);
+        return $query->execute(array($id));
+    }
 
 }
