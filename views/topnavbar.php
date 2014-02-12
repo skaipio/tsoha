@@ -26,6 +26,12 @@
                             ?>">
                             <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/tyontekijat/index.php">Työntekijät</a>
                         </li>
+                        <li class="<?php if (isActivePage("/tyovuorolista/kiireellisyyskategoriat/index.php")): ?>
+                                <?php echo "active";
+                            endif;
+                            ?>">
+                            <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/kiireellisyyskategoriat/index.php">Kiireellisyyskategoriat</a>
+                        </li>
                     <?php endif; ?>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

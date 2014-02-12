@@ -2,22 +2,21 @@ INSERT INTO personnelcategory (name) VALUES ('Lääkäri');
 INSERT INTO personnelcategory (name) VALUES ('Sairaanhoitaja');
 INSERT INTO personnelcategory (name) VALUES ('Perushoitaja');
 
-INSERT INTO urgencycategory (name) VALUES ('L3');
 INSERT INTO urgencycategory (name) VALUES ('L2');
 
 INSERT INTO minimumpersonnel (urgencycategory_id, personnelcategory_id, minimum)
-	VALUES (2, 1, 1);
+	VALUES (1, 1, 1);
 INSERT INTO minimumpersonnel (urgencycategory_id, personnelcategory_id, minimum)
-	VALUES (2, 2, 1);
+	VALUES (1, 2, 1);
 INSERT INTO minimumpersonnel (urgencycategory_id, personnelcategory_id, minimum)
-	VALUES (2, 3, 1);
+	VALUES (1, 3, 1);
 
 INSERT INTO openhour (opendate, hour, urgencycategory_id)
-	VALUES ('2014-03-01', '08:00', 2);
+	VALUES ('2014-03-01', '08:00', 1);
 INSERT INTO openhour (opendate, hour, urgencycategory_id)
-	VALUES ('2014-03-01', '09:00', 2);	
+	VALUES ('2014-03-01', '09:00', 1);	
 INSERT INTO openhour (opendate, hour, urgencycategory_id)
-	VALUES ('2014-03-01', '10:00', 2);	
+	VALUES ('2014-03-01', '10:00', 1);	
 
 INSERT INTO employee (password, email, admin, firstname, lastname, ssn,
 	address, phone, personnelcategory_id, maxhoursperday, maxhoursperweek)

@@ -1,11 +1,4 @@
 <?php
-
-//$root = $_SERVER['DOCUMENT_ROOT'] . '/tyovuorolista';
-//$path = $root . "/libs/common.php";
-//require_once($path);
-//$path = $root . "/models/personnelcategory.php";
-//require_once($path);
-
 require 'libs/common.php';
 require_once 'models/employee.php';
 

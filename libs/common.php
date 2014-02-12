@@ -77,6 +77,35 @@ function getSubmittedEmployeeData() {
     return $data;
 }
 
+function getSubmittedUrgencyCategoryData() {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $personnelcategories = Personnelcategory::getPersonnelCategories();
+    $minimums = array();
+    foreach($personnelcategories as $pc){
+        $pcid = $pc->getID();
+        $minimum = $_POST["minimum_of_$pcid"];
+        if (isset($minimum)){
+            $minimums[$pcid] = $minimum;
+        }
+    }
+    $data = array('id' => $id, 'name' => $name, 'minimums' => (object)$minimums);
+    return $data;
+}
+
+function getSubmittedMinimumPersonnelData() {
+    $personnelcategories = Personnelcategory::getPersonnelCategories();
+    $minimums = array();
+    foreach($personnelcategories as $pc){
+        $pcid = $pc->getID();
+        $minimum = $_POST["minimum_of_$pcid"];
+        if (isset($minimum)){
+            $minimums[$pcid] = $minimum;
+        }
+    }
+    return $minimums;
+}
+
 function isActivePage($page) {
     $current = filter_input(INPUT_SERVER, 'PHP_SELF');
     return $current === $page;
