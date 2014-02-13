@@ -48,6 +48,15 @@ class UrgencyCategory {
         }
         return $ok;
     }
+    
+    public function updateDatabaseEntry() {
+        $ucDataArray = $this->getAsDataArray();
+        unset($ucDataArray['id']);
+        $ucDataArray['id'] = $this->getID();
+        $sql = "UPDATE urgencycategory SET name=? WHERE id=?";
+        $query = getDatabaseConnection()->prepare($sql);
+        return $query->execute(array_values($ucDataArray));
+    }
 
     public static function getUrgencyCategories() {
         $sql = "SELECT * from urgencycategory";
@@ -61,19 +70,18 @@ class UrgencyCategory {
         return $results;
     }
     
-//    public static function getMinimumPersonnelDataObject() {
-//        $sql = "SELECT * FROM minimumpersonnel WHERE urgencycategory_id = ?";
-//        $query = getDatabaseConnection()->prepare($sql);
-//        $query->execute(array($this->getID()));
-//
-//        $result = $query->fetchObject();
-//        if ($result == null) {
-//            return null;
-//        } else {
-//            $personnelcategory = new Personnelcategory($result->id, $result->name);
-//            return $personnelcategory;
-//        }
-//    }
+    public static function getByID($id) {
+        $sql = "SELECT * FROM urgencycategory WHERE id = ?";
+        $query = getDatabaseConnection()->prepare($sql);
+        $query->execute(array($id));
+
+        $result = $query->fetchObject();
+        if ($result == null) {
+            return null;
+        } else {
+            return UrgencyCategory::createFromData($result);
+        }
+    }
     
     public static function createFromData($data) {
         $urgencycategory = new UrgencyCategory();

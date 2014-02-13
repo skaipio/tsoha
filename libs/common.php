@@ -78,7 +78,6 @@ function getSubmittedEmployeeData() {
 }
 
 function getSubmittedUrgencyCategoryData() {
-    $id = $_POST['id'];
     $name = $_POST['name'];
     $personnelcategories = Personnelcategory::getPersonnelCategories();
     $minimums = array();

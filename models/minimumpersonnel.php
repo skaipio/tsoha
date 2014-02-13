@@ -2,11 +2,16 @@
 
 class MinimumPersonnel {
 
+    private $errors = array();
     private $id;
     private $urgencycategory_id;
     private $personnelcategory_id;
     private $minimum;
 
+    public function getErrors() {
+        return $this->errors;
+    }
+    
     public function getID() {
         return $this->id;
     }
@@ -40,8 +45,22 @@ class MinimumPersonnel {
         $this->personnelcategory_id = $id;
     }
     
-    private function setMinimum($minimum) {
-        $this->minimum = $minimum;
+    private function setMinimum($minimum) {       
+        if (empty($minimum)){
+            $this->errors['empty'] = "Minimi ei voi olla tyhjä. ";
+        }else{
+            unset($this->errors['empty']);
+        }
+        if (!is_numeric($minimum)){
+            $this->errors['number'] = "Minimin on oltava numero. ";
+        }else{
+            unset($this->errors['number']);
+            $this->minimum = $minimum; 
+        }
+    }
+    
+    public function isValid() {
+        return empty($this->errors);
     }
     
     public function addToDatabase() {
@@ -57,6 +76,23 @@ class MinimumPersonnel {
         return $ok;
     }
     
+    public function updateDatabaseEntry() {
+        $sql = "UPDATE minimumpersonnel SET minimum=? WHERE urgencycategory_id=? AND personnelcategory_id=?";
+        $query = getDatabaseConnection()->prepare($sql);
+        return $query->execute(array($this->getMinimum(), $this->getUrgencyCategoryId(), $this->getPersonnelCategoryId()));
+    }
+    
+    public static function getMinimumPersonnelByUrgencyCategory($urgencycategory_id) {
+        $sql = "SELECT * FROM minimumpersonnel WHERE urgencycategory_id = ?";
+        $query = getDatabaseConnection()->prepare($sql);
+        $query->execute(array($urgencycategory_id));
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $results[] = MinimumPersonnel::createFromData($result);
+        }
+        return $results;
+    }
     
     public static function getMinimumPersonnelByUrgencyCategoryAndPersonnelCategory($urgencycategory_id, $personnelcategory_id) {
         $sql = "SELECT * FROM minimumpersonnel WHERE urgencycategory_id = ? AND personnelcategory_id = ? LIMIT 1";
@@ -82,20 +118,6 @@ class MinimumPersonnel {
         }
         return $results;
     }
-
-//    public static function getMinimumPersonnelDataObject() {
-//        $sql = "SELECT * FROM minimumpersonnel WHERE urgencycategory_id = ?";
-//        $query = getDatabaseConnection()->prepare($sql);
-//        $query->execute(array($this->getID()));
-//
-//        $result = $query->fetchObject();
-//        if ($result == null) {
-//            return null;
-//        } else {
-//            $personnelcategory = new Personnelcategory($result->id, $result->name);
-//            return $personnelcategory;
-//        }
-//    }
 
     public static function createFromData($data) {
         $minimumpersonnel = new MinimumPersonnel();
