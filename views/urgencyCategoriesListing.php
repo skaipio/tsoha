@@ -4,23 +4,24 @@
         <thead>
             <tr>              
                 <th>Nimi</th>
-                <?php $personnelcategories = $data->personnelcategories; ?>
+                <?php $personnelcategories = $data->personnelCategories; ?>
                 <?php foreach ($personnelcategories as $personnelcategory): ?>
-                    <th><?php echo $personnelcategory->name ?></th>
+                    <th><?php echo $personnelcategory->getName() ?></th>
                 <?php endforeach; ?>
                 <th>Toiminnot</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($data->urgencycategories as $urgencycategory): ?>
+            <?php foreach ($data->urgencyCategories as $urgencyCategory): ?>
                 <tr>              
-                    <td><?php echo $urgencycategory->name ?></td>
-                    <?php foreach ($urgencycategory->minimumpersonnels as $minimumpersonnel): ?>
-                        <td><?php echo $minimumpersonnel->minimum ?></td>
+                    <td><?php echoToPage($urgencyCategory->urgencyCategory->getName()) ?></td>
+                    <?php foreach ($urgencyCategory->minimumPersonnels as $minimumpersonnel): ?>
+                        <td><?php echo $minimumpersonnel->getMinimum() ?></td>
                     <?php endforeach; ?>
                     <td>
-                        <a href="<?php echo "nayta.php?id=$urgencycategory->id" ?>" class="btn btn-default btn-sm" role="button">Näytä</a>
-                        <a href="<?php echo "poista.php?id=$urgencycategory->id" ?>" class="btn btn-default btn-sm" role="button">Poista</a>
+                        <?php $urgencyCategoryID = $urgencyCategory->urgencyCategory->getId(); ?>
+                        <a href="<?php echo "muokkaa.php?id=$urgencyCategoryID" ?>" class="btn btn-default btn-sm" role="button">Muokkaa</a>
+                        <a href="<?php echo "poista.php?id=$urgencyCategoryID" ?>" class="btn btn-default btn-sm" role="button">Poista</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

@@ -5,8 +5,8 @@ $path = $root . "/libs/databaseconnection.php";
 require($path);
 $path = $root . "/models/employee.php";
 require($path);
-$path = $root . "/models/personnelcategory.php";
-require($path);
+//$path = $root . "/models/personnelcategory.php";
+//require($path);
 
 session_start();
 
@@ -44,14 +44,26 @@ function getUserLoggedIn() {
     return $_SESSION['loggedIn'];
 }
 
-function getPersonnelCategoriesDataArray() {
-    $pcategories = Personnelcategory::getPersonnelCategories();
-    $pcategoriesData = array();
-    foreach ($pcategories as $pcategory) {
-        $pcategoriesData[] = (object) $pcategory->getAsDataArray();
+function loggedInAsAdmin(){
+    $user = $_SESSION['loggedIn'];
+    if (isset($user)){
+        if ($user->isAdmin()){
+            return true;
+        }else{
+            setErrors(array('Sivu vaatii ylläpito-oikeudet.'));
+            redirect('kirjautuminen.php');
+        }
     }
-    return $pcategoriesData;
 }
+
+//function getPersonnelCategoriesDataArray() {
+//    $pcategories = Personnelcategory::getPersonnelCategories();
+//    $pcategoriesDataObject = array();
+//    foreach ($pcategories as $pcategory) {
+//        $pcategoriesDataObject[$pcategory->getID()] = (object) $pcategory->getAsDataArray();
+//    }
+//    return $pcategoriesDataObject;
+//}
 
 function trimInput($input) {
     $input = trim($input);
@@ -77,33 +89,7 @@ function getSubmittedEmployeeData() {
     return $data;
 }
 
-function getSubmittedUrgencyCategoryData() {
-    $name = $_POST['name'];
-    $personnelcategories = Personnelcategory::getPersonnelCategories();
-    $minimums = array();
-    foreach($personnelcategories as $pc){
-        $pcid = $pc->getID();
-        $minimum = $_POST["minimum_of_$pcid"];
-        if (isset($minimum)){
-            $minimums[$pcid] = $minimum;
-        }
-    }
-    $data = array('id' => $id, 'name' => $name, 'minimums' => (object)$minimums);
-    return $data;
-}
 
-function getSubmittedMinimumPersonnelData() {
-    $personnelcategories = Personnelcategory::getPersonnelCategories();
-    $minimums = array();
-    foreach($personnelcategories as $pc){
-        $pcid = $pc->getID();
-        $minimum = $_POST["minimum_of_$pcid"];
-        if (isset($minimum)){
-            $minimums[$pcid] = $minimum;
-        }
-    }
-    return $minimums;
-}
 
 function isActivePage($page) {
     $current = filter_input(INPUT_SERVER, 'PHP_SELF');

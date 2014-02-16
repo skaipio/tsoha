@@ -76,11 +76,11 @@ class Employee {
 
     public function setSSN($socialsecuritynumber) {
         $this->ssn = trim($socialsecuritynumber);
-//        if(strlen($ssn) != 11){
-//            $this->errors['ssn'] = "Henkilötunnuksen on oltava 11 merkkiä pitkä. ";
-//        } else{
-//            unset($this->errors['ssn']);
-//        }       
+        if(strlen($this->ssn) != 11){
+            $this->errors['ssn'] = "Henkilötunnuksen on oltava 11 merkkiä pitkä. ";
+        } else{
+            unset($this->errors['ssn']);
+        }       
     }
 
     public function setAddress($address) {

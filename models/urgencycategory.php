@@ -2,8 +2,13 @@
 
 class UrgencyCategory {
 
+    private $errors = array();
     private $id;
     private $name;
+
+    public function getErrors() {
+        return $this->errors;
+    }
 
     public function getID() {
         return $this->id;
@@ -13,18 +18,23 @@ class UrgencyCategory {
         return $this->name;
     }
 
-    public function getAsDataArray() {
-        return array('id' => $this->getID(), 'name' => $this->getName());
-    }
-
     private function setId($id) {
         $this->id = $id;
     }
 
     private function setName($name) {
         $this->name = $name;
+        if(empty($name)){
+            $this->errors['emptyName'] = 'Nimi ei voi olla tyhjä.';
+        }else{
+            unset($this->errors['emptyName']);
+        }
     }
-    
+
+    public function isValid() {
+        return empty($this->errors);
+    }
+
     public function setFromDataObject($data) {
         if (is_object($data) && count($data)) {
             $valid = get_class_vars(get_class($this));
@@ -36,26 +46,21 @@ class UrgencyCategory {
             }
         }
     }
-    
+
     public function addToDatabase() {
         $sql = "INSERT INTO urgencycategory(name) VALUES (?) RETURNING id";
         $query = getDatabaseConnection()->prepare($sql);
-        $data = $this->getAsDataArray();
-        unset($data['id']);
-        $ok = $query->execute(array_values($data));
+        $ok = $query->execute(array($this->getName()));
         if ($ok) {
             $this->id = $query->fetchColumn();
         }
         return $ok;
     }
-    
+
     public function updateDatabaseEntry() {
-        $ucDataArray = $this->getAsDataArray();
-        unset($ucDataArray['id']);
-        $ucDataArray['id'] = $this->getID();
         $sql = "UPDATE urgencycategory SET name=? WHERE id=?";
         $query = getDatabaseConnection()->prepare($sql);
-        return $query->execute(array_values($ucDataArray));
+        return $query->execute(array($this->getName(), $this->getID()));
     }
 
     public static function getUrgencyCategories() {
@@ -69,7 +74,7 @@ class UrgencyCategory {
         }
         return $results;
     }
-    
+
     public static function getByID($id) {
         $sql = "SELECT * FROM urgencycategory WHERE id = ?";
         $query = getDatabaseConnection()->prepare($sql);
@@ -82,10 +87,10 @@ class UrgencyCategory {
             return UrgencyCategory::createFromData($result);
         }
     }
-    
+
     public static function createFromData($data) {
         $urgencycategory = new UrgencyCategory();
-        $urgencycategory->setFromDataObject((object)$data);
+        $urgencycategory->setFromDataObject((object) $data);
         return $urgencycategory;
     }
 

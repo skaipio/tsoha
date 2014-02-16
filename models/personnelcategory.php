@@ -23,7 +23,7 @@ class Personnelcategory {
     }
 
     public static function getPersonnelCategoryById($id_) {
-        $sql = "SELECT * FROM personnelcategory WHERE id = ?";
+        $sql = "SELECT * FROM personnelcategory WHERE id = ? ORDER BY id";
         $query = getDatabaseConnection()->prepare($sql);
         $query->execute(array($id_));
 
@@ -37,7 +37,7 @@ class Personnelcategory {
     }
 
     public static function getPersonnelCategories() {
-        $sql = "SELECT * from personnelcategory";
+        $sql = "SELECT * from personnelcategory ORDER BY id";
         $query = getDatabaseConnection()->prepare($sql);
         $query->execute();
 

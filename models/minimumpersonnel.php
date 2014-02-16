@@ -83,7 +83,7 @@ class MinimumPersonnel {
     }
     
     public static function getMinimumPersonnelByUrgencyCategory($urgencycategory_id) {
-        $sql = "SELECT * FROM minimumpersonnel WHERE urgencycategory_id = ?";
+        $sql = "SELECT * FROM minimumpersonnel WHERE urgencycategory_id = ? ORDER BY urgencycategory_id";
         $query = getDatabaseConnection()->prepare($sql);
         $query->execute(array($urgencycategory_id));
 
@@ -94,7 +94,7 @@ class MinimumPersonnel {
         return $results;
     }
     
-    public static function getMinimumPersonnelByUrgencyCategoryAndPersonnelCategory($urgencycategory_id, $personnelcategory_id) {
+    public static function getMinimumPersonnelByUrgencyAndPersonnelCategory($urgencycategory_id, $personnelcategory_id) {
         $sql = "SELECT * FROM minimumpersonnel WHERE urgencycategory_id = ? AND personnelcategory_id = ? LIMIT 1";
         $query = getDatabaseConnection()->prepare($sql);
         $query->execute(array($urgencycategory_id, $personnelcategory_id));
