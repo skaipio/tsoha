@@ -5,8 +5,6 @@ $path = $root . "/libs/databaseconnection.php";
 require($path);
 $path = $root . "/models/employee.php";
 require($path);
-//$path = $root . "/models/personnelcategory.php";
-//require($path);
 
 session_start();
 
@@ -55,15 +53,6 @@ function loggedInAsAdmin(){
         }
     }
 }
-
-//function getPersonnelCategoriesDataArray() {
-//    $pcategories = Personnelcategory::getPersonnelCategories();
-//    $pcategoriesDataObject = array();
-//    foreach ($pcategories as $pcategory) {
-//        $pcategoriesDataObject[$pcategory->getID()] = (object) $pcategory->getAsDataArray();
-//    }
-//    return $pcategoriesDataObject;
-//}
 
 function trimInput($input) {
     $input = trim($input);

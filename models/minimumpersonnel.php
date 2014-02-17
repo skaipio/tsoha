@@ -55,20 +55,20 @@ class MinimumPersonnel {
     
 
     public function setMinimum($minimum) {
-        if (empty($minimum)) {
+        $this->minimum = $minimum;
+        if (!isset($this->minimum)) {
             $this->errors['empty'] = "Minimi ei voi olla tyhjä. ";
         } else {
             unset($this->errors['empty']);
         }
-        if (!is_numeric($minimum)) {
+        if (!is_numeric($this->minimum)) {
             $this->errors['number'] = "Minimin on oltava numero. ";
         } else {
             unset($this->errors['number']);
-            if ($minimum < 0) {
+            if ($this->minimum < 0) {
                 $this->errors['negative'] = "Minimin on oltava positiivinen tai nolla. ";
             } else {
                 unset($this->errors['negative']);
-                $this->minimum = $minimum;
             }
         }
     }
@@ -81,9 +81,8 @@ class MinimumPersonnel {
         $sql = "INSERT INTO minimumpersonnel(urgencycategory_id, personnelcategory_id, minimum)"
                 . "VALUES (?,?,?) RETURNING id";
         $query = getDatabaseConnection()->prepare($sql);
-        $data = $this->getAsDataArray();
-        unset($data['id']);
-        $ok = $query->execute(array_values($data));
+        $ok = $query->execute(array($this->getUrgencyCategoryId(),
+            $this->getPersonnelCategoryId(), $this->getMinimum()));
         if ($ok) {
             $this->id = $query->fetchColumn();
         }

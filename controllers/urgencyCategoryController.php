@@ -29,31 +29,35 @@ class UrgencyCategoryController {
     }
 
     public function add() {
-        $this->errors = array();
-        $urgencyCategorySubmission = $this->getSubmittedUrgencyCategory();
-        $minimumPersonnels = $urgencyCategorySubmission->getMinimumPersonnels();
+        $urgencyCategorySubmission = UrgencyCategoryController::getSubmittedUrgencyCategory();   
 
         if (!$urgencyCategorySubmission->isValid()) {
             $this->errors = $urgencyCategorySubmission->getErrors();
         }
 
+        $minimumPersonnels = $urgencyCategorySubmission->getMinimumPersonnels();
+        
         foreach ($minimumPersonnels as $minimumPersonnel) {
-            $minimumPersonnel->setUrgencycategory_id($urgencyCategorySubmission->getID());
-            var_dump($minimumPersonnel);
             if (!$minimumPersonnel->isValid()) {
                 $this->errors = $this->errors + $minimumPersonnel->getErrors();
             }
         }
+        
+        $urgencyCategorySubmission->setMinimumPersonnels($minimumPersonnels);
 
         if (empty($this->errors)) {
             $urgencyCategorySubmission->addToDatabase();
+            $minimumPersonnels = $urgencyCategorySubmission->getMinimumPersonnels();
             foreach ($minimumPersonnels as $minimumPersonnel) {
                 $minimumPersonnel->setUrgencycategory_id($urgencyCategorySubmission->getID());
-                $minimumPersonnel->addToDatabase();
+                if(!$minimumPersonnel->addToDatabase()){
+                    $this->errors = $this->errors + array('Minimivahvuutta ei voitu lisätä tietokantaan.');
+                }
             }
+            $urgencyCategorySubmission->setMinimumPersonnels($minimumPersonnels);
         }
 
-        $_SESSION['urgencyCategory'] = $urgencyCategorySubmission;
+        $this->urgencyCategory = $urgencyCategorySubmission;
     }
 
     public function modify() {
@@ -87,6 +91,32 @@ class UrgencyCategoryController {
 
         return $errors;
     }
+    
+    private static function getSubmittedUrgencyCategory() {
+        $urgencyCategory = new UrgencyCategory();
+
+        $name = $_POST['name'];
+        $urgencyCategory->setName($name);
+
+        $minimumPersonnels = $urgencyCategory->getMinimumPersonnels();
+        $personnelCategories = Personnelcategory::getPersonnelCategories();
+
+        foreach ($personnelCategories as $personnelCategory) {
+            $minimp = new MinimumPersonnel();
+            $minimp->setPersonnelCategory($personnelCategory);
+
+            $pcID = $personnelCategory->getID();
+            $minimp->setPersonnelcategory_id($pcID);
+
+            $minimum = $_POST["minimum_of_$pcID"];
+            $minimp->setMinimum((int)$minimum);
+
+            $minimumPersonnels[] = $minimp;
+        }
+
+        $urgencyCategory->setMinimumPersonnels($minimumPersonnels);
+        return $urgencyCategory;
+    }
 
     public static function createEmptyUrgencyCategory() {
         $urgencyCategory = new UrgencyCategory();
@@ -113,29 +143,6 @@ class UrgencyCategoryController {
         return $paired;
     }
 
-    private function getSubmittedUrgencyCategory() {
-        $urgencyCategory = new UrgencyCategory();
-
-        $name = $_POST['name'];
-        $urgencyCategory->setName($name);
-
-        $minimumPersonnels = $urgencyCategory->getMinimumPersonnels();
-        $personnelCategories = Personnelcategory::getPersonnelCategories();
-
-        foreach ($personnelCategories as $personnelCategory) {
-            $minimp = new MinimumPersonnel();
-            $minimp->setPersonnelCategory($personnelCategory);
-
-            $pcID = $personnelCategory->getID();
-            $minimp->setPersonnelcategory_id($pcID);
-
-            $minimum = $_POST["minimum_of_$pcID"];
-            $minimp->setMinimum((int)$minimum);
-
-            $minimumPersonnels[] = $minimp;
-        }
-
-        return $urgencyCategory;
-    }
+    
 
 }

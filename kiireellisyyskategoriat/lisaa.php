@@ -13,14 +13,14 @@ if (loggedInAsAdmin()) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller->add();
 
-        $errors = $controller->getErrors();
+        $errors = $controller->getErrors();      
 
         if (empty($errors)) {
             setSuccesses(array("Kiireellisyyskategoria on onnistuneesti lisätty tietokantaan."));
             redirectTo('index.php');
         } else {
             setErrors($errors);
-            $urgencyCategory = $_SESSION['urgencyCategory'];
+            $urgencyCategory = $controller->getUrgencyCategory();
             showView('views/urgencyCategoryCreation.php', array('admin' => true,
                 'urgencyCategory' => $urgencyCategory, 'formTitle' => 'Kiireellisyyskategorian muokkaus'));
         }
