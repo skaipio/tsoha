@@ -11,7 +11,7 @@ class MinimumPersonnel {
     public function getErrors() {
         return $this->errors;
     }
-    
+
     public function getID() {
         return $this->id;
     }
@@ -23,7 +23,7 @@ class MinimumPersonnel {
     public function getPersonnelCategoryId() {
         return $this->personnelcategory_id;
     }
-    
+
     public function getMinimum() {
         return $this->minimum;
     }
@@ -37,32 +37,37 @@ class MinimumPersonnel {
         $this->id = $id;
     }
 
-    private function setUrgencycategory_id($id) {
+    public function setUrgencycategory_id($id) {
         $this->urgencycategory_id = $id;
     }
 
-    private function setPersonnelcategory_id($id) {
+    public function setPersonnelcategory_id($id) {
         $this->personnelcategory_id = $id;
     }
-    
-    private function setMinimum($minimum) {       
-        if (empty($minimum)){
+
+    public function setMinimum($minimum) {
+        if (empty($minimum)) {
             $this->errors['empty'] = "Minimi ei voi olla tyhjä. ";
-        }else{
+        } else {
             unset($this->errors['empty']);
         }
-        if (!is_numeric($minimum)){
+        if (!is_numeric($minimum)) {
             $this->errors['number'] = "Minimin on oltava numero. ";
-        }else{
+        } else {
             unset($this->errors['number']);
-            $this->minimum = $minimum; 
+            if ($minimum < 0) {
+                $this->errors['negative'] = "Minimin on oltava positiivinen tai nolla. ";
+            } else {
+                unset($this->errors['negative']);
+                $this->minimum = $minimum;
+            }
         }
     }
-    
+
     public function isValid() {
         return empty($this->errors);
     }
-    
+
     public function addToDatabase() {
         $sql = "INSERT INTO minimumpersonnel(urgencycategory_id, personnelcategory_id, minimum)"
                 . "VALUES (?,?,?) RETURNING id";
@@ -75,13 +80,13 @@ class MinimumPersonnel {
         }
         return $ok;
     }
-    
+
     public function updateDatabaseEntry() {
         $sql = "UPDATE minimumpersonnel SET minimum=? WHERE urgencycategory_id=? AND personnelcategory_id=?";
         $query = getDatabaseConnection()->prepare($sql);
         return $query->execute(array($this->getMinimum(), $this->getUrgencyCategoryId(), $this->getPersonnelCategoryId()));
     }
-    
+
     public static function getMinimumPersonnelByUrgencyCategory($urgencycategory_id) {
         $sql = "SELECT * FROM minimumpersonnel WHERE urgencycategory_id = ? ORDER BY urgencycategory_id";
         $query = getDatabaseConnection()->prepare($sql);
@@ -93,7 +98,7 @@ class MinimumPersonnel {
         }
         return $results;
     }
-    
+
     public static function getMinimumPersonnelByUrgencyAndPersonnelCategory($urgencycategory_id, $personnelcategory_id) {
         $sql = "SELECT * FROM minimumpersonnel WHERE urgencycategory_id = ? AND personnelcategory_id = ? LIMIT 1";
         $query = getDatabaseConnection()->prepare($sql);

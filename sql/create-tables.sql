@@ -13,7 +13,8 @@ CREATE TABLE minimumpersonnel
 	id serial primary key,
 	urgencycategory_id integer NOT NULL references urgencycategory(id) ON DELETE cascade,
 	personnelcategory_id integer NOT NULL references personnelcategory(id) ON DELETE cascade,
-	minimum integer NOT NULL
+	minimum integer NOT NULL CHECK (minimum >= 0),
+        UNIQUE (urgencycategory_id,personnelcategory_id)
 );
 CREATE TABLE employee
 (

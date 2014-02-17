@@ -7,9 +7,20 @@ require "../libs/common.php";
 
 if (loggedInAsAdmin()) {
     setNavBarAsVisible(false);
+    
+    $controller = new UrgencyCategoryController();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        UrgencyCategoryController::modify($_SESSION['urgencyCategoryModified']);
+        $errors = $controller->modify();
+        
+        if (!empty($errors)) {
+            setErrors($errors);
+            showView('views/urgencyCategoryCreation.php', array('admin' => true,
+                'modify' => $controller->getUrgencyCategory(), 'formTitle' => 'Kiireellisyyskategorian muokkaus'));
+        } else {
+            setSuccesses(array("Kiireellisyyskategoriaa on onnistuneesti muokattu."));
+            redirectTo('index.php');
+        }
     }
 
     $id = $_GET['id'];
@@ -27,7 +38,7 @@ if (loggedInAsAdmin()) {
     
     $_SESSION['urgencyCategoryModified'] = $urgencyCategory;
 
-    showView('views/urgencyCategoryCreation.php', array('admin' => $admin,
+    showView('views/urgencyCategoryCreation.php', array('admin' => true,
         'modify' => $urgencyCategory, 'formTitle' => 'Kiireellisyyskategorian muokkaus'));
 }
 

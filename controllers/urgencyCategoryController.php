@@ -5,100 +5,84 @@ require '../models/urgencycategory.php';
 
 class UrgencyCategoryController {
 
-    public static function listAll() {
-        $personnelCategories = Personnelcategory::getPersonnelCategories();
+    private $urgencyCategory;
 
+    public function getUrgencyCategory() {
+        return $this->urgencyCategory;
+    }
+
+    public function getUrgencyCategoryList() {
         $urgencyCategories = UrgencyCategory::getUrgencyCategories();
         $urgencyCategoriesWithMinimumPersonnels = array();
 
         // Pair Urgency Categories with their respective minimum personnel demands.
         foreach ($urgencyCategories as $urgencyCategory) {
             $minimumpersonnels = MinimumPersonnel::getMinimumPersonnelByUrgencyCategory($urgencyCategory->getID());
-            $paired = UrgencyCategoryController::pairUrgencyCategoryAndMinimumPersonnels($urgencyCategory, $minimumpersonnels);
+            $paired = UrgencyCategoryController::urgencyCategoryWithMinimumPersonnels($urgencyCategory, $minimumpersonnels);
             $urgencyCategoriesWithMinimumPersonnels[] = $paired;
         }
 
-        showView('views/urgencyCategoriesListing.php', array('admin' => true,
-            'personnelCategories' => $personnelCategories, 'urgencyCategories' => $urgencyCategoriesWithMinimumPersonnels));
+        return $urgencyCategoriesWithMinimumPersonnels;
     }
 
-    public static function add() {
-        $urgencyCategorySubmission = UrgencyCategoryController::getSubmittedUrgencyCategoryDataObject();
+    public function add() {
+        $urgencyCategorySubmission = $this->getSubmittedUrgencyCategoryDataObject();
 
         $ucBeingModified = UrgencyCategory::createFromData($urgencyCategorySubmission);
+        $minimumpSubmission = $this->getSubmittedMinimumPersonnelsWithPersonnelCategories();
 
         $errors = array();
 
         if (!$ucBeingModified->isValid()) {
             $errors = $ucBeingModified->getErrors();
         } else if ($ucBeingModified->addToDatabase()) {
-            $minimumpSubmission = UrgencyCategoryController::getSubmittedMinimumPersonnelDataObject();
-            $minimumPersonnels = array();
+            foreach ($minimumpSubmission as $submission) {
+                $minimumPersonnel = $submission->minimumPersonnel;
+                $minimumPersonnel->setUrgencycategory_id($ucBeingModified->getID());
 
-            foreach ($minimumpSubmission as $pcid => $minimum) {
-                $minimp = MinimumPersonnel::createFromData(array('urgencycategory_id' => $ucBeingModified->getID(),
-                            'personnelcategory_id' => $pcid, 'minimum' => $minimum));
-                $personnelCategory = Personnelcategory::getPersonnelCategoryById($pcid);
-                $minimumPersonnels[] = (object) array('minimumPersonnel' => $minimp, 'personnelCategory' => $personnelCategory);
-                if (!$minimp->isValid()) {
-                    $errors = $errors + $minimp->getErrors();
+                if (!$minimumPersonnel->isValid()) {
+                    $errors = $errors + $minimumPersonnel->getErrors();
                 } else {
-                    $minimp->addToDatabase();
+                    $minimumPersonnel->addToDatabase();
                 }
             }
         }
 
-        if (empty($errors)) {
-            setSuccesses(array("Kiireellisyyskategoria on onnistuneesti lisätty tietokantaan."));
-            redirectTo('../kiireellisyyskategoriat/index.php');
-        } else {
-            setErrors($errors);
-            $urgencyCategory = (object) array('urgencyCategory' => $ucBeingModified, 'minimumPersonnels' => $minimumPersonnels);
-            showView('views/urgencyCategoryCreation.php', array('admin' => true,
-                'modify' => $urgencyCategory, 'formTitle' => 'Kiireellisyyskategorian muokkaus'));
-        }
+        $this->urgencyCategory = (object) array('urgencyCategory' => $ucBeingModified, 'minimumPersonnels' => $minimumpSubmission);
+
+        return $errors;
     }
 
-    public static function modify($urgencyCategory) {
-        $urgencyCategorySubmission = UrgencyCategoryController::getSubmittedUrgencyCategoryDataObject();
+    public function modify() {
+        $urgencyCategorySubmission = $this->getSubmittedUrgencyCategoryDataObject();
 
         $ucBeingModified = $_SESSION['urgencyCategoryModified']->urgencyCategory;
         $ucBeingModified->setFromDataObject($urgencyCategorySubmission);
-
-        $minimumpSubmission = UrgencyCategoryController::getSubmittedMinimumPersonnelDataObject();
 
         $errors = array();
 
         if (!$ucBeingModified->isValid()) {
             $errors = $ucBeingModified->getErrors();
-        }
+        } else if ($ucBeingModified->updateDatabaseEntry()) {
+            $minimumpSubmission = $this->getSubmittedMinimumPersonnelsWithPersonnelCategories();
+            foreach ($minimumpSubmission as $submission) {
+                $minimumPersonnel = $submission->minimumPersonnel;
+                $dbMinimumPersonnel = MinimumPersonnel::getMinimumPersonnelByUrgencyAndPersonnelCategory(
+                                $ucBeingModified->getID(), $minimumPersonnel->getPersonnelCategoryId());
 
-        $minimumPersonnels = array();
+                $dbMinimumPersonnel->setMinimum($minimumPersonnel->getMinimum());
 
-        foreach ($minimumpSubmission as $pcid => $minimum) {
-            $minimp = MinimumPersonnel::createFromData(array('urgencycategory_id' => $ucBeingModified->getID(),
-                        'personnelcategory_id' => $pcid, 'minimum' => $minimum));
-            $minimumPersonnels[] = $minimp;
-            if ($minimp->isValid()) {
-                $minimp->updateDatabaseEntry();
-            } else {
-                $errors = $errors + $minimp->getErrors();
+                if ($dbMinimumPersonnel->isValid()) {
+                    $dbMinimumPersonnel->updateDatabaseEntry();
+                } else {
+                    $errors = $errors + $dbMinimumPersonnel->getErrors();
+                }
             }
         }
 
-        if (!empty($errors)) {
-            setErrors($errors);
-            $urgencyCategoryAndMinimumPersonnels = UrgencyCategoryController::pairUrgencyCategoryAndMinimumPersonnels($ucBeingModified, $minimp);
-            showView('views/urgencyCategoryCreation.php', array('admin' => $admin,
-                'urgencyCategory' => $urgencyCategoryAndMinimumPersonnels, 'formTitle' => 'Kiireellisyyskategorian muokkaus'));
-        } else if ($ucBeingModified->updateDatabaseEntry()) {
-            setSuccesses(array("Kiireellisyyskategoriaa on onnistuneesti muokattu."));
-            redirectTo('../kiireellisyyskategoriat/index.php');
-        }
+        $this->urgencyCategory = (object) array('urgencyCategory' => $ucBeingModified, 'minimumPersonnels' => $minimumpSubmission);
 
-        setErrors(array('Kiireellisyyskategoriaa ei voitu muokata.') + $ucerror);
-        showView('views/urgencyCategoryCreation.php', $ucBeingModified->getAsDataArray() + array('admin' => $admin,
-            'personnelcategories' => $prcategories, 'formTitle' => 'Kiireellisyyskategorian muokkaus'));
+        return $errors;
     }
 
     public static function createEmptyUrgencyCategory() {
@@ -106,13 +90,9 @@ class UrgencyCategoryController {
         $minimumPersonnels = array();
         foreach ($personnelCategories as $personnelCategory) {
             $minimp = new MinimumPersonnel();
-            $minimumPersonnels[] = (object) array('minimumPersonnel' => $minimp, 'personnelCategory' => $personnelCategory);
+            $minimumPersonnels[] = UrgencyCategoryController::minimumPersonnelWithPersonnelCategory($minimp, $personnelCategory);
         }
-        return (object) array('urgencyCategory' => new UrgencyCategory(), 'minimumPersonnels' => $minimumPersonnels);
-    }
-
-    public static function pairUrgencyCategoryAndMinimumPersonnels($urgencyCategory, $minimumpersonnels) {
-        return (object) array('urgencyCategory' => $urgencyCategory, 'minimumPersonnels' => $minimumpersonnels);
+        return UrgencyCategoryController::urgencyCategoryWithMinimumPersonnels(new UrgencyCategory(), $minimumPersonnels);
     }
 
     public static function getPersonnelCategoriesAndMinimumPersonnelsOfUrgencyCategory($id) {
@@ -125,7 +105,15 @@ class UrgencyCategoryController {
         return $paired;
     }
 
-    private static function getSubmittedUrgencyCategoryDataObject() {
+    private static function minimumPersonnelWithPersonnelCategory($minimumPersonnel, $personnelCategory) {
+        return (object) array('minimumPersonnel' => $minimumPersonnel, 'personnelCategory' => $personnelCategory);
+    }
+
+    private static function urgencyCategoryWithMinimumPersonnels($urgencyCategory, $minimumPersonnels) {
+        return (object) array('urgencyCategory' => $urgencyCategory, 'minimumPersonnels' => $minimumPersonnels);
+    }
+
+    private function getSubmittedUrgencyCategoryDataObject() {
         $name = $_POST['name'];
         $personnelcategories = Personnelcategory::getPersonnelCategories();
         $minimums = array();
@@ -140,17 +128,23 @@ class UrgencyCategoryController {
         return (object) $data;
     }
 
-    private static function getSubmittedMinimumPersonnelDataObject() {
-        $personnelcategories = Personnelcategory::getPersonnelCategories();
-        $minimums = array();
-        foreach ($personnelcategories as $pc) {
-            $pcid = $pc->getID();
-            $minimum = $_POST["minimum_of_$pcid"];
+    private function getSubmittedMinimumPersonnelsWithPersonnelCategories() {
+        $minimumPersonnels = array();
+        $personnelCategories = Personnelcategory::getPersonnelCategories();
+
+        foreach ($personnelCategories as $personnelCategory) {
+            $pcID = $personnelCategory->getID();
+            $minimum = $_POST["minimum_of_$pcID"];
+
+            $minimp = new MinimumPersonnel();
             if (isset($minimum)) {
-                $minimums[$pcid] = $minimum;
+                $minimp->setMinimum($minimum);
             }
+            $minimp->setPersonnelcategory_id($pcID);
+            $minimumPersonnels[] = (object) array('minimumPersonnel' => $minimp, 'personnelCategory' => $personnelCategory);
         }
-        return (object) $minimums;
+
+        return $minimumPersonnels;
     }
 
 }

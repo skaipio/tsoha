@@ -7,8 +7,14 @@ require '../models/minimumpersonnel.php';
 
 if (loggedInAsAdmin()) {
     setNavBarAsVisible(true);
-
-    UrgencyCategoryController::listAll();
+    
+    $controller = new UrgencyCategoryController();
+    
+    $urgencyCategories = $controller->getUrgencyCategoryList();
+    $personnelCategories = Personnelcategory::getPersonnelCategories();
+    
+    showView('views/urgencyCategoryListing.php', array('admin' => true,
+            'personnelCategories' => $personnelCategories, 'urgencyCategories' => $urgencyCategories));
 }
 
 
