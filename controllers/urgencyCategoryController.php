@@ -6,51 +6,54 @@ require '../models/urgencycategory.php';
 class UrgencyCategoryController {
 
     private $urgencyCategory;
+    private $errors = array();
 
     public function getUrgencyCategory() {
         return $this->urgencyCategory;
     }
 
+    public function getErrors() {
+        return $this->errors;
+    }
+
     public function getUrgencyCategoryList() {
         $urgencyCategories = UrgencyCategory::getUrgencyCategories();
-        $urgencyCategoriesWithMinimumPersonnels = array();
 
         // Pair Urgency Categories with their respective minimum personnel demands.
         foreach ($urgencyCategories as $urgencyCategory) {
-            $minimumpersonnels = MinimumPersonnel::getMinimumPersonnelByUrgencyCategory($urgencyCategory->getID());
-            $paired = UrgencyCategoryController::urgencyCategoryWithMinimumPersonnels($urgencyCategory, $minimumpersonnels);
-            $urgencyCategoriesWithMinimumPersonnels[] = $paired;
+            $minimumPersonnels = MinimumPersonnel::getMinimumPersonnelByUrgencyCategory($urgencyCategory->getID());
+            $urgencyCategory->setMinimumPersonnels($minimumPersonnels);
         }
 
-        return $urgencyCategoriesWithMinimumPersonnels;
+        return $urgencyCategories;
     }
 
     public function add() {
-        $urgencyCategorySubmission = $this->getSubmittedUrgencyCategoryDataObject();
+        $this->errors = array();
+        $urgencyCategorySubmission = $this->getSubmittedUrgencyCategory();
+        $minimumPersonnels = $urgencyCategorySubmission->getMinimumPersonnels();
 
-        $ucBeingModified = UrgencyCategory::createFromData($urgencyCategorySubmission);
-        $minimumpSubmission = $this->getSubmittedMinimumPersonnelsWithPersonnelCategories();
+        if (!$urgencyCategorySubmission->isValid()) {
+            $this->errors = $urgencyCategorySubmission->getErrors();
+        }
 
-        $errors = array();
-
-        if (!$ucBeingModified->isValid()) {
-            $errors = $ucBeingModified->getErrors();
-        } else if ($ucBeingModified->addToDatabase()) {
-            foreach ($minimumpSubmission as $submission) {
-                $minimumPersonnel = $submission->minimumPersonnel;
-                $minimumPersonnel->setUrgencycategory_id($ucBeingModified->getID());
-
-                if (!$minimumPersonnel->isValid()) {
-                    $errors = $errors + $minimumPersonnel->getErrors();
-                } else {
-                    $minimumPersonnel->addToDatabase();
-                }
+        foreach ($minimumPersonnels as $minimumPersonnel) {
+            $minimumPersonnel->setUrgencycategory_id($urgencyCategorySubmission->getID());
+            var_dump($minimumPersonnel);
+            if (!$minimumPersonnel->isValid()) {
+                $this->errors = $this->errors + $minimumPersonnel->getErrors();
             }
         }
 
-        $this->urgencyCategory = (object) array('urgencyCategory' => $ucBeingModified, 'minimumPersonnels' => $minimumpSubmission);
+        if (empty($this->errors)) {
+            $urgencyCategorySubmission->addToDatabase();
+            foreach ($minimumPersonnels as $minimumPersonnel) {
+                $minimumPersonnel->setUrgencycategory_id($urgencyCategorySubmission->getID());
+                $minimumPersonnel->addToDatabase();
+            }
+        }
 
-        return $errors;
+        $_SESSION['urgencyCategory'] = $urgencyCategorySubmission;
     }
 
     public function modify() {
@@ -86,13 +89,18 @@ class UrgencyCategoryController {
     }
 
     public static function createEmptyUrgencyCategory() {
+        $urgencyCategory = new UrgencyCategory();
         $personnelCategories = Personnelcategory::getPersonnelCategories();
         $minimumPersonnels = array();
         foreach ($personnelCategories as $personnelCategory) {
             $minimp = new MinimumPersonnel();
-            $minimumPersonnels[] = UrgencyCategoryController::minimumPersonnelWithPersonnelCategory($minimp, $personnelCategory);
+            $minimp->setMinimum(0);
+            $minimp->setPersonnelcategory_id($personnelCategory->getID());
+            $minimp->setPersonnelCategory($personnelCategory);
+            $minimumPersonnels[] = $minimp;
         }
-        return UrgencyCategoryController::urgencyCategoryWithMinimumPersonnels(new UrgencyCategory(), $minimumPersonnels);
+        $urgencyCategory->setMinimumPersonnels($minimumPersonnels);
+        return $urgencyCategory;
     }
 
     public static function getPersonnelCategoriesAndMinimumPersonnelsOfUrgencyCategory($id) {
@@ -105,46 +113,29 @@ class UrgencyCategoryController {
         return $paired;
     }
 
-    private static function minimumPersonnelWithPersonnelCategory($minimumPersonnel, $personnelCategory) {
-        return (object) array('minimumPersonnel' => $minimumPersonnel, 'personnelCategory' => $personnelCategory);
-    }
+    private function getSubmittedUrgencyCategory() {
+        $urgencyCategory = new UrgencyCategory();
 
-    private static function urgencyCategoryWithMinimumPersonnels($urgencyCategory, $minimumPersonnels) {
-        return (object) array('urgencyCategory' => $urgencyCategory, 'minimumPersonnels' => $minimumPersonnels);
-    }
-
-    private function getSubmittedUrgencyCategoryDataObject() {
         $name = $_POST['name'];
-        $personnelcategories = Personnelcategory::getPersonnelCategories();
-        $minimums = array();
-        foreach ($personnelcategories as $pc) {
-            $pcid = $pc->getID();
-            $minimum = $_POST["minimum_of_$pcid"];
-            if (isset($minimum)) {
-                $minimums[$pcid] = $minimum;
-            }
-        }
-        $data = array('name' => $name, 'minimums' => (object) $minimums);
-        return (object) $data;
-    }
+        $urgencyCategory->setName($name);
 
-    private function getSubmittedMinimumPersonnelsWithPersonnelCategories() {
-        $minimumPersonnels = array();
+        $minimumPersonnels = $urgencyCategory->getMinimumPersonnels();
         $personnelCategories = Personnelcategory::getPersonnelCategories();
 
         foreach ($personnelCategories as $personnelCategory) {
-            $pcID = $personnelCategory->getID();
-            $minimum = $_POST["minimum_of_$pcID"];
-
             $minimp = new MinimumPersonnel();
-            if (isset($minimum)) {
-                $minimp->setMinimum($minimum);
-            }
+            $minimp->setPersonnelCategory($personnelCategory);
+
+            $pcID = $personnelCategory->getID();
             $minimp->setPersonnelcategory_id($pcID);
-            $minimumPersonnels[] = (object) array('minimumPersonnel' => $minimp, 'personnelCategory' => $personnelCategory);
+
+            $minimum = $_POST["minimum_of_$pcID"];
+            $minimp->setMinimum((int)$minimum);
+
+            $minimumPersonnels[] = $minimp;
         }
 
-        return $minimumPersonnels;
+        return $urgencyCategory;
     }
 
 }

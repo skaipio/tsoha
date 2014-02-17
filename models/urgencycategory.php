@@ -5,6 +5,7 @@ class UrgencyCategory {
     private $errors = array();
     private $id;
     private $name;
+    private $minimumPersonnels = array();
 
     public function getErrors() {
         return $this->errors;
@@ -17,34 +18,30 @@ class UrgencyCategory {
     public function getName() {
         return $this->name;
     }
+    
+    public function getMinimumPersonnels(){
+        return $this->minimumPersonnels;
+    }
 
     private function setId($id) {
         $this->id = $id;
     }
 
-    private function setName($name) {
+    public function setName($name) {
         $this->name = $name;
-        if(empty($name)){
+        if (empty($name)) {
             $this->errors['emptyName'] = 'Nimi ei voi olla tyhjä.';
-        }else{
+        } else {
             unset($this->errors['emptyName']);
         }
+    }
+    
+    public function setMinimumPersonnels($minimumPersonnels){
+        $this->minimumPersonnels = $minimumPersonnels;
     }
 
     public function isValid() {
         return empty($this->errors);
-    }
-
-    public function setFromDataObject($data) {
-        if (is_object($data) && count($data)) {
-            $valid = get_class_vars(get_class($this));
-            foreach ($valid as $var => $val) {
-                if (isset($data->$var)) {
-                    //$this->$var = $data[$var];
-                    call_user_func(array($this, 'set' . ucfirst($var)), $data->$var);
-                }
-            }
-        }
     }
 
     public function addToDatabase() {
@@ -90,7 +87,8 @@ class UrgencyCategory {
 
     public static function createFromData($data) {
         $urgencycategory = new UrgencyCategory();
-        $urgencycategory->setFromDataObject((object) $data);
+        $urgencycategory->setId($data->id);
+        $urgencycategory->setName($data->name);
         return $urgencycategory;
     }
 

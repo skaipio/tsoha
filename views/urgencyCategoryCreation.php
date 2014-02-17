@@ -14,8 +14,8 @@
                                     <input type="text" class="form-control" id="name"
                                            name="name"
                                            value="<?php
-                                           if (isset($data->modify)) {
-                                               echoToPage($data->modify->urgencyCategory->getName());
+                                           if (isset($data->urgencyCategory)) {
+                                               echoToPage($data->urgencyCategory->getName());
                                            }
                                            ?>">
                                 </div>
@@ -31,19 +31,17 @@
                             </div>
                         </div>
                     </div>
-                    <?php foreach ($data->modify->minimumPersonnels as $minimumPersonnel): ?>
+                    <?php foreach ($data->urgencyCategory->getMinimumPersonnels() as $minimumPersonnel): ?>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="name" class="col-lg-3 control-label"><?php echoToPage($minimumPersonnel->personnelCategory->getName()) ?></label>
+                                    <?php $personnelCategory = $minimumPersonnel->getPersonnelCategory(); ?>
+                                    <label for="name" class="col-lg-3 control-label"><?php echoToPage($personnelCategory->getName()) ?></label>
                                     <div class="col-lg-2">
                                         <input type="text" class="form-control" id="name"
-                                        <?php $personnelCategoryID = $minimumPersonnel->personnelCategory->getID() ?>
+                                        <?php $personnelCategoryID = $personnelCategory->getID() ?>
                                                name="<?php echo "minimum_of_$personnelCategoryID" ?>"
-                                               value="<?php
-                                               $minimum = $minimumPersonnel->minimumPersonnel->getMinimum();
-                                               echoToPage($minimum);
-                                               ?>">
+                                               value="<?php echoToPage($minimumPersonnel->getMinimum());?>">
                                     </div>
                                 </div>
                             </div>

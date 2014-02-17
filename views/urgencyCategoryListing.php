@@ -14,12 +14,12 @@
         <tbody>
             <?php foreach ($data->urgencyCategories as $urgencyCategory): ?>
                 <tr>              
-                    <td><?php echoToPage($urgencyCategory->urgencyCategory->getName()) ?></td>
-                    <?php foreach ($urgencyCategory->minimumPersonnels as $minimumpersonnel): ?>
+                    <td><?php echoToPage($urgencyCategory->getName()) ?></td>
+                    <?php foreach ($urgencyCategory->getMinimumPersonnels() as $minimumpersonnel): ?>
                         <td><?php echo $minimumpersonnel->getMinimum() ?></td>
                     <?php endforeach; ?>
                     <td>
-                        <?php $urgencyCategoryID = $urgencyCategory->urgencyCategory->getId(); ?>
+                        <?php $urgencyCategoryID = $urgencyCategory->getId(); ?>
                         <a href="<?php echo "muokkaa.php?id=$urgencyCategoryID" ?>" class="btn btn-default btn-sm" role="button">Muokkaa</a>
                         <a href="<?php echo "poista.php?id=$urgencyCategoryID" ?>" class="btn btn-default btn-sm" role="button">Poista</a>
                     </td>

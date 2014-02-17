@@ -7,6 +7,7 @@ class MinimumPersonnel {
     private $urgencycategory_id;
     private $personnelcategory_id;
     private $minimum;
+    private $personnelCategory;
 
     public function getErrors() {
         return $this->errors;
@@ -32,6 +33,10 @@ class MinimumPersonnel {
         return array('id' => $this->getID(), 'urgencycategory_id' => $this->getUrgencyCategoryId(),
             '$personnelcategory_id' => $this->getPersonnelCategoryId(), 'minimum' => $this->getMinimum());
     }
+    
+    public function getPersonnelCategory(){
+        return $this->personnelCategory;
+    }
 
     private function setId($id) {
         $this->id = $id;
@@ -44,6 +49,10 @@ class MinimumPersonnel {
     public function setPersonnelcategory_id($id) {
         $this->personnelcategory_id = $id;
     }
+    public function setPersonnelCategory($personnelCategory){
+        $this->personnelCategory = $personnelCategory;
+    }
+    
 
     public function setMinimum($minimum) {
         if (empty($minimum)) {
