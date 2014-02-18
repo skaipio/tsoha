@@ -42,12 +42,12 @@ function getUserLoggedIn() {
     return $_SESSION['loggedIn'];
 }
 
-function loggedInAsAdmin(){
+function loggedInAsAdmin() {
     $user = $_SESSION['loggedIn'];
-    if (isset($user)){
-        if ($user->isAdmin()){
+    if (isset($user)) {
+        if ($user->isAdmin()) {
             return true;
-        }else{
+        } else {
             setErrors(array('Sivu vaatii ylläpito-oikeudet.'));
             redirect('kirjautuminen.php');
         }
@@ -78,8 +78,6 @@ function getSubmittedEmployeeData() {
     return $data;
 }
 
-
-
 function isActivePage($page) {
     $current = filter_input(INPUT_SERVER, 'PHP_SELF');
     return $current === $page;
@@ -109,4 +107,17 @@ function setWarnings($warnings) {
 
 function setErrors($errors) {
     $_SESSION['errors'] = $errors;
+}
+
+/**
+ * @param type $objects an array of object that have isValid() and getErrors() methods.
+ */
+function validate($objects) {
+    $errors = array();
+    foreach ($objects as $object) {
+        if (!$object->isValid()) {
+            $errors = $errors + $object->getErrors();
+        }
+    }
+    return $errors;
 }
