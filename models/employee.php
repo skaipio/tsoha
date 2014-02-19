@@ -24,10 +24,6 @@ class Employee {
         return $this->id;
     }
 
-    public function getEmail() {
-        return $this->email;
-    }
-
     public function getPassword() {
         return $this->password;
     }
@@ -40,20 +36,44 @@ class Employee {
         return $this->lastname;
     }
 
+    public function getSSN() {
+        return $this->ssn;
+    }
+
+    public function getAddress() {
+        return $this->address;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
+    
+    public function getPhone(){
+        return $this->phone;
+    }
+
     public function getPersonnelCategoryID() {
         return $this->personnelcategory_id;
+    }
+    
+    public function getMaxHoursPerWeek() {
+        return $this->maxhoursperweek;
+    }
+    
+    public function getMaxHoursPerDay() {
+        return $this->maxhoursperday;
     }
 
     public function isAdmin() {
         return $this->admin;
     }
-    
-    private function setId($id){
+
+    private function setId($id) {
         $this->id = $id;
     }
-    
-    private function setPassword($password){
-        $this->password=$password;
+
+    private function setPassword($password) {
+        $this->password = $password;
     }
 
     public function setFirstname($firstname) {
@@ -76,11 +96,11 @@ class Employee {
 
     public function setSSN($socialsecuritynumber) {
         $this->ssn = trim($socialsecuritynumber);
-        if(strlen($this->ssn) != 11){
+        if (strlen($this->ssn) != 11) {
             $this->errors['ssn'] = "Henkilötunnuksen on oltava 11 merkkiä pitkä. ";
-        } else{
+        } else {
             unset($this->errors['ssn']);
-        }       
+        }
     }
 
     public function setAddress($address) {
@@ -146,7 +166,7 @@ class Employee {
             foreach ($valid as $var => $val) {
                 if (isset($data->$var)) {
                     //$this->$var = $data[$var];
-                    call_user_func(array($this, 'set'.ucfirst($var)), $data->$var);
+                    call_user_func(array($this, 'set' . ucfirst($var)), $data->$var);
                 }
             }
         }
@@ -247,7 +267,7 @@ class Employee {
 
     public static function createEmployeeFromData($data) {
         $employee = new Employee();
-        $employee->setFromDataObject((object)$data);
+        $employee->setFromDataObject((object) $data);
         return $employee;
     }
 

@@ -12,7 +12,7 @@
                                 <label for="firstname" class="col-lg-3 control-label">Etunimi</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="firstname"
-                                           name="firstname" value="<?php echoToPage($data->firstname) ?>">
+                                           name="firstname" value="<?php echoToPage($data->employee->getFirstName()) ?>">
                                 </div>
                             </div>
                         </div>
@@ -21,7 +21,7 @@
                                 <label for="lastname" class="col-lg-3 control-label">Sukunimi</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="lastname"
-                                           name="lastname" value="<?php echoToPage($data->lastname) ?>">
+                                           name="lastname" value="<?php echoToPage($data->employee->getLastName()) ?>">
                                 </div>
                             </div>  
                         </div>
@@ -32,7 +32,7 @@
                                 <label for="ssn" class="col-lg-3 control-label">Henkilötunnus</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="ssn"
-                                           name="ssn"value="<?php echoToPage($data->ssn) ?>">
+                                           name="ssn"value="<?php echoToPage($data->employee->getSSN()) ?>">
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                 <label for="address" class="col-lg-3 control-label">Osoite</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="address"
-                                           name="address" value="<?php echoToPage($data->address) ?>">
+                                           name="address" value="<?php echoToPage($data->employee->getAddress()) ?>">
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                                 <label for="email" class="col-lg-3 control-label">Sähköposti</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="email"
-                                           name="email" value="<?php echoToPage($data->email) ?>">
+                                           name="email" value="<?php echoToPage($data->employee->getEmail()) ?>">
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                                 <label for="phone" class="col-lg-3 control-label">Puhelin</label>
                                 <div class="col-lg-8">
                                     <input type="text" class="form-control" id="phone"
-                                           name="phone" value="<?php echoToPage($data->phone) ?>">
+                                           name="phone" value="<?php echoToPage($data->employee->getPhone()) ?>">
                                 </div>
                             </div>
                         </div>
@@ -73,15 +73,15 @@
                                 <label for="personnelcategory_id" class="col-lg-5 control-label">Henkilöstöluokka</label>
                                 <div class="col-lg-6">
                                     <select class="form-control" id="personnelcategory_id" name="personnelcategory_id">
-                                        <?php $categories = $data->personnelcategories; ?>
+                                        <?php $categories = $data->personnelCategories; ?>
                                         <?php foreach ($categories as $category): ?>
-                                            <option value="<?php echo $category->id; ?>" 
+                                            <option value="<?php echo $category->getID(); ?>" 
                                             <?php
-                                            if (isset($data->personnelcategory_id) && $data->personnelcategory_id == $category->id) {
+                                            if (isset($data->employee) && $data->employee->getPersonnelCategoryID() == $category->getID()) {
                                                 echo ' selected';
                                             }
                                             ?>>
-                                                        <?php echo $category->name ?>
+                                                        <?php echo $category->getName() ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -93,7 +93,7 @@
                                 <label for="maxhoursperweek" class="col-lg-5 control-label">Max tunnit viikossa</label>
                                 <div class="col-lg-4">
                                     <input type="text" class="form-control" id="maxhoursperweek"
-                                           name="maxhoursperweek" value="<?php echoToPage($data->maxhoursperweek) ?>">
+                                           name="maxhoursperweek" value="<?php echoToPage($data->employee->getMaxHoursPerWeek()) ?>">
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                                         <input type="checkbox" id="Admin"
                                                name="Admin" value='true'
                                                <?php
-                                               if (isset($data->Admin) && $data->Admin) {
+                                               if (isset($data->Admin) && $data->employee->isAdmin()) {
                                                    echo 'checked';
                                                }
                                                ?>>
@@ -120,7 +120,7 @@
                                 <label for="maxhoursperday" class="col-lg-5 control-label">Max tunnit päivässä</label>
                                 <div class="col-lg-4">
                                     <input type="text" class="form-control" id="maxhoursperday"
-                                           name="maxhoursperday" value="<?php echoToPage($data->maxhoursperday) ?>">
+                                           name="maxhoursperday" value="<?php echoToPage($data->employee->getMaxHoursPerDay()) ?>">
                                 </div>
                             </div>
                         </div>
