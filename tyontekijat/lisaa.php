@@ -1,11 +1,12 @@
 <?php
 
+require '../models/personnelcategory.php';
 require "../libs/common.php";
 
 if (loggedInAsAdmin()) {
     setNavBarAsVisible(false);
 
-    $prcategories = getPersonnelCategoriesDataArray();
+    $prcategories = getPersonnelCategories();
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = getSubmittedEmployeeData();
         $employee = Employee::createEmployeeFromData($data);
@@ -18,7 +19,7 @@ if (loggedInAsAdmin()) {
             showView("views/employeeCreation.php", array('personnelcategories' => $prcategories, 'formTitle' => 'Uuden tyontekijän lisäys') + $data);
         }
     }
-    showView('views/employeeCreation.php', array('admin' => $admin, 'personnelcategories' => $prcategories, 'formTitle' => 'Uuden tyontekijän lisäys'));
+    showView('views/employeeCreation.php', array('admin' => $admin, 'personnelCategories' => $prcategories, 'formTitle' => 'Uuden tyontekijän lisäys'));
 }
 
 

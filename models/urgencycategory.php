@@ -71,6 +71,18 @@ class UrgencyCategory {
         }
         return $results;
     }
+    
+    public static function getUrgencyCategoriesArray() {
+        $urgencyCategories = UrgencyCategory::getUrgencyCategories();
+        
+        $urgencyCategoriesArray = array();
+        
+        foreach ($urgencyCategories as $urgencyCategory){
+            $urgencyCategoriesArray[$urgencyCategory->getID()] = $urgencyCategory;
+        }
+        
+        return $urgencyCategoriesArray;
+    }
 
     public static function getByID($id) {
         $sql = "SELECT * FROM urgencycategory WHERE id = ?";

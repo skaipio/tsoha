@@ -11,15 +11,7 @@
                     ?>">
                         <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/omattyovuorot.php">Omat työvuorot</a>
                     </li>
-                    <?php if ($data->admin): ?>
-                        <!--                <li><a href="?type=tyovuorot">Työvuorot</a></li>
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Henkilöstövahvuus<b class="caret"></b></a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#">Kalenteri</a></li>
-                                                <li><a href="#">Kiireellisyysluokat</a></li>
-                                            </ul>
-                                        </li>-->
+                    <?php if (isset($data->admin) && $data->admin): ?>
                         <li class="<?php if (isActivePage("/tyovuorolista/tyontekijat/index.php")): ?>
                                 <?php echo "active";
                             endif;
@@ -31,6 +23,12 @@
                             endif;
                             ?>">
                             <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/kiireellisyyskategoriat/index.php">Kiireellisyyskategoriat</a>
+                        </li>
+                        <li class="<?php if (isActivePage("/tyovuorolista/henkilostovahvuus/index.php")): ?>
+                                <?php echo "active";
+                            endif;
+                            ?>">
+                            <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/henkilostovahvuus/index.php">Henkilöstövahvuuskalenteri</a>
                         </li>
                     <?php endif; ?>
                 </ul>

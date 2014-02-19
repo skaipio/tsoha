@@ -1,4 +1,5 @@
 <?php
+require '../models/personnelcategory.php';
 require '../libs/common.php';
 
 $user = getUserLoggedIn();

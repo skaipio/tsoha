@@ -12,11 +12,11 @@ INSERT INTO minimumpersonnel (urgencycategory_id, personnelcategory_id, minimum)
 	VALUES (1, 3, 1);
 
 INSERT INTO openhour (opendate, hour, urgencycategory_id)
-	VALUES ('2014-03-01', '08:00', 1);
+	VALUES ('2014-02-20', '08:00', 1);
 INSERT INTO openhour (opendate, hour, urgencycategory_id)
-	VALUES ('2014-03-01', '09:00', 1);	
+	VALUES ('2014-02-20', '09:00', 1);	
 INSERT INTO openhour (opendate, hour, urgencycategory_id)
-	VALUES ('2014-03-01', '10:00', 1);	
+	VALUES ('2014-02-20', '10:00', 1);	
 
 INSERT INTO employee (password, email, admin, firstname, lastname, ssn,
 	address, phone, personnelcategory_id, maxhoursperday, maxhoursperweek)

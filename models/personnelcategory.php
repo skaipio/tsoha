@@ -47,4 +47,16 @@ class Personnelcategory {
         }
         return $results;
     }
+    
+    public static function getPersonnelCategoriesArray() {
+        $personnelCategories = Personnelcategory::getPersonnelCategories();
+        
+        $personnelCategoriesArray = array();
+        
+        foreach ($personnelCategories as $personnelCategory){
+            $personnelCategoriesArray[$personnelCategory->getID()] = $personnelCategory;
+        }
+        
+        return $personnelCategoriesArray;
+    }
 }
