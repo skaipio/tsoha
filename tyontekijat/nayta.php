@@ -1,10 +1,10 @@
 <?php
+
+require '../models/personnelcategory.php';
 require "../libs/common.php";
 
-unset($_SESSION['employeeBeingModified']);
 
-$user = getUserLoggedIn();
-if (isset($user)) {
+if (loggedInAsAdmin()) {
     setNavBarAsVisible(false);
     $admin = $user->isAdmin();
     if ($admin) {
@@ -12,9 +12,7 @@ if (isset($user)) {
         if (isset($id)) {            
             $employee = Employee::getEmployeeByID($id);
             $prcategory = Personnelcategory::getPersonnelCategoryById($employee->getPersonnelCategoryID());
-            $employee = $employee->getAsDataArray();
-            $employee['personnelcategory'] = $prcategory->getName();
-            showView("views/showEmployee.php", $employee);
+            showView("views/showEmployee.php", array('admin'=>true, 'employee'=>$employee, 'personnelCategory'=>$prcategory));
         }
     } else {
         setErrors(array("Sivu vaatii ylläpito-oikeudet."));

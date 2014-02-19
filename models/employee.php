@@ -47,19 +47,19 @@ class Employee {
     public function getEmail() {
         return $this->email;
     }
-    
-    public function getPhone(){
+
+    public function getPhone() {
         return $this->phone;
     }
 
     public function getPersonnelCategoryID() {
         return $this->personnelcategory_id;
     }
-    
+
     public function getMaxHoursPerWeek() {
         return $this->maxhoursperweek;
     }
-    
+
     public function getMaxHoursPerDay() {
         return $this->maxhoursperday;
     }
@@ -97,9 +97,14 @@ class Employee {
     public function setSSN($socialsecuritynumber) {
         $this->ssn = trim($socialsecuritynumber);
         if (strlen($this->ssn) != 11) {
-            $this->errors['ssn'] = "Henkilötunnuksen on oltava 11 merkkiä pitkä. ";
+            $this->errors['ssnLength'] = "Henkilötunnuksen on oltava 11 merkkiä pitkä. ";
         } else {
-            unset($this->errors['ssn']);
+            unset($this->errors['ssnLength']);
+        }
+        if (!Employee::ssnIsUnique($this->ssn)) {
+            $this->errors['ssnUnique'] = "Henkilötunnuksen on oltava uniikki. ";
+        } else {
+            unset($this->errors['ssnUnique']);
         }
     }
 
@@ -225,6 +230,18 @@ class Employee {
                 . "WHERE id=?";
         $query = getDatabaseConnection()->prepare($sql);
         return $query->execute(array_values($employeeDataArray));
+    }
+
+    private static function ssnIsUnique($ssn) {
+        $sql = "SELECT id FROM employee WHERE ssn = ?";
+        $query = getDatabaseConnection()->prepare($sql);
+        $query->execute(array($ssn));
+
+        $rows = 0;
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $rows++;
+        }
+        return $rows == 0;
     }
 
     public static function getEmployees() {
