@@ -101,7 +101,7 @@ class Employee {
         } else {
             unset($this->errors['ssnLength']);
         }
-        if (!Employee::ssnIsUnique($this->ssn)) {
+        if (!$this->ssnIsUnique($this->ssn)) {
             $this->errors['ssnUnique'] = "Henkilötunnuksen on oltava uniikki. ";
         } else {
             unset($this->errors['ssnUnique']);
@@ -170,7 +170,6 @@ class Employee {
             $valid = get_class_vars(get_class($this));
             foreach ($valid as $var => $val) {
                 if (isset($data->$var)) {
-                    //$this->$var = $data[$var];
                     call_user_func(array($this, 'set' . ucfirst($var)), $data->$var);
                 }
             }
@@ -232,10 +231,10 @@ class Employee {
         return $query->execute(array_values($employeeDataArray));
     }
 
-    private static function ssnIsUnique($ssn) {
-        $sql = "SELECT id FROM employee WHERE ssn = ?";
+    private function ssnIsUnique($ssn) {
+        $sql = "SELECT id FROM employee WHERE ssn = ? AND id != ?";
         $query = getDatabaseConnection()->prepare($sql);
-        $query->execute(array($ssn));
+        $query->execute(array($ssn, $this->getID()));
 
         $rows = 0;
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
