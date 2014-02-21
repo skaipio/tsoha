@@ -52,6 +52,8 @@ class UrgencyCategoryController {
 
         $this->urgencyCategory = $urgencyCategorySubmission;
     }
+    
+    
 
     public function modify() {
         $urgencyCategory = UrgencyCategoryController::getSubmittedUrgencyCategory();
@@ -79,6 +81,10 @@ class UrgencyCategoryController {
         $this->errors = $errors;
         $this->urgencyCategory = $urgencyCategory;
         $_SESSION['urgencyCategory'] = $urgencyCategory;
+    }
+    
+    public function submit(){
+        
     }
 
     public static function createEmptyUrgencyCategory() {

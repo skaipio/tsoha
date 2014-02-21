@@ -1,4 +1,4 @@
-<div id="henkilostovahvuuskalenteri" class="container tsoha-listing">
+<div id="henkilostovahvuuskalenteri" class="container-fluid tsoha-listing">
     <h4 class="text-center">Henkilöstövahvuuskalenteri - <a href="#">Muokkaa</a></h4>
 
     <ul class="pager">
@@ -14,16 +14,8 @@
     <table id="vahvuuslistaus" class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>              
-                <td>Tuntiväli</td>
-                <?php foreach ($data->dates as $date): ?>
-                    <td><div class="text-center"><?php echo date('D d.m.', strtotime($date)) ?></div></td>
-                <?php endforeach ?>
-            </tr>
-
-        </thead>
-        <tbody>
-            <?php for ($hour = 0; $hour < 24; $hour++): ?>
-                <tr>
+                <th></th>
+                <?php for ($hour = 0; $hour < 24; $hour++): ?>
                     <th>
                         <?php
                         $nexthour = $hour + 1;
@@ -37,24 +29,56 @@
                         echo $formattedHour;
                         ?>
                     </th>
-                    <?php for ($weekday = 0; $weekday < 7; $weekday++): ?>
+
+                <?php endfor; ?>
+
+            </tr>
+        </thead>
+        <tbody>
+            <?php for ($weekday = 0; $weekday < 7; $weekday++): ?>
+                <tr>
+                    <?php $date = $data->dates[$weekday]; ?>
+                    <th><div class="text-center"><?php echo date('D d.m.', strtotime($date)) ?></div></th>
+            <?php for ($hour = 0; $hour < 24; $hour++): ?>
+                <td style="text-align: center">
+                    <?php
+                    $date = date('Y-m-d', strtotime($date));
+                    $hourKey = date('H:00', mktime($hour));
+                    if (isset($data->openHours[$date])) {
+                        if (isset($data->openHours[$date][$hourKey])) {
+                            $openHour = $data->openHours[$date][$hourKey];
+                            $urgencyCategories = $data->urgencyCategories;
+                            echoToPage($urgencyCategories[$openHour->getUrgencyCategoryID()]->getName());
+                        }
+                    }
+                    ?>
+                </td>
+            <?php endfor; ?>
+            </tr>
+            <?php foreach ($data->personnelCategories as $personnelCategory): ?>
+                <tr>
+                    <td><div class=""><?php echoToPage($personnelCategory->getName()) ?></div></td>
+                    <?php for ($hour = 0; $hour < 24; $hour++): ?>
                         <td style="text-align: center">
                             <?php
-                            $date = $data->dates[$weekday];
                             $date = date('Y-m-d', strtotime($date));
-                            $hourKey = date('H:i', strtotime(substr($formattedHour,0,4)));
+                            $hourKey = date('H:00', mktime($hour));
                             if (isset($data->openHours[$date])) {
                                 if (isset($data->openHours[$date][$hourKey])) {
                                     $openHour = $data->openHours[$date][$hourKey];
                                     $urgencyCategories = $data->urgencyCategories;
-                                    echoToPage($urgencyCategories[$openHour->getUrgencyCategoryID()]->getName());
+                                    $urgencyCategory = $urgencyCategories[$openHour->getUrgencyCategoryID()];
+                                    $minimumPersonnels = $urgencyCategory->getMinimumPersonnels();
+                                    $minimum = $minimumPersonnels[$personnelCategory->getID()];
+                                    echo($minimum);
                                 }
                             }
                             ?>
                         </td>
                     <?php endfor; ?>
                 </tr>
-            <?php endfor; ?>
+            <?php endforeach ?>
+        <?php endfor ?>
         </tbody>
     </table>
 </div>

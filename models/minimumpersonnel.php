@@ -131,6 +131,18 @@ class MinimumPersonnel {
         }
         return $results;
     }
+    
+    public static function getMinimumPersonnelsArray() {
+        $minimumPersonnels = MinimumPersonnel::getMinimumPersonnels();
+        
+        $minimumPersonnelsArray = array();
+        
+        foreach ($minimumPersonnels as $minimumPersonnel){
+            $minimumPersonnelsArray[$minimumPersonnel->getID()] = $minimumPersonnel;
+        }
+        
+        return $minimumPersonnelsArray;
+    }
 
     public static function createFromData($data) {
         $minimumpersonnel = new MinimumPersonnel();

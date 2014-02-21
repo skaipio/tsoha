@@ -18,8 +18,8 @@ class UrgencyCategory {
     public function getName() {
         return $this->name;
     }
-    
-    public function getMinimumPersonnels(){
+
+    public function getMinimumPersonnels() {
         return $this->minimumPersonnels;
     }
 
@@ -35,9 +35,13 @@ class UrgencyCategory {
             unset($this->errors['emptyName']);
         }
     }
-    
-    public function setMinimumPersonnels($minimumPersonnels){
+
+    public function setMinimumPersonnels($minimumPersonnels) {
         $this->minimumPersonnels = $minimumPersonnels;
+    }
+    
+    public function addMinimumPersonnel($key, $minimumPersonnel) {
+        $this->minimumPersonnels[$key] = $minimumPersonnel;
     }
 
     public function isValid() {
@@ -71,17 +75,39 @@ class UrgencyCategory {
         }
         return $results;
     }
-    
+
     public static function getUrgencyCategoriesArray() {
         $urgencyCategories = UrgencyCategory::getUrgencyCategories();
-        
+
         $urgencyCategoriesArray = array();
-        
-        foreach ($urgencyCategories as $urgencyCategory){
+
+        foreach ($urgencyCategories as $urgencyCategory) {
             $urgencyCategoriesArray[$urgencyCategory->getID()] = $urgencyCategory;
         }
-        
+
         return $urgencyCategoriesArray;
+    }
+
+    public static function getWithMinimumsAndPersonnelCategoryNames() {
+        $sql = "SELECT urgencycategory.id as ucid, urgencycategory.name as ucname,"
+                . "personnelcategory.id as pcid, personnelcategory.name as pcname, minimum FROM "
+                . "urgencycategory, minimumpersonnel, personnelcategory WHERE "
+                . "urgencycategory.id = minimumpersonnel.urgencycategory_id AND "
+                . "personnelcategory.id = minimumpersonnel.personnelcategory_id";
+        $query = getDatabaseConnection()->prepare($sql);
+        $query->execute();
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            if (!isset($results[$result->ucid])){
+                $uc = new UrgencyCategory();
+                $uc->setName($result->ucname);
+                $uc->setId($result->ucid);
+                $results[$result->ucid] = $uc;
+            }
+            $results[$result->ucid]->addMinimumPersonnel($result->pcid, $result->minimum);
+        }
+        return $results;
     }
 
     public static function getByID($id) {
