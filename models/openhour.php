@@ -8,6 +8,7 @@ class OpenHour {
     private $hour;
     private $urgencycategory_id;
     private $isInDatabase = false;
+    private $remove = false;
 
     public function getErrors() {
         return $this->errors;
@@ -29,6 +30,10 @@ class OpenHour {
         return $this->urgencycategory_id;
     }
 
+    public function isToBeRemoved() {
+        return $this->remove;
+    }
+
     private function setID($id) {
         $this->id = (int) $id;
     }
@@ -43,6 +48,10 @@ class OpenHour {
 
     public function setUrgencyCategoryID($id) {
         $this->urgencycategory_id = (int) $id;
+    }
+
+    public function setToBeRemoved() {
+        $this->remove = true;
     }
 
     public function isValid() {
@@ -61,6 +70,15 @@ class OpenHour {
             $this->id = $query->fetchColumn();
         }
         return $ok;
+    }
+
+    public function removeFromDatabase() {
+        if (!isset($this->id)) {
+            return;
+        }
+        $sql = "DELETE FROM openhour WHERE id = ?";
+        $query = getDatabaseConnection()->prepare($sql);
+        $query->execute(array($this->getID()));
     }
 
     public static function getAllBetweenDates($startDate, $endDate) {

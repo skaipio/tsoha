@@ -48,17 +48,26 @@ class OpenHourController {
 
         $openHoursOfThisWeek = $_SESSION['openHours'];
 
-        if (isset($_GET["ucid"]) && isset($_GET["date"]) && isset($_GET["hour"])) {
+        if ((isset($_GET["date"]) && isset($_GET["hour"]))) {
             $date = $_GET["date"];
             $hour = $_GET["hour"];
-            $openHour = new OpenHour();
-            $openHour->setOpenDate($date);
-            $openHour->setHour($hour);
-            $openHour->setUrgencyCategoryID($_GET["ucid"]);
-            if (!isset($openHoursOfThisWeek[$date])) {
-                $openHoursOfThisWeek[$date] = array();
+            if (isset($_GET["ucid"])) {
+                $openHour = new OpenHour();
+                $openHour->setOpenDate($date);
+                $openHour->setHour($hour);
+                $openHour->setUrgencyCategoryID($_GET["ucid"]);
+                if (!isset($openHoursOfThisWeek[$date])) {
+                    $openHoursOfThisWeek[$date] = array();
+                }
+                $openHoursOfThisWeek[$date][$hour] = $openHour;
+            } else if (isset($_GET["poista"])) {
+                $openHour = $openHoursOfThisWeek[$date][$hour];
+                if (!isset($_SESSION['openHoursToRemove'])) {
+                    $_SESSION['openHoursToRemove'] = array();
+                }
+                $_SESSION['openHoursToRemove'][] = $openHour;
+                unset($openHoursOfThisWeek[$date][$hour]);
             }
-            $openHoursOfThisWeek[$date][$hour] = $openHour;
             $_SESSION['openHours'] = $openHoursOfThisWeek;
         }
 
@@ -74,13 +83,21 @@ class OpenHourController {
 
         foreach ($openHours as $date => $openHoursOfDate) {
             foreach ($openHoursOfDate as $hour => $openHour) {
-                if ($openHour->isValid()){
+                if ($openHour->isValid()) {
                     $openHour->addToDatabase();
                 }
             }
         }
+        if (isset($_SESSION['openHoursToRemove'])) {
+            foreach ($_SESSION['openHoursToRemove'] as $openHour) {
+                $openHour->removeFromDatabase();
+            }
+        }
         
-        setSuccesses(array('Aukioloajat on tallennettu tietokantaan.'));
+        unset($_SESSION['openHoursToRemove']);
+        unset($_SESSION['openHours']);
+
+        setSuccesses(array('Aukioloaikoja on onnistuneesti muokattu.'));
     }
 
     public function previousWeek() {

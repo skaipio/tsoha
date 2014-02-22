@@ -19,24 +19,35 @@ class StaffingCalendarView {
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <?php if (isset($urgencyCategory)): ?>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="<?php
+                        echo "muokkaa.php?poista=true&";
+                        echo "date=$date&";
+                        echo "hour=$hour";
+                        ?>">
+                            Poista
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <?php foreach ($urgencyCategories as $ucFromArray): ?>
                     <?php if ($urgencyCategory != $ucFromArray) : ?>
                         <li role="presentation">
                             <a role="menuitem" tabindex="-1" href=
-                            "<?php
-                            echo "muokkaa.php?ucid=";
-                            echo $ucFromArray->getID();
-                            echo "&date=";
-                            echo $date;
-                            echo "&hour=";
-                            echo $hour;
-                            ?>"
-                            >
-                            <?php echoToPage($ucFromArray->getName()) ?>
-                        </a></li>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </ul>
+                               "<?php
+                               echo "muokkaa.php?ucid=";
+                               echo $ucFromArray->getID();
+                               echo "&date=";
+                               echo $date;
+                               echo "&hour=";
+                               echo $hour;
+                               ?>"
+                               >
+                                   <?php echoToPage($ucFromArray->getName()) ?>
+                            </a></li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </ul>
         </div>
         <?php
     }
