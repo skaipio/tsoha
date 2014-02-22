@@ -1,9 +1,6 @@
 <?php
 
-require '../libs/common.php';
 require '../controllers/openHourController.php';
-
-
 
 if (loggedInAsAdmin()) {
     $openHourController = new OpenHourController();
@@ -16,5 +13,5 @@ if (loggedInAsAdmin()) {
 
     $openHourController->index();
 } else {
-    redirect('index.php');
+    redirectTo('../index.php');
 }
