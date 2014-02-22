@@ -43,14 +43,27 @@ function getUserLoggedIn() {
 }
 
 function loggedInAsAdmin() {
-    $user = $_SESSION['loggedIn'];
-    if (isset($user)) {
+    if (!isset($_SESSION['loggedIn'])) {
+        return false;
+    }
+    if (isset($_SESSION['loggedIn'])) {
+        $user = $_SESSION['loggedIn'];
         if ($user->isAdmin()) {
             return true;
         } else {
             setErrors(array('Sivu vaatii ylläpito-oikeudet.'));
             redirect('kirjautuminen.php');
         }
+    }
+}
+
+function loggedInAsUser() {
+    if (!isset($_SESSION['loggedIn'])) {
+        return false;
+    }
+    if (!isset($_SESSION['loggedIn'])) {
+        setErrors(array('Sinun on kirjauduttava sisään nähdäksesi tämä sivu.'));
+        redirect('kirjautuminen.php');
     }
 }
 

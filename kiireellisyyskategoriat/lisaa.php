@@ -13,7 +13,7 @@ if (loggedInAsAdmin()) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller->add();
 
-        $errors = $controller->getErrors();      
+        $errors = $controller->getErrors();
 
         if (empty($errors)) {
             setSuccesses(array("Kiireellisyyskategoria on onnistuneesti lisätty tietokantaan."));
@@ -30,5 +30,9 @@ if (loggedInAsAdmin()) {
     $personnelCategories = Personnelcategory::getPersonnelCategories();
     showView('views/urgencyCategoryCreation.php', array('admin' => true,
         'urgencyCategory' => $urgencyCategory, 'personnelCategories' => $personnelCategories, 'formTitle' => 'Kiireellisyyskategorian lisäys'));
-} 
+} else {
+    $errors = array("Sivu vaatii ylläpito-oikeudet.");
+    setErrors($errors);
+    redirect('../index.php');
+}
 

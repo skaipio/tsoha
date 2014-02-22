@@ -254,6 +254,26 @@ class Employee {
         }
         return $results;
     }
+    
+    public static function getEmployeesWithShiftLimitDetails() {
+        $sql = "SELECT id, firstname, lastname, personnelcategory_id,"
+                . "maxhoursperweek, maxhoursperday FROM employee";
+        $query = getDatabaseConnection()->prepare($sql);
+        $query->execute();
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $employee = new Employee();
+            $employee->setId($result->id);
+            $employee->setFirstname($result->firstname);
+            $employee->setLastname($result->lastname);
+            $employee->setPersonnelcategory_id($result->personnelcategory_id);
+            $employee->setMaxhoursperweek($result->maxhoursperweek);
+            $employee->setMaxhoursperday($result->maxhoursperday);
+            $results[$result->id] = $employee;
+        }
+        return $results;
+    }
 
     public static function getEmployeeByLoginInfo($email, $password) {
         $sql = "SELECT * FROM employee WHERE password = ? AND email = ? LIMIT 1";

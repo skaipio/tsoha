@@ -41,5 +41,9 @@ if (loggedInAsAdmin()) {
 
     showView('views/urgencyCategoryCreation.php', array('admin' => true,
         'urgencyCategory' => $urgencyCategory, 'formTitle' => 'Kiireellisyyskategorian muokkaus'));
+}else{
+    $errors = array("Sivu vaatii ylläpito-oikeudet.");
+    setErrors($errors);
+    redirect('../index.php');
 }
 

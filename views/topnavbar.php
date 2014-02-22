@@ -30,6 +30,12 @@
                             ?>">
                             <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/henkilostovahvuus/index.php">Henkilöstövahvuuskalenteri</a>
                         </li>
+                        <li class="<?php if (isActivePage("/tyovuorolista/tyovuorot/index.php")): ?>
+                                <?php echo "active";
+                            endif;
+                            ?>">
+                            <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/tyovuorot/index.php">Työvuorot</a>
+                        </li>
                     <?php endif; ?>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

@@ -15,6 +15,10 @@ if (loggedInAsAdmin()) {
 
     showView('views/urgencyCategoryListing.php', array('admin' => true,
         'personnelCategories' => $personnelCategories, 'urgencyCategories' => $urgencyCategories));
+} else {
+    $errors = array("Sivu vaatii ylläpito-oikeudet.");
+    setErrors($errors);
+    redirect('../index.php');
 }
 
 

@@ -20,5 +20,7 @@ if (isset($user)) {
         showOnlyTemplate();
     }
 } else {
-    redirectTo('../kirjautuminen.php');
+    $errors = array("Sivu vaatii ylläpito-oikeudet.");
+    setErrors($errors);
+    redirect('../index.php');
 }
