@@ -13,6 +13,8 @@ class ShiftCalendarController {
         setNavBarAsVisible(true);
 
         unset($_SESSION['requiredPersonnel']);
+        unset($_SESSION['workShiftsToBeAdded']);
+        unset($_SESSION['workShiftsToBeRemoved']);
 
         if (!isset($_SESSION['weekViewed'])) {
             $monday = date('Y-m-d', strtotime('last monday', strtotime('tomorrow')));
@@ -77,6 +79,7 @@ class ShiftCalendarController {
         $urgencyCategories = UrgencyCategory::getWithMinimumsAndPersonnelCategoryNames();
 
         $requiredPersonnel = $this->getRequiredPersonnel($openHoursOfThisWeek, $urgencyCategories, $employees, $workshifts);
+        $_SESSION['requiredPersonnel'] = $requiredPersonnel;
 
         showView('views/shiftCalendar.php', array('admin' => true, 'dayViewed' => $dayViewed, 'modify' => true, 'dateViewed' => $dateViewed,
             'dates' => $dates, 'employees' => $employees, 'workshifts' => $workshifts, 'personnelCategories' => $personnelCategories,
@@ -84,24 +87,30 @@ class ShiftCalendarController {
     }
 
     public function submit() {
-        if (isset($_SESSION['workShiftsToBeAdded'])) {
-            $workshiftsToAdd = $_SESSION['workShiftsToBeAdded'];
-            foreach ($workshiftsToAdd as $workshift) {
-                $workshift->addToDatabase();
+        if ($this->requiredPersonnelFulfilled()) {
+            if (isset($_SESSION['workShiftsToBeAdded'])) {
+                $workshiftsToAdd = $_SESSION['workShiftsToBeAdded'];
+                foreach ($workshiftsToAdd as $workshift) {
+                    $workshift->addToDatabase();
+                }
             }
-        }
-        if (isset($_SESSION['workShiftsToBeRemoved'])) {
-            $workshiftsToRemove = $_SESSION['workShiftsToBeRemoved'];
-            foreach ($workshiftsToRemove as $workshift) {
-                $workshift->removeFromDatabase();
+            if (isset($_SESSION['workShiftsToBeRemoved'])) {
+                $workshiftsToRemove = $_SESSION['workShiftsToBeRemoved'];
+                foreach ($workshiftsToRemove as $workshift) {
+                    $workshift->removeFromDatabase();
+                }
             }
+
+            unset($_SESSION['workShiftsToBeAdded']);
+            unset($_SESSION['workShiftsToBeRemoved']);
+            unset($_SESSION['workshifts']);
+
+            setSuccesses(array('Työvuoroja on onnistuneesti muokattu.'));
+            redirectTo('index.php');
+        } else {
+            setErrors(array('Viikolla on avoimia tunteja, joille ei ole tarpeeksi työntekijöitä.'));
+            redirectTo('muokkaa.php');
         }
-
-        unset($_SESSION['workShiftsToBeAdded']);
-        unset($_SESSION['workShiftsToBeRemoved']);
-        unset($_SESSION['workshifts']);
-
-        setSuccesses(array('Työvuoroja on onnistuneesti muokattu.'));
     }
 
     public function previousWeek() {
@@ -133,14 +142,28 @@ class ShiftCalendarController {
                     $employee = $employees[$employeeID];
                     if (isset($workshiftDates[$date][$hour->getHour()])) {
                         $minimum = $requiredPersonnel[$date][$hour->getHour()][$employee->getPersonnelCategoryID()];
-                        if ($minimum > 0){
+                        if ($minimum > 0) {
                             $requiredPersonnel[$date][$hour->getHour()][$employee->getPersonnelCategoryID()] --;
-                        }                      
+                        }
                     }
                 }
             }
         }
         return $requiredPersonnel;
+    }
+
+    private function requiredPersonnelFulfilled() {
+        $requiredPersonnel = $_SESSION['requiredPersonnel'];
+        foreach ($requiredPersonnel as $date => $hours) {
+            foreach ($hours as $hour) {
+                foreach ($hour as $pcid => $minimum) {
+                    if ($minimum > 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     private function getAndSetToSessionWorkshiftsToBeRemoved() {
@@ -156,9 +179,6 @@ class ShiftCalendarController {
 
     private function getAndSetToSessionWorkshiftsToBeAdded() {
         if (isset($_GET['lisaa']) && isset($_GET['date']) && isset($_GET['hour']) && isset($_GET['employeeID'])) {
-            if (!isset($_SESSION['workShiftsToBeAdded'])) {
-                $_SESSION['workShiftsToBeAdded'] = array();
-            }
             $openHour = $_SESSION['openHours'][$_GET['date']][$_GET['hour']];
             $workShift = new Workshifthour(0, $_GET['hour'], $_GET['employeeID']);
             $workShift->setOpenHourID($openHour->getID());
