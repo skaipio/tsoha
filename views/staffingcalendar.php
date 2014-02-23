@@ -32,6 +32,7 @@
                 <?php for ($hour = 0; $hour < 24; $hour++): ?>
                     <th class="headerRow">
                         <?php
+                        date_default_timezone_set('UTC');
                         $nexthour = $hour + 1;
                         $nexthour = date('H:i', $nexthour*60*60);
                         $formattedHour = date('H:i', $hour*60*60);

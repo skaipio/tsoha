@@ -4,12 +4,37 @@ class Workshifthour {
 
     private $id;
     private $openhour;
+    private $openhour_id;
     private $employee_id;
 
     public function __construct($id, $openhour, $employee_id) {
         $this->id = $id;
         $this->openhour = $openhour;
         $this->employee_id = $employee_id;
+    }
+    
+    public function setOpenHourID($id){
+        $this->openhour_id = (int)$id;
+    }
+    
+    public function addToDatabase() {
+        $sql = "INSERT INTO workshifthour(openhour_id, employee_id)"
+                . "VALUES (?,?) RETURNING id";
+        $query = getDatabaseConnection()->prepare($sql);
+        $ok = $query->execute(array($this->openhour_id, $this->employee_id));
+        if ($ok) {
+            $this->id = $query->fetchColumn();
+        }
+        return $ok;
+    }
+    
+    public function removeFromDatabase() {
+        if (!isset($this->id)) {
+            return;
+        }
+        $sql = "DELETE FROM workshifthour WHERE id = ?";
+        $query = getDatabaseConnection()->prepare($sql);
+        $query->execute(array($this->id));
     }
 
     public static function getAllWorkshifthoursForEmployee($id) {

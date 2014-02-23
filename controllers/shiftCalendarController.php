@@ -2,6 +2,7 @@
 
 require '../models/personnelcategory.php';
 require '../models/workshifthour.php';
+require '../models/openhour.php';
 require '../libs/common.php';
 require '../views/shiftCalendarView.php';
 
@@ -35,6 +36,8 @@ class ShiftCalendarController {
         $_SESSION['employees'] = $employees;
         $workshifts = Workshifthour::getAllWorkShiftsByDateRangeWithEmployeeIDsAndHours($monday, $sunday);
         $_SESSION['workshifts'] = $workshifts;
+        $openHoursOfThisWeek = OpenHour::getAllBetweenDates($monday, $sunday);
+        $_SESSION['openHours'] = $openHoursOfThisWeek;
         $personnelCategories = Personnelcategory::getPersonnelCategoriesArray();
 
         showView('views/shiftCalendar.php', array('admin' => true, 'dayViewed' => $dayViewed, 'dateViewed' => $dateViewed,
@@ -54,6 +57,9 @@ class ShiftCalendarController {
             $_SESSION['dayViewed'] = 0;
         }
 
+        $this->getAndSetToSessionWorkshiftsToBeRemoved();
+        $this->getAndSetToSessionWorkshiftsToBeAdded();
+
         $dayViewed = $_SESSION['dayViewed'];
         $dateViewed = date('Y-m-d', strtotime($monday . '+' . ($dayViewed) . ' days'));
 
@@ -62,14 +68,34 @@ class ShiftCalendarController {
 
         $employees = $_SESSION['employees'];
         $workshifts = $_SESSION['workshifts'];
+        $openHoursOfThisWeek = $_SESSION['openHours'];
+
         $personnelCategories = Personnelcategory::getPersonnelCategoriesArray();
 
         showView('views/shiftCalendar.php', array('admin' => true, 'dayViewed' => $dayViewed, 'modify' => true, 'dateViewed' => $dateViewed,
-            'dates' => $dates, 'employees' => $employees, 'workshifts' => $workshifts, 'personnelCategories' => $personnelCategories));
+            'dates' => $dates, 'employees' => $employees, 'workshifts' => $workshifts, 'personnelCategories' => $personnelCategories,
+            'openHours' => $openHoursOfThisWeek));
     }
 
     public function submit() {
-        
+        if (isset($_SESSION['workShiftsToBeAdded'])) {
+            $workshiftsToAdd = $_SESSION['workShiftsToBeAdded'];
+            foreach ($workshiftsToAdd as $workshift) {
+                $workshift->addToDatabase();
+            }
+        }
+        if (isset($_SESSION['workShiftsToBeRemoved'])) {
+            $workshiftsToRemove = $_SESSION['workShiftsToBeRemoved'];
+            foreach ($workshiftsToRemove as $workshift) {
+                $workshift->removeFromDatabase();
+            }
+        }
+
+        unset($_SESSION['workShiftsToBeAdded']);
+        unset($_SESSION['workShiftsToBeRemoved']);
+        unset($_SESSION['workshifts']);
+
+        setSuccesses(array('Työvuoroja on onnistuneesti muokattu.'));
     }
 
     public function previousWeek() {
@@ -87,6 +113,30 @@ class ShiftCalendarController {
         $this->setWeekViewed($this->getDayOfNextWeek($monday));
 
         $this->index();
+    }
+
+    private function getAndSetToSessionWorkshiftsToBeRemoved() {
+        if (isset($_GET['poista']) && isset($_GET['date']) && isset($_GET['hour']) && isset($_GET['employeeID'])) {
+            if (!isset($_SESSION['workShiftsToBeRemoved'])) {
+                $_SESSION['workShiftsToBeRemoved'] = array();
+            }
+            $workShift = $_SESSION['workshifts'][$_GET['employeeID']][$_GET['date']][$_GET['hour']];
+            $_SESSION['workShiftsToBeRemoved'][] = $workShift;
+            unset($_SESSION['workshifts'][$_GET['employeeID']][$_GET['date']][$_GET['hour']]);
+        }
+    }
+
+    private function getAndSetToSessionWorkshiftsToBeAdded() {
+        if (isset($_GET['lisaa']) && isset($_GET['date']) && isset($_GET['hour']) && isset($_GET['employeeID'])) {
+            if (!isset($_SESSION['workShiftsToBeAdded'])) {
+                $_SESSION['workShiftsToBeAdded'] = array();
+            }
+            $openHour = $_SESSION['openHours'][$_GET['date']][$_GET['hour']];
+            $workShift = new Workshifthour(0, $_GET['hour'], $_GET['employeeID']);
+            $workShift->setOpenHourID($openHour->getID());
+            $_SESSION['workShiftsToBeAdded'][] = $workShift;
+            $_SESSION['workshifts'][$_GET['employeeID']][$_GET['date']][$_GET['hour']] = $workShift;
+        }
     }
 
     private function setWeekViewed($mondayOfWeek) {

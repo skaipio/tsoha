@@ -31,7 +31,7 @@ class ShiftCalendarView {
         <?php
     }
 
-    public function displayEmployeeTable($employees, $personnelCategories, $workshifts, $modify, $dateViewed) {
+    public function displayEmployeeTable($employees, $personnelCategories, $workshifts, $modify, $dateViewed, $openHours) {
         ?>
         <table id="shiftTable" class="table table-striped table-bordered table-condensed">
             <thead>
@@ -50,53 +50,75 @@ class ShiftCalendarView {
                     <tr>
                         <td>
                             <?php
-                            $category = $personnelCategories[$employee->getPersonnelCategoryID()];
-                            $category = $category->getName();
-                            $firstname = $employee->getFirstName();
-                            $lastname = $employee->getLastName();
-                            echoToPage("$category $firstname $lastname");
+                            $this->displayEmployee($employee, $personnelCategories);
+                            $employeeDates = $workshifts[$employeeID];
                             ?>
                         </td>
                         <?php for ($hour = 0; $hour < 24; $hour++): ?>
                             <td>
                                 <?php
-                                $employeeDates = $workshifts[$employeeID];
                                 date_default_timezone_set('UTC');
                                 $formattedHour = date('H:i', $hour * 60 * 60);
                                 ?>
-                                <?php if (isset($employeeDates[$dateViewed]) && isset($employeeDates[$dateViewed][$formattedHour])): ?>
-                                    <?php if (isset($modify) && $modify): ?>
-                                    <td>
-                                        <a><button><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></button><a>
-                                                </td>
-                                            <?php else: ?>
-                                                <div class="text-center"><span class="glyphicon glyphicon-ok"></span></div>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
-                                        </td>
-                                    <?php endfor; ?>
-                                    </tr>
-                                <?php endforeach; ?>
-                                </tbody>
-                                </table>
                                 <?php
-                            }
+                                if (isset($modify) && $modify) {
+                                    $this->displayModifiableShiftHour($employeeDates, $dateViewed, $formattedHour, $employeeID, $openHours);
+                                } else {
+                                    $this->displayNormalShiftHour($employeeDates, $dateViewed, $formattedHour);
+                                }
+                                ?>
+                            </td>
+                        <?php endfor; ?>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php
+    }
 
-                            /**
-                             * Displays hour gap in the form XX:00-YY:00 where XX is the from hour
-                             * and YY is the to hour.
-                             * @param type $from Hour integer 
-                             * @param type $to
-                             */
-                            public function displayHourRange($from, $to) {
-                                date_default_timezone_set('UTC');
+    /**
+     * Displays hour gap in the form XX:00-YY:00 where XX is the from hour
+     * and YY is the to hour.
+     * @param type $from Hour integer 
+     * @param type $to
+     */
+    public function displayHourRange($from, $to) {
+        date_default_timezone_set('UTC');
 
-                                $formattedFrom = date('H:i', $from * 60 * 60);
-                                $formattedTo = date('H:i', $to * 60 * 60);
-                                echo($formattedFrom);
-                                echo ("-");
-                                echo($formattedTo);
-                            }
+        $formattedFrom = date('H:i', $from * 60 * 60);
+        $formattedTo = date('H:i', $to * 60 * 60);
+        echo($formattedFrom);
+        echo ("-");
+        echo($formattedTo);
+    }
 
-                        }
-                        
+    public function displayEmployee($employee, $personnelCategories) {
+        $category = $personnelCategories[$employee->getPersonnelCategoryID()];
+        $category = $category->getName();
+        $firstname = $employee->getFirstName();
+        $lastname = $employee->getLastName();
+        echoToPage("$category $firstname $lastname");
+    }
+
+    public function displayModifiableShiftHour($employeeDates, $dateViewed, $hour, $employeeID, $openHours) {
+        ?>
+        <?php if (isset($employeeDates[$dateViewed]) && isset($employeeDates[$dateViewed][$hour])): ?>
+            <a href="<?php echo "muokkaa.php?poista=true&date=$dateViewed&hour=$hour&employeeID=$employeeID"; ?>">
+                <button><div class="text-center"><span class="glyphicon glyphicon-ok"></span></div></button>
+            </a>
+
+        <?php elseif (isset($openHours[$dateViewed]) && isset($openHours[$dateViewed][$hour])): ?>
+            <a href="<?php echo "muokkaa.php?lisaa=true&date=$dateViewed&hour=$hour&employeeID=$employeeID"; ?>">
+                <button><div class="text-center"><span class="glyphicon"></span></div></button>
+            </a>
+        <?php endif; ?><?php
+    }
+
+    public function displayNormalShiftHour($employeeDates, $dateViewed, $hour) {
+        ?>
+        <?php if (isset($employeeDates[$dateViewed]) && isset($employeeDates[$dateViewed][$hour])): ?>
+            <div class="text-center"><span class="glyphicon glyphicon-ok"></span></div>
+        <?php endif; ?><?php
+    }
+
+}
