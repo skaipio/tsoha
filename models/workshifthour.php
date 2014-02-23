@@ -39,21 +39,27 @@ class Workshifthour {
         return $results;
     }
 
-    public static function getAllWorkShiftsByDateWithEmployeeIDsAndHours($date) {
-        $sql = "SELECT workshifthour.id as wsid, openhour.hour, employee_id"
+    public static function getAllWorkShiftsByDateRangeWithEmployeeIDsAndHours($startDate, $endDate) {
+        $sql = "SELECT workshifthour.id as wsid, openhour.opendate, openhour.hour, employee_id"
                 . " FROM workshifthour, openhour WHERE"
                 . " openhour_id = openhour.id AND"
-                . " openhour.opendate = ?";
+                . " openhour.opendate >= ? AND openhour.opendate <= ?";
         $query = getDatabaseConnection()->prepare($sql);
-        $query->execute(array($date));
+        $query->execute(array($startDate,$endDate));
 
         $results = array();
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
             if (!isset($results[$result->employee_id])) {
                 $results[$result->employee_id] = array();
             }
+            
+            $date = date('Y-m-d', strtotime($result->opendate));
+            
+            if (!isset($results[$result->employee_id][$date])) {              
+                $results[$result->employee_id][$date] = array();
+            }
             $hour = date('H:i', strtotime($result->hour));
-            $results[$result->employee_id][$hour] = new Workshifthour(
+            $results[$result->employee_id][$date][$hour] = new Workshifthour(
                     $result->wsid, $hour, $result->employee_id);
         }
         return $results;

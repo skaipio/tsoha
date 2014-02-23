@@ -32,15 +32,40 @@ class ShiftCalendarController {
         $dates = dateRange($monday, $sunday);
 
         $employees = Employee::getEmployeesWithShiftLimitDetails();
-        $workshifts = Workshifthour::getAllWorkShiftsByDateWithEmployeeIDsAndHours($dateViewed);
+        $_SESSION['employees'] = $employees;
+        $workshifts = Workshifthour::getAllWorkShiftsByDateRangeWithEmployeeIDsAndHours($monday, $sunday);
+        $_SESSION['workshifts'] = $workshifts;
         $personnelCategories = Personnelcategory::getPersonnelCategoriesArray();
 
-        showView('views/shiftCalendar.php', array('admin' => true, 'dayViewed' => $dayViewed,
+        showView('views/shiftCalendar.php', array('admin' => true, 'dayViewed' => $dayViewed, 'dateViewed' => $dateViewed,
             'dates' => $dates, 'employees' => $employees, 'workshifts' => $workshifts, 'personnelCategories' => $personnelCategories));
     }
 
     public function modify() {
-        
+        setNavBarAsVisible(true);
+
+        $monday = $_SESSION['weekViewed'];
+
+        if (isset($_GET['day'])) {
+            $dayViewed = $_GET['day'];
+            $_SESSION['dayViewed'] = $dayViewed;
+        }
+        if (!isset($_SESSION['dayViewed'])) {
+            $_SESSION['dayViewed'] = 0;
+        }
+
+        $dayViewed = $_SESSION['dayViewed'];
+        $dateViewed = date('Y-m-d', strtotime($monday . '+' . ($dayViewed) . ' days'));
+
+        $sunday = date('Y-m-d', strtotime($monday . '+' . (6) . ' days'));
+        $dates = dateRange($monday, $sunday);
+
+        $employees = $_SESSION['employees'];
+        $workshifts = $_SESSION['workshifts'];
+        $personnelCategories = Personnelcategory::getPersonnelCategoriesArray();
+
+        showView('views/shiftCalendar.php', array('admin' => true, 'dayViewed' => $dayViewed, 'modify' => true, 'dateViewed' => $dateViewed,
+            'dates' => $dates, 'employees' => $employees, 'workshifts' => $workshifts, 'personnelCategories' => $personnelCategories));
     }
 
     public function submit() {

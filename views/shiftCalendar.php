@@ -5,7 +5,7 @@
     <h4 class="text-center">
         Työvuorot - 
         <?php if (!isset($data->modify)): ?>
-            <a href="muokkaa.php">Muokkaa</a>
+            <a href="muokkaa.php?">Muokkaa</a>
         <?php else: ?>
             <a href="tallenna.php">Tallenna</a> - <a href="index.php">Peruuta</a>
         <?php endif; ?>
@@ -24,6 +24,7 @@
         </ul>
     <?php endif; ?>
 
-    <?php $shiftCalendarView->displayWeekdayNavPills($data->dayViewed, $data->dates) ?>
-    <?php $shiftCalendarView->displayEmployeeTable($data->employees, $data->personnelCategories, $data->workshifts) ?>
+    <?php $shiftCalendarView->displayWeekdayNavPills($data->dayViewed, $data->dates, $data->modify) ?>
+    <?php $shiftCalendarView->displayEmployeeTable($data->employees, $data->personnelCategories,
+            $data->workshifts, $data->modify, $data->dateViewed) ?>
 </div>
