@@ -101,10 +101,10 @@ class Employee {
         } else {
             unset($this->errors['ssnLength']);
         }
-        if (!$this->ssnIsUnique($this->ssn)) {
-            $this->errors['ssnUnique'] = "Henkilötunnuksen on oltava uniikki. ";
+        if ($this->ssnInUse($this->ssn)) {
+            $this->errors['ssnInUse'] = "Henkilötunnuksen on oltava uniikki. ";
         } else {
-            unset($this->errors['ssnUnique']);
+            unset($this->errors['ssnInUse']);
         }
     }
 
@@ -231,16 +231,16 @@ class Employee {
         return $query->execute(array_values($employeeDataArray));
     }
 
-    private function ssnIsUnique($ssn) {
-        $sql = "SELECT id FROM employee WHERE ssn = ? AND id != ?";
+    private function ssnInUse($ssn) {
+        $sql = "SELECT id FROM employee WHERE ssn = ?";
         $query = getDatabaseConnection()->prepare($sql);
-        $query->execute(array($ssn, $this->getID()));
+        $query->execute(array($ssn));
 
         $rows = 0;
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
             $rows++;
         }
-        return $rows == 0;
+        return $rows > 0;
     }
 
     public static function getEmployees() {

@@ -132,7 +132,10 @@ class ShiftCalendarController {
                 foreach ($workshifts as $employeeID => $workshiftDates) {
                     $employee = $employees[$employeeID];
                     if (isset($workshiftDates[$date][$hour->getHour()])) {
-                        $requiredPersonnel[$date][$hour->getHour()][$employee->getPersonnelCategoryID()] --;
+                        $minimum = $requiredPersonnel[$date][$hour->getHour()][$employee->getPersonnelCategoryID()];
+                        if ($minimum > 0){
+                            $requiredPersonnel[$date][$hour->getHour()][$employee->getPersonnelCategoryID()] --;
+                        }                      
                     }
                 }
             }
