@@ -26,5 +26,5 @@
 
     <?php $shiftCalendarView->displayWeekdayNavPills($data->dayViewed, $data->dates, $data->modify) ?>
     <?php $shiftCalendarView->displayEmployeeTable($data->employees, $data->personnelCategories,
-            $data->workshifts, $data->modify, $data->dateViewed, $data->openHours) ?>
+            $data->workshifts, $data->modify, $data->dateViewed, $data->openHours, $data->requiredPersonnel) ?>
 </div>

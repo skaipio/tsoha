@@ -3,6 +3,7 @@
 require '../models/personnelcategory.php';
 require '../models/workshifthour.php';
 require '../models/openhour.php';
+require '../models/urgencycategory.php';
 require '../libs/common.php';
 require '../views/shiftCalendarView.php';
 
@@ -10,6 +11,8 @@ class ShiftCalendarController {
 
     public function index() {
         setNavBarAsVisible(true);
+
+        unset($_SESSION['requiredPersonnel']);
 
         if (!isset($_SESSION['weekViewed'])) {
             $monday = date('Y-m-d', strtotime('last monday', strtotime('tomorrow')));
@@ -71,10 +74,15 @@ class ShiftCalendarController {
         $openHoursOfThisWeek = $_SESSION['openHours'];
 
         $personnelCategories = Personnelcategory::getPersonnelCategoriesArray();
+        $urgencyCategories = UrgencyCategory::getWithMinimumsAndPersonnelCategoryNames();
+        
+        $this->setRequiredPersonnel($openHoursOfThisWeek, $urgencyCategories, $employees, $workshifts);
+
+        $requiredPersonnel = $_SESSION['requiredPersonnel'];
 
         showView('views/shiftCalendar.php', array('admin' => true, 'dayViewed' => $dayViewed, 'modify' => true, 'dateViewed' => $dateViewed,
             'dates' => $dates, 'employees' => $employees, 'workshifts' => $workshifts, 'personnelCategories' => $personnelCategories,
-            'openHours' => $openHoursOfThisWeek));
+            'openHours' => $openHoursOfThisWeek, 'urgencyCategories' => $urgencyCategories, 'requiredPersonnel' => $requiredPersonnel));
     }
 
     public function submit() {
@@ -113,6 +121,29 @@ class ShiftCalendarController {
         $this->setWeekViewed($this->getDayOfNextWeek($monday));
 
         $this->index();
+    }
+
+    private function setRequiredPersonnel($openHoursOfThisWeek, $urgencyCategories, $employees, $workshifts) {
+        if (!isset($_SESSION['requiredPersonnel'])) {
+            $requiredPersonnel = array();
+
+            foreach ($openHoursOfThisWeek as $date => $hours) {
+                $requiredPersonnel[$date] = array();
+                foreach ($hours as $hour) {
+                    $urgencyCategory = $urgencyCategories[$hour->getUrgencyCategoryID()];
+                    $minimumPersonnels = $urgencyCategory->getMinimumPersonnels();
+                    $requiredPersonnel[$date][$hour->getHour()] = $minimumPersonnels;
+                    foreach ($workshifts as $employeeID => $workshiftDates) {
+                        $employee = $employees[$employeeID];
+                        if (isset($workshiftDates[$date][$hour->getHour()])) {
+                            $requiredPersonnel[$date][$hour->getHour()][$employee->getPersonnelCategoryID()] --;
+                        }
+                    }
+                }
+            }
+
+            $_SESSION['requiredPersonnel'] = $requiredPersonnel;
+        }
     }
 
     private function getAndSetToSessionWorkshiftsToBeRemoved() {

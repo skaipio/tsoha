@@ -31,7 +31,7 @@ class ShiftCalendarView {
         <?php
     }
 
-    public function displayEmployeeTable($employees, $personnelCategories, $workshifts, $modify, $dateViewed, $openHours) {
+    public function displayEmployeeTable($employees, $personnelCategories, $workshifts, $modify, $dateViewed, $openHours, $requiredPersonnel) {
         ?>
         <table id="shiftTable" class="table table-striped table-bordered table-condensed">
             <thead>
@@ -43,6 +43,20 @@ class ShiftCalendarView {
                         </th>
                     <?php endfor; ?>
                 </tr>
+                <?php if (isset($modify) && $modify) : ?>
+                    <tr>              
+                        <td>Lääkäreitä tarvitaan</td>
+                        <?php $this->displayNeededNumbersForPersonnelCategory(1, $openHours, $dateViewed, $requiredPersonnel); ?>
+                    </tr>
+                    <tr>              
+                        <td>Sairaanhoitajia tarvitaan</td>
+                        <?php $this->displayNeededNumbersForPersonnelCategory(2, $openHours, $dateViewed, $requiredPersonnel); ?>
+                    </tr>
+                    <tr>              
+                        <td>Perushoitajia tarvitaan</td>
+                        <?php $this->displayNeededNumbersForPersonnelCategory(3, $openHours, $dateViewed, $requiredPersonnel); ?>
+                    </tr>
+                <?php endif; ?>
             </thead>
             <tbody>
                 <?php foreach ($employees as $employeeID => $employee):
@@ -118,7 +132,24 @@ class ShiftCalendarView {
         ?>
         <?php if (isset($employeeDates[$dateViewed]) && isset($employeeDates[$dateViewed][$hour])): ?>
             <div class="text-center"><span class="glyphicon glyphicon-ok"></span></div>
-        <?php endif; ?><?php
+            <?php endif; ?><?php
+        }
+
+        public function displayNeededNumbersForPersonnelCategory($personnelCategoryID, $openHours, $dateViewed, $requiredPersonnel) {
+            for ($hour = 0; $hour < 24; $hour++) {
+                date_default_timezone_set('UTC');
+                $formattedHour = date('H:i', $hour * 60 * 60);
+                ?>
+                <td>
+                <?php
+                if (isset($requiredPersonnel[$dateViewed][$formattedHour][$personnelCategoryID])) {
+                    $requiredNumber = $requiredPersonnel[$dateViewed][$formattedHour][$personnelCategoryID];
+                    echo $requiredNumber;
+                    ?>
+                </td>
+                <?php
+            }
+        }
     }
 
 }
