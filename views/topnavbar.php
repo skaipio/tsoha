@@ -5,11 +5,11 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="<?php if (isActivePage("/tyovuorolista/omattyovuorot.php")): ?>
+                    <li class="<?php if (isActivePage("/tyovuorolista/tyovuorot/tyontekija.php")): ?>
                         <?php echo "active";
                     endif;
                     ?>">
-                        <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/omattyovuorot.php">Omat työvuorot</a>
+                        <a href="http://skaipio.users.cs.helsinki.fi/tyovuorolista/tyovuorot/tyontekija.php">Omat työvuorot</a>
                     </li>
                     <?php if (isset($data->admin) && $data->admin): ?>
                         <li class="<?php if (isActivePage("/tyovuorolista/tyontekijat/index.php")): ?>

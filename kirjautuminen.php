@@ -24,7 +24,7 @@ $user = Employee::getEmployeeByLoginInfo($email, $password);
 
 if (isset($user)) {
     $_SESSION['loggedIn'] = $user;
-    header('Location: omattyovuorot.php');
+    header('Location: tyovuorot/tyontekija.php');
 } else {
     /* Väärän tunnuksen syöttänyt saa eteensä kirjautumislomakkeen. */
     showView("views/login.php",array(

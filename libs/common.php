@@ -59,12 +59,10 @@ function loggedInAsAdmin() {
 
 function loggedInAsUser() {
     if (!isset($_SESSION['loggedIn'])) {
-        return false;
-    }
-    if (!isset($_SESSION['loggedIn'])) {
         setErrors(array('Sinun on kirjauduttava sisään nähdäksesi tämä sivu.'));
         redirect('kirjautuminen.php');
     }
+    return true;
 }
 
 function trimInput($input) {

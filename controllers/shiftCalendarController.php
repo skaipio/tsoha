@@ -113,6 +113,37 @@ class ShiftCalendarController {
         }
     }
 
+    public function employeeShifts() {
+        setNavBarAsVisible(true);
+        
+        $user = $_SESSION['loggedIn'];
+
+        if (!isset($_SESSION['weekViewed'])) {
+            $monday = date('Y-m-d', strtotime('last monday', strtotime('tomorrow')));
+            $_SESSION['weekViewed'] = $monday;
+        } else {
+            $monday = $_SESSION['weekViewed'];
+        }
+        if (isset($_GET['day'])) {
+            $dayViewed = $_GET['day'];
+            $_SESSION['dayViewed'] = $dayViewed;
+        }
+        if (!isset($_SESSION['dayViewed'])) {
+            $_SESSION['dayViewed'] = 0;
+        }
+
+        $dayViewed = $_SESSION['dayViewed'];
+        $dateViewed = date('Y-m-d', strtotime($monday . '+' . ($dayViewed) . ' days'));
+
+        $sunday = date('Y-m-d', strtotime($monday . '+' . (6) . ' days'));
+        $dates = dateRange($monday, $sunday);
+
+        $workshifts = Workshifthour::getAllWorkShiftsByDateRangeAndEmployeeIDWithHours($user->getID(), $monday, $sunday);
+
+        showView('views/employeeWorkShifts.php', array('admin' => $user->isAdmin(), 'dayViewed' => $dayViewed, 'dateViewed' => $dateViewed,
+            'dates' => $dates, 'employee' => $user, 'workshifts' => $workshifts));
+    }
+
     public function previousWeek() {
         $this->redirectToIndexIfNoWeekViewed();
         $monday = $this->getWeekViewed();
@@ -128,6 +159,27 @@ class ShiftCalendarController {
         $this->setWeekViewed($this->getDayOfNextWeek($monday));
 
         $this->index();
+    }
+    
+    public function employeePreviousWeek() {
+        if (!isset($_SESSION['weekViewed'])) {
+            $this->employeeShifts();
+        }
+        $monday = $this->getWeekViewed();
+        $this->setWeekViewed($this->getDayOfPreviousWeek($monday));
+        $_SESSION['weekViewed'] = date('Y-m-d', strtotime($monday . '-' . (7) . ' days'));
+
+        $this->employeeShifts();
+    }
+
+    public function employeeNextWeek() {
+        if (!isset($_SESSION['weekViewed'])) {
+            $this->employeeShifts();
+        }
+        $monday = $this->getWeekViewed();
+        $this->setWeekViewed($this->getDayOfNextWeek($monday));
+
+        $this->employeeShifts();
     }
 
     private function getRequiredPersonnel($openHoursOfThisWeek, $urgencyCategories, $employees, $workshifts) {

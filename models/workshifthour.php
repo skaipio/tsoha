@@ -89,5 +89,28 @@ class Workshifthour {
         }
         return $results;
     }
+    
+    public static function getAllWorkShiftsByDateRangeAndEmployeeIDWithHours($employeeID, $startDate, $endDate) {
+        $sql = "SELECT workshifthour.id as wsid, openhour.opendate, openhour.hour"
+                . " FROM workshifthour, openhour WHERE"
+                . " openhour_id = openhour.id AND"
+                . " employee_id = ? AND"
+                . " openhour.opendate >= ? AND openhour.opendate <= ?";
+        $query = getDatabaseConnection()->prepare($sql);
+        $query->execute(array($employeeID, $startDate,$endDate));
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $date = date('Y-m-d', strtotime($result->opendate));           
+            if (!isset($results[$date])) {              
+                $results[$date] = array();
+            }
+            
+            $hour = date('H:i', strtotime($result->hour));
+            $results[$date][$hour] = new Workshifthour(
+                    $result->wsid, $hour, $employeeID);
+        }
+        return $results;
+    }
 
 }

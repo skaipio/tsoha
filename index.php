@@ -7,7 +7,7 @@ if (isset($_GET["logout"])){
 }
 $user = getUserLoggedIn();
 if (isset($user)) {
-    header('Location: omattyovuorot.php');
+    header('Location: tyovuorot/tyontekija.php');
 }else{
     header('Location: kirjautuminen.php');
 }
