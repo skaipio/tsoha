@@ -225,16 +225,22 @@ class Employee {
         $employeeDataArray['id'] = $this->getID();
         $sql = "UPDATE employee SET password=?, firstname=?, lastname=?, "
                 . "ssn=?, address=?, email=?, phone=?, personnelcategory_id=?, "
-                . "maxhoursperday=?, maxhoursperweek=?, admin=? "
+                . "maxhoursperweek=?, maxhoursperday=?,  admin=? "
                 . "WHERE id=?";
         $query = getDatabaseConnection()->prepare($sql);
         return $query->execute(array_values($employeeDataArray));
     }
 
     private function ssnInUse($ssn) {
-        $sql = "SELECT id FROM employee WHERE ssn = ?";
-        $query = getDatabaseConnection()->prepare($sql);
-        $query->execute(array($ssn));
+        if (!isset($this->id)) {
+            $sql = "SELECT id FROM employee WHERE ssn = ?";
+            $query = getDatabaseConnection()->prepare($sql);
+            $query->execute(array($ssn));
+        } else {
+            $sql = "SELECT id FROM employee WHERE ssn = ? AND id != ?";
+            $query = getDatabaseConnection()->prepare($sql);
+            $query->execute(array($ssn, $this->id));
+        }
 
         $rows = 0;
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
@@ -254,7 +260,7 @@ class Employee {
         }
         return $results;
     }
-    
+
     public static function getEmployeesWithShiftLimitDetails() {
         $sql = "SELECT id, firstname, lastname, personnelcategory_id,"
                 . "maxhoursperweek, maxhoursperday FROM employee";
